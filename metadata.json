@@ -1,0 +1,6 @@
+{
+  "name": "Snippet Vault",
+  "description": "Contenitore e anteprima per snippet HTML con codifica a colori per categoria e ricerca rapida.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,627 +1,1505 @@
-import { Snippet, SnippetCategory } from '../types';
+import { CategoryInfo, Snippet } from '../types';
 
-export interface CategoryColorConfig {
-  id: SnippetCategory | 'all';
-  name: string;
-  shortLabel: string;
-  icon: string;
-  colorName: string;
-  hex: string;
-  badgeClass: string;
-  badgeDot: string;
-  borderAccent: string;
-  hoverBorder: string;
-  activeBtnClass: string;
-}
-
-export const CATEGORIES_CONFIG: CategoryColorConfig[] = [
-  { 
-    id: 'all', 
-    name: 'Tutti gli Snippet', 
-    shortLabel: 'Tutti',
-    icon: 'Layers',
-    colorName: 'stone',
-    hex: '#78716c',
-    badgeClass: 'bg-stone-200 text-stone-800 dark:bg-stone-800 dark:text-stone-200 border-stone-300 dark:border-stone-700',
-    badgeDot: 'bg-stone-500',
-    borderAccent: '#78716c',
-    hoverBorder: 'hover:border-stone-400',
-    activeBtnClass: 'bg-stone-800 text-stone-50 dark:bg-stone-200 dark:text-stone-900 border-stone-800 dark:border-stone-200'
+export const CATEGORIES: CategoryInfo[] = [
+  {
+    id: 'bottoni',
+    name: 'Bottoni & Controlli',
+    color: '#0d9488',
+    dotBg: 'bg-teal-600',
+    badgeBg: 'bg-teal-50',
+    badgeText: 'text-teal-800',
+    badgeBorder: 'border-teal-200',
+    headerBg: 'bg-teal-700',
+    headerBorder: 'border-teal-800',
+    headerHex: '#0f766e',
   },
-  { 
-    id: 'buttons', 
-    name: 'Pulsanti (Buttons)', 
-    shortLabel: 'Pulsanti',
-    icon: 'MousePointerClick',
-    colorName: 'amber',
-    hex: '#f59e0b',
-    badgeClass: 'bg-amber-100 text-amber-900 dark:bg-amber-950/70 dark:text-amber-300 border-amber-300 dark:border-amber-800',
-    badgeDot: 'bg-amber-500',
-    borderAccent: '#f59e0b',
-    hoverBorder: 'hover:border-amber-400 dark:hover:border-amber-600',
-    activeBtnClass: 'bg-amber-600 text-white border-amber-600 shadow-sm'
+  {
+    id: 'schede',
+    name: 'Schede & Card',
+    color: '#d97706',
+    dotBg: 'bg-amber-600',
+    badgeBg: 'bg-amber-50',
+    badgeText: 'text-amber-800',
+    badgeBorder: 'border-amber-200',
+    headerBg: 'bg-amber-600',
+    headerBorder: 'border-amber-700',
+    headerHex: '#d97706',
   },
-  { 
-    id: 'cards', 
-    name: 'Schede (Cards)', 
-    shortLabel: 'Schede',
-    icon: 'SquareCode',
-    colorName: 'blue',
-    hex: '#3b82f6',
-    badgeClass: 'bg-blue-100 text-blue-900 dark:bg-blue-950/70 dark:text-blue-300 border-blue-300 dark:border-blue-800',
-    badgeDot: 'bg-blue-500',
-    borderAccent: '#3b82f6',
-    hoverBorder: 'hover:border-blue-400 dark:hover:border-blue-600',
-    activeBtnClass: 'bg-blue-600 text-white border-blue-600 shadow-sm'
+  {
+    id: 'layout',
+    name: 'Layout & Griglie',
+    color: '#4f46e5',
+    dotBg: 'bg-indigo-600',
+    badgeBg: 'bg-indigo-50',
+    badgeText: 'text-indigo-800',
+    badgeBorder: 'border-indigo-200',
+    headerBg: 'bg-indigo-700',
+    headerBorder: 'border-indigo-800',
+    headerHex: '#4338ca',
   },
-  { 
-    id: 'navigation', 
-    name: 'Navigazione & Menu', 
-    shortLabel: 'Navigazione',
-    icon: 'Compass',
-    colorName: 'purple',
-    hex: '#a855f7',
-    badgeClass: 'bg-purple-100 text-purple-900 dark:bg-purple-950/70 dark:text-purple-300 border-purple-300 dark:border-purple-800',
-    badgeDot: 'bg-purple-500',
-    borderAccent: '#a855f7',
-    hoverBorder: 'hover:border-purple-400 dark:hover:border-purple-600',
-    activeBtnClass: 'bg-purple-600 text-white border-purple-600 shadow-sm'
+  {
+    id: 'animazioni',
+    name: 'Animazioni & Effetti',
+    color: '#9333ea',
+    dotBg: 'bg-purple-600',
+    badgeBg: 'bg-purple-50',
+    badgeText: 'text-purple-800',
+    badgeBorder: 'border-purple-200',
+    headerBg: 'bg-purple-700',
+    headerBorder: 'border-purple-800',
+    headerHex: '#7e22ce',
   },
-  { 
-    id: 'forms', 
-    name: 'Moduli & Input', 
-    shortLabel: 'Moduli',
-    icon: 'CheckSquare',
-    colorName: 'emerald',
-    hex: '#10b981',
-    badgeClass: 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950/70 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
-    badgeDot: 'bg-emerald-500',
-    borderAccent: '#10b981',
-    hoverBorder: 'hover:border-emerald-400 dark:hover:border-emerald-600',
-    activeBtnClass: 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+  {
+    id: 'form',
+    name: 'Campi & Form',
+    color: '#ea580c',
+    dotBg: 'bg-orange-600',
+    badgeBg: 'bg-orange-50',
+    badgeText: 'text-orange-800',
+    badgeBorder: 'border-orange-200',
+    headerBg: 'bg-orange-600',
+    headerBorder: 'border-orange-700',
+    headerHex: '#ea580c',
   },
-  { 
-    id: 'badges', 
-    name: 'Badge & Indicatori', 
-    shortLabel: 'Badge',
-    icon: 'Award',
-    colorName: 'rose',
-    hex: '#f43f5e',
-    badgeClass: 'bg-rose-100 text-rose-900 dark:bg-rose-950/70 dark:text-rose-300 border-rose-300 dark:border-rose-800',
-    badgeDot: 'bg-rose-500',
-    borderAccent: '#f43f5e',
-    hoverBorder: 'hover:border-rose-400 dark:hover:border-rose-600',
-    activeBtnClass: 'bg-rose-600 text-white border-rose-600 shadow-sm'
+  {
+    id: 'modali',
+    name: 'Modali & Dialoghi',
+    color: '#059669',
+    dotBg: 'bg-emerald-600',
+    badgeBg: 'bg-emerald-50',
+    badgeText: 'text-emerald-800',
+    badgeBorder: 'border-emerald-200',
+    headerBg: 'bg-emerald-700',
+    headerBorder: 'border-emerald-800',
+    headerHex: '#047857',
   },
-  { 
-    id: 'feedback', 
-    name: 'Interattivi & Feedback', 
-    shortLabel: 'Feedback',
-    icon: 'Sparkles',
-    colorName: 'cyan',
-    hex: '#06b6d4',
-    badgeClass: 'bg-cyan-100 text-cyan-900 dark:bg-cyan-950/70 dark:text-cyan-300 border-cyan-300 dark:border-cyan-800',
-    badgeDot: 'bg-cyan-500',
-    borderAccent: '#06b6d4',
-    hoverBorder: 'hover:border-cyan-400 dark:hover:border-cyan-600',
-    activeBtnClass: 'bg-cyan-600 text-white border-cyan-600 shadow-sm'
+  {
+    id: 'menu',
+    name: 'Menu & Navigazione',
+    color: '#0284c7',
+    dotBg: 'bg-sky-600',
+    badgeBg: 'bg-sky-50',
+    badgeText: 'text-sky-800',
+    badgeBorder: 'border-sky-200',
+    headerBg: 'bg-sky-700',
+    headerBorder: 'border-sky-800',
+    headerHex: '#0369a1',
   },
-  { 
-    id: 'layout', 
-    name: 'Layout & Sezioni', 
-    shortLabel: 'Layout',
-    icon: 'LayoutTemplate',
-    colorName: 'indigo',
-    hex: '#6366f1',
-    badgeClass: 'bg-indigo-100 text-indigo-900 dark:bg-indigo-950/70 dark:text-indigo-300 border-indigo-300 dark:border-indigo-800',
-    badgeDot: 'bg-indigo-500',
-    borderAccent: '#6366f1',
-    hoverBorder: 'hover:border-indigo-400 dark:hover:border-indigo-600',
-    activeBtnClass: 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+  {
+    id: 'header',
+    name: 'Header & Barre Top',
+    color: '#e11d48',
+    dotBg: 'bg-rose-600',
+    badgeBg: 'bg-rose-50',
+    badgeText: 'text-rose-800',
+    badgeBorder: 'border-rose-200',
+    headerBg: 'bg-rose-700',
+    headerBorder: 'border-rose-800',
+    headerHex: '#be123c',
   },
-  { 
-    id: 'other', 
-    name: 'Altri Snippet', 
-    shortLabel: 'Altri',
-    icon: 'Code',
-    colorName: 'slate',
-    hex: '#64748b',
-    badgeClass: 'bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700',
-    badgeDot: 'bg-slate-500',
-    borderAccent: '#64748b',
-    hoverBorder: 'hover:border-slate-400 dark:hover:border-slate-600',
-    activeBtnClass: 'bg-slate-700 text-white border-slate-700 shadow-sm'
+  {
+    id: 'hero',
+    name: 'Hero & Banner',
+    color: '#7c3aed',
+    dotBg: 'bg-violet-600',
+    badgeBg: 'bg-violet-50',
+    badgeText: 'text-violet-800',
+    badgeBorder: 'border-violet-200',
+    headerBg: 'bg-violet-700',
+    headerBorder: 'border-violet-800',
+    headerHex: '#6d28d9',
   },
 ];
 
-export function getCategoryConfig(category: SnippetCategory | 'all' | string): CategoryColorConfig {
-  const found = CATEGORIES_CONFIG.find((c) => c.id === category);
-  if (found) return found;
-  return CATEGORIES_CONFIG[CATEGORIES_CONFIG.length - 1]; // fallback to 'other'
-}
-
-export const DEFAULT_SNIPPETS: Snippet[] = [
-  // --- BUTTONS (AMBER) ---
+export const INITIAL_SNIPPETS: Snippet[] = [
   {
-    id: 'html-glow-button',
-    title: 'Pulsante Glow con Gradiente',
-    description: 'Pulsante moderno con gradiente animato, ombra colorata ed effetto hover scalato.',
-    category: 'buttons',
-    type: 'html',
-    tags: ['button', 'gradient', 'glow', 'tailwind', 'cta'],
-    path: '/snippets/buttons/glow-button.html',
-    createdAt: '2026-09-08',
-    code: `<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-xl group bg-gradient-to-br from-amber-500 to-orange-600 group-hover:from-amber-500 group-hover:to-orange-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 transition-all duration-300 shadow-lg shadow-amber-500/25 hover:scale-105 active:scale-95 cursor-pointer">
-  <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-[10px] group-hover:bg-opacity-0 font-semibold tracking-wide">
-    ✨ Gradient Glow Button
-  </span>
-</button>`
+    id: 'btn-moderno',
+    title: 'Pulsante Gradiente Fluttuante',
+    category: 'bottoni',
+    filePath: 'public/snippets/bottoni/pulsante-moderno.html',
+    description: 'Pulsante call-to-action con sfumatura smeraldo/teal e animazione hover.',
+    tags: ['button', 'gradient', 'hover', 'icon'],
+    createdAt: 1710000000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .btn-gradient {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.35);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.45);
+      background: linear-gradient(135deg, #0f766e 0%, #0369a1 100%);
+    }
+    .btn-gradient:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+    }
+    .btn-icon {
+      transition: transform 0.2s ease;
+    }
+    .btn-gradient:hover .btn-icon {
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body>
+  <button class="btn-gradient" onclick="this.querySelector('span').textContent = 'Cliccato! ✓'; setTimeout(() => this.querySelector('span').textContent = 'Azione Principale', 1500)">
+    <span>Azione Principale</span>
+    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+  </button>
+</body>
+</html>`,
   },
   {
-    id: 'html-button-group',
-    title: 'Gruppo Pulsanti Segmentati',
-    description: 'Controllo a segmenti con pulsanti affiancati e stato attivo evidenziato.',
-    category: 'buttons',
-    type: 'html',
-    tags: ['button', 'group', 'segmented', 'toolbar'],
-    path: '/snippets/buttons/button-group.html',
-    createdAt: '2026-09-08',
-    code: `<div class="inline-flex rounded-xl shadow-xs border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-1" role="group">
-  <button type="button" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-amber-600 rounded-lg shadow-xs transition cursor-pointer">
-    Giorno
+    id: 'btn-ardesia',
+    title: 'Pulsante Outline Minimalista',
+    category: 'bottoni',
+    filePath: 'public/snippets/bottoni/bottone-ardesia-minimale.html',
+    description: 'Pulsante secondario elegante con bordo sottile e sfumatura al passaggio del mouse.',
+    tags: ['button', 'outline', 'minimal', 'clean'],
+    createdAt: 1710001000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #334155;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+    .btn-outline:hover {
+      border-color: #0f172a;
+      color: #0f172a;
+      background: #f8fafc;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+    .btn-outline:active {
+      transform: translateY(0);
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn-outline" onclick="this.style.borderColor = '#0d9488'; this.style.color = '#0d9488';">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 20h9"></path>
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+    </svg>
+    <span>Modifica Parametri</span>
   </button>
-  <button type="button" class="px-3.5 py-1.5 text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition cursor-pointer">
-    Settimana
-  </button>
-  <button type="button" class="px-3.5 py-1.5 text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition cursor-pointer">
-    Mese
-  </button>
-</div>`
+</body>
+</html>`,
   },
-
-  // --- CARDS (BLUE) ---
   {
-    id: 'html-pricing-card',
-    title: 'Scheda Pricing Pro',
-    description: 'Card per piano tariffario con badge di popolarità e pulsante d\'azione.',
-    category: 'cards',
-    type: 'html',
-    tags: ['pricing', 'card', 'saas', 'tailwind'],
-    path: '/snippets/cards/pricing-card.html',
-    createdAt: '2026-09-08',
-    code: `<div class="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 dark:bg-gray-800 dark:border-gray-700">
-  <div class="flex items-center justify-between mb-4">
-    <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Pro Plan</h5>
-    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Popolare</span>
-  </div>
-  <div class="flex items-baseline text-gray-900 dark:text-white mb-4">
-    <span class="text-3xl font-extrabold tracking-tight">€29</span>
-    <span class="ms-1 text-sm font-normal text-gray-500 dark:text-gray-400">/mese</span>
-  </div>
-  <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Tutti gli strumenti avanzati per sviluppatori e team agili.</p>
-  <button type="button" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition duration-150 shadow-sm hover:shadow active:scale-[0.98] cursor-pointer">
-    Inizia Prova Gratuita
-  </button>
-</div>`
-  },
-  {
-    id: 'html-testimonial-card',
-    title: 'Scheda Testimonianza con Avatar',
-    description: 'Recensione cliente con voto a stelle, citazione virgolettata e autore.',
-    category: 'cards',
-    type: 'html',
-    tags: ['card', 'testimonial', 'review', 'social-proof'],
-    path: '/snippets/cards/testimonial-card.html',
-    createdAt: '2026-09-08',
-    code: `<div class="w-full max-w-sm p-5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-  <div class="flex items-center gap-1 text-amber-400 text-sm mb-3">
-    ★ ★ ★ ★ ★
-  </div>
-  <p class="text-sm text-slate-600 dark:text-slate-300 italic mb-4">
-    "La velocità di anteprima HTML è fenomenale. Abbiamo ridotto del 70% il tempo speso a cercare e testare componenti."
-  </p>
-  <div class="flex items-center gap-3">
-    <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
-      MC
+    id: 'card-prodotto',
+    title: 'Scheda Prodotto Vetrina',
+    category: 'schede',
+    filePath: 'public/snippets/schede/scheda-prodotto.html',
+    description: 'Card prodotto elegante con banner ambra, badge categoria e prezzo con pulsante d’acquisto.',
+    tags: ['card', 'shop', 'ecommerce', 'product'],
+    createdAt: 1710002000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 320px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      transition: all 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px -5px rgba(0, 0, 0, 0.12);
+      border-color: #cbd5e1;
+    }
+    .card-banner {
+      height: 120px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      border-bottom: 1px solid #fef3c7;
+    }
+    .card-content {
+      padding: 20px;
+    }
+    .card-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #b45309;
+      background: #fef3c7;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      margin: 0 0 8px 0;
+      font-size: 17px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .card-desc {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 14px;
+    }
+    .card-price {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .card-btn {
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .card-btn:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-banner">📦</div>
+    <div class="card-content">
+      <span class="card-tag">Nuovo Arrivo</span>
+      <h3 class="card-title">Kit Componenti Web</h3>
+      <p class="card-desc">Raccolta di elementi UI leggeri e accessibili già ottimizzati per la resa.</p>
+      <div class="card-footer">
+        <span class="card-price">€29,00</span>
+        <button class="card-btn" onclick="this.textContent = 'Aggiunto!'; setTimeout(() => this.textContent = 'Acquista', 1500)">Acquista</button>
+      </div>
     </div>
+  </div>
+</body>
+</html>`,
+  },
+  {
+    id: 'profilo-utente',
+    title: 'Profilo Utente Compatto',
+    category: 'schede',
+    filePath: 'public/snippets/schede/profilo-minimale.html',
+    description: 'Badge profilo orizzontale con avatar iniziali, ruolo e spia status attiva.',
+    tags: ['profile', 'avatar', 'user', 'badge'],
+    createdAt: 1710003000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 14px;
+      min-width: 290px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .user-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(13,148,136,0.3);
+    }
+    .info-name {
+      margin: 0;
+      font-size: 15px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .info-role {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .badge-status {
+      margin-left: auto;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 3px #d1fae5;
+    }
+  </style>
+</head>
+<body>
+  <div class="user-card">
+    <div class="avatar">MR</div>
     <div>
-      <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100">Marco Colombo</h4>
-      <p class="text-[11px] text-slate-500 dark:text-slate-400">Lead Frontend Engineer</p>
+      <h4 class="info-name">Marco Rossi</h4>
+      <p class="info-role">Frontend Specialist</p>
     </div>
+    <div class="badge-status" title="Disponibile Online"></div>
   </div>
-</div>`
-  },
-
-  // --- NAVIGATION (PURPLE) ---
-  {
-    id: 'html-glass-navbar',
-    title: 'Floating Glass Navbar',
-    description: 'Barra di navigazione fluttuante con effetto sfocato frosted glass.',
-    category: 'navigation',
-    type: 'html',
-    tags: ['navbar', 'glassmorphism', 'floating', 'menu'],
-    path: '/snippets/nav/glass-navbar.html',
-    createdAt: '2026-09-08',
-    code: `<nav class="w-full max-w-xl px-5 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full shadow-lg border border-purple-200/60 dark:border-purple-900/40 flex items-center justify-between">
-  <div class="flex items-center gap-2">
-    <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-xs">
-      SV
-    </div>
-    <span class="font-bold text-sm tracking-tight text-slate-800 dark:text-slate-100">SnippetApp</span>
-  </div>
-  <div class="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-300">
-    <a href="#" class="hover:text-purple-600 transition">Home</a>
-    <a href="#" class="hover:text-purple-600 transition">Componenti</a>
-    <a href="#" class="hover:text-purple-600 transition">Docs</a>
-  </div>
-  <button class="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-full text-xs font-semibold transition cursor-pointer">
-    Accedi
-  </button>
-</nav>`
+</body>
+</html>`,
   },
   {
-    id: 'html-breadcrumbs-tabs',
-    title: 'Breadcrumbs & Tab di Navigazione',
-    description: 'Percorso breadcrumbs gerarchico con pillole di sezione selezionabili.',
-    category: 'navigation',
-    type: 'html',
-    tags: ['breadcrumbs', 'navigation', 'tabs'],
-    path: '/snippets/nav/breadcrumbs.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-col gap-2 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-  <nav class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-    <a href="#" class="hover:text-purple-600 transition">Dashboard</a>
-    <span>/</span>
-    <a href="#" class="hover:text-purple-600 transition">Progetti</a>
-    <span>/</span>
-    <span class="font-semibold text-purple-600 dark:text-purple-400">Design System</span>
+    id: 'griglia-moderna',
+    title: 'Griglia Responsive Auto-Fit',
+    category: 'layout',
+    filePath: 'public/snippets/layout/griglia-moderna.html',
+    description: 'Layout a griglia senza media queries con CSS Grid repeat(auto-fit, minmax(...)).',
+    tags: ['grid', 'layout', 'responsive'],
+    createdAt: 1710004000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .grid-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px 12px;
+      text-align: center;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+    .grid-item:hover {
+      transform: translateY(-2px);
+      border-color: #4f46e5;
+      color: #4f46e5;
+      box-shadow: 0 6px 16px rgba(79,70,229,0.12);
+    }
+    .grid-item span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 6px;
+      font-weight: 800;
+      color: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="grid-item">
+      <span>01</span>
+      Layout Flessibile
+    </div>
+    <div class="grid-item">
+      <span>02</span>
+      Auto Responsive
+    </div>
+    <div class="grid-item">
+      <span>03</span>
+      Zero Dipendenze
+    </div>
+    <div class="grid-item">
+      <span>04</span>
+      CSS Grid Moderno
+    </div>
+  </div>
+</body>
+</html>`,
+  },
+  {
+    id: 'barra-navigazione',
+    title: 'Barra di Navigazione Isolata',
+    category: 'layout',
+    filePath: 'public/snippets/layout/barra-navigazione.html',
+    description: 'Header di navigazione compatto a pillola con link e marchio evidenziato.',
+    tags: ['nav', 'header', 'menu', 'pill'],
+    createdAt: 1710005000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 16px;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 10px 18px;
+      border-radius: 999px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+    .brand {
+      font-weight: 800;
+      color: #4f46e5;
+      font-size: 14px;
+      letter-spacing: -0.3px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-links a {
+      color: #64748b;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: #0f172a;
+      background: #f1f5f9;
+    }
+    .nav-links a.active {
+      color: #ffffff;
+      background: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">✦ PROGETTO</div>
+    <div class="nav-links">
+      <a href="#" class="active">Home</a>
+      <a href="#">Archivio</a>
+      <a href="#">Snippet</a>
+    </div>
   </nav>
-  <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-700">
-    <button class="px-3 py-1 bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 rounded-lg text-xs font-semibold">Generale</button>
-    <button class="px-3 py-1 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-xs font-medium transition">Componenti</button>
-    <button class="px-3 py-1 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-xs font-medium transition">Impostazioni</button>
-  </div>
-</div>`
-  },
-
-  // --- FORMS (EMERALD) ---
-  {
-    id: 'html-newsletter-card',
-    title: 'Form Newsletter Dark Mode',
-    description: 'Box iscrizione newsletter con gradiente scuro, input compatto e invio.',
-    category: 'forms',
-    type: 'html',
-    tags: ['newsletter', 'form', 'input', 'dark'],
-    path: '/snippets/forms/newsletter-card.html',
-    createdAt: '2026-09-08',
-    code: `<div class="w-full max-w-md p-6 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl text-white shadow-xl border border-emerald-900/40">
-  <h3 class="text-lg font-semibold mb-1">Rimani Aggiornato</h3>
-  <p class="text-sm text-slate-300 mb-4">Ricevi i migliori snippet frontend direttamente ogni settimana.</p>
-  <form class="flex gap-2" onsubmit="event.preventDefault()">
-    <input 
-      type="email" 
-      placeholder="nome@azienda.it" 
-      class="flex-1 px-4 py-2 bg-slate-950/60 border border-slate-700 rounded-xl text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white"
-    />
-    <button 
-      type="submit" 
-      class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-xl transition duration-150 shadow-md shrink-0 cursor-pointer"
-    >
-      Iscriviti
-    </button>
-  </form>
-</div>`
+</body>
+</html>`,
   },
   {
-    id: 'html-animated-toggle',
-    title: 'Switch a Scorrimento CSS',
-    description: 'Interruttore on/off fluido con checkbox CSS nativo peer-checked e feedback testuale.',
-    category: 'forms',
-    type: 'html',
-    tags: ['toggle', 'switch', 'checkbox', 'peer-checked'],
-    path: '/snippets/forms/animated-toggle.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-col items-center gap-3 p-5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 w-64">
-  <div class="flex items-center justify-between w-full">
-    <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Notifiche Email</span>
-    <label class="relative inline-flex items-center cursor-pointer">
-      <input type="checkbox" checked class="sr-only peer" onchange="document.getElementById('toggle-state').innerText = this.checked ? 'Attivo' : 'Disattivato'">
-      <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
-    </label>
-  </div>
-  <span class="text-xs text-slate-500 dark:text-slate-400">
-    Stato: <strong id="toggle-state" class="text-emerald-600 dark:text-emerald-400">Attivo</strong>
-  </span>
-</div>`
-  },
-  {
-    id: 'html-tag-input',
-    title: 'Gestore Tag e Chip Input',
-    description: 'Contenitore per chip di tag interattivi con aggiunta da input ed eliminazione.',
-    category: 'forms',
-    type: 'html',
-    tags: ['tags', 'chips', 'input', 'interactive'],
-    path: '/snippets/forms/tag-input.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-col gap-3 p-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm w-80">
-  <div class="flex items-center justify-between">
-    <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Tag del Componente</span>
-    <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">HTML + JS</span>
-  </div>
-
-  <div id="tag-container" class="flex flex-wrap gap-1.5 min-h-[32px]">
-    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-      TailwindCSS
-      <button onclick="this.parentElement.remove()" class="hover:opacity-75 cursor-pointer">×</button>
-    </span>
-    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-300 dark:border-blue-800">
-      HTML5
-      <button onclick="this.parentElement.remove()" class="hover:opacity-75 cursor-pointer">×</button>
-    </span>
-  </div>
-
-  <div class="flex gap-2">
-    <input
-      id="new-tag-input"
-      type="text"
-      placeholder="Aggiungi tag..."
-      class="flex-1 px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-900 dark:text-slate-100"
-      onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomTag();}"
-    />
-    <button
-      onclick="addCustomTag()"
-      class="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition cursor-pointer"
-    >
-      +
-    </button>
-  </div>
-
-  <script>
-    function addCustomTag() {
-      const input = document.getElementById('new-tag-input');
-      const text = input.value.trim();
-      if (!text) return;
-      const span = document.createElement('span');
-      span.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800';
-      span.innerHTML = text + ' <button onclick="this.parentElement.remove()" class="hover:opacity-75 cursor-pointer">×</button>';
-      document.getElementById('tag-container').appendChild(span);
-      input.value = '';
+    id: 'caricamento-pulsante',
+    title: 'Spinner di Caricamento Viola',
+    category: 'animazioni',
+    filePath: 'public/snippets/animazioni/caricamento-pulsante.html',
+    description: 'Indicatore circolare di avanzamento con rotazione continua e didascalia.',
+    tags: ['loader', 'spinner', 'animation'],
+    createdAt: 1710006000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
     }
-  </script>
-</div>`
-  },
-
-  // --- BADGES (ROSE) ---
-  {
-    id: 'html-status-pills',
-    title: 'Badge di Stato e Indicatori',
-    description: 'Indicatori di stato circolare con animazione a impulsi per server o servizi.',
-    category: 'badges',
-    type: 'html',
-    tags: ['badge', 'status', 'pulse', 'indicator'],
-    path: '/snippets/badges/status-pills.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-wrap gap-2 items-center justify-center p-4">
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-    Attivo / Online
-  </span>
-
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-    In Manutenzione
-  </span>
-
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
-    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-    Offline
-  </span>
-</div>`
-  },
-  {
-    id: 'html-metric-badge',
-    title: 'Badge Metrica KPI con Incremento',
-    description: 'Scheda statistica con valore numerico dinamico, trend positivo e pulsante boost.',
-    category: 'badges',
-    type: 'html',
-    tags: ['badge', 'kpi', 'metric', 'stats', 'interactive'],
-    path: '/snippets/badges/metric-badge.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-col items-center gap-3 p-5 bg-white dark:bg-slate-800 border border-rose-200 dark:border-rose-900/50 rounded-2xl shadow-sm w-72">
-  <div class="flex items-center justify-between w-full">
-    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">
-      Tasso Conversione
-    </span>
-    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300">
-      +4.8%
-    </span>
-  </div>
-
-  <div class="flex items-baseline gap-1 my-1">
-    <span id="kpi-val" class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-      98.4
-    </span>
-    <span class="text-sm font-semibold text-slate-500 dark:text-slate-400">%</span>
-  </div>
-
-  <button
-    onclick="const el=document.getElementById('kpi-val'); el.innerText = (parseFloat(el.innerText) + 0.5).toFixed(1);"
-    class="w-full py-1.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition active:scale-95 cursor-pointer shadow-xs"
-  >
-    Simula Boost (+0.5%)
-  </button>
-</div>`
-  },
-
-  // --- FEEDBACK & INTERACTIVE (CYAN) ---
-  {
-    id: 'html-interactive-counter',
-    title: 'Contatore Interattivo',
-    description: 'Componente contatore con pulsanti per incremento, decremento e azzeramento rapido.',
-    category: 'feedback',
-    type: 'html',
-    tags: ['counter', 'interactive', 'vanilla-js', 'feedback'],
-    path: '/snippets/feedback/interactive-counter.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-cyan-200 dark:border-cyan-900/50 w-72">
-  <span class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2">
-    Contatore Interattivo
-  </span>
-  <div id="counter-val" class="text-4xl font-extrabold text-cyan-600 dark:text-cyan-400 mb-6 transition-transform">
-    0
-  </div>
-  <div class="flex items-center gap-3 w-full justify-center">
-    <button
-      onclick="changeVal(-1)"
-      class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-slate-100 font-bold flex items-center justify-center transition active:scale-95 cursor-pointer"
-    >
-      -
-    </button>
-    <button
-      onclick="resetVal()"
-      class="px-3 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-semibold text-slate-600 dark:text-slate-300 transition active:scale-95 cursor-pointer"
-    >
-      Reset
-    </button>
-    <button
-      onclick="changeVal(1)"
-      class="w-10 h-10 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold flex items-center justify-center transition shadow-md shadow-cyan-500/20 active:scale-95 cursor-pointer"
-    >
-      +
-    </button>
-  </div>
-
-  <script>
-    let currentCount = 0;
-    function changeVal(delta) {
-      currentCount += delta;
-      document.getElementById('counter-val').innerText = currentCount;
+    .spinner-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 24px 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
     }
-    function resetVal() {
-      currentCount = 0;
-      document.getElementById('counter-val').innerText = currentCount;
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3.5px solid #f3e8ff;
+      border-top-color: #9333ea;
+      border-radius: 50%;
+      animation: spin 0.75s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
     }
-  </script>
-</div>`
-  },
-  {
-    id: 'html-star-rating',
-    title: 'Valutazione a Stelle Interattiva',
-    description: 'Componente rating a 5 stelle con hover dinamico e selezione del punteggio.',
-    category: 'feedback',
-    type: 'html',
-    tags: ['rating', 'stars', 'interactive', 'feedback'],
-    path: '/snippets/feedback/star-rating.html',
-    createdAt: '2026-09-08',
-    code: `<div class="flex flex-col items-center gap-2 p-5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
-    Valuta questo componente
-  </span>
-  <div id="stars-row" class="flex gap-1 text-2xl cursor-pointer">
-    <span onclick="setRating(1)" class="star text-amber-400 hover:scale-110 transition">★</span>
-    <span onclick="setRating(2)" class="star text-amber-400 hover:scale-110 transition">★</span>
-    <span onclick="setRating(3)" class="star text-amber-400 hover:scale-110 transition">★</span>
-    <span onclick="setRating(4)" class="star text-amber-400 hover:scale-110 transition">★</span>
-    <span onclick="setRating(5)" class="star text-slate-300 dark:text-slate-600 hover:scale-110 transition">★</span>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spinner-label {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="spinner-box">
+    <div class="spinner"></div>
+    <span class="spinner-label">Elaborazione in corso...</span>
   </div>
-  <span id="rating-label" class="text-xs font-medium text-slate-600 dark:text-slate-300 mt-1">
-    4 su 5 stelle
-  </span>
-
-  <script>
-    function setRating(val) {
-      const stars = document.querySelectorAll('#stars-row .star');
-      stars.forEach((star, index) => {
-        if (index < val) {
-          star.className = 'star text-amber-400 hover:scale-110 transition';
-        } else {
-          star.className = 'star text-slate-300 dark:text-slate-600 hover:scale-110 transition';
-        }
-      });
-      document.getElementById('rating-label').innerText = val + ' su 5 stelle';
-    }
-  </script>
-</div>`
+</body>
+</html>`,
   },
   {
-    id: 'html-toast-alert',
-    title: 'Toast Alert con Chiusura',
-    description: 'Notifica banner moderna con indicatore iconico e pulsante di chiusura immediata.',
-    category: 'feedback',
-    type: 'html',
-    tags: ['toast', 'alert', 'notification', 'feedback'],
-    path: '/snippets/feedback/toast-alert.html',
-    createdAt: '2026-09-08',
-    code: `<div id="my-toast" class="flex items-center justify-between gap-3 p-3.5 bg-cyan-950 text-cyan-100 border border-cyan-800 rounded-xl shadow-lg max-w-sm">
-  <div class="flex items-center gap-2.5">
-    <div class="w-6 h-6 rounded-full bg-cyan-500 text-white flex items-center justify-center text-xs font-bold shrink-0">
-      ✓
+    id: 'effetto-testo-fluido',
+    title: 'Badge di Stato con Effetto Pulse',
+    category: 'animazioni',
+    filePath: 'public/snippets/animazioni/effetto-testo-fluido.html',
+    description: 'Badge pillola con cerchio radar pulsante continuo per monitoraggio stato server.',
+    tags: ['pulse', 'badge', 'status', 'radar'],
+    createdAt: 1710007000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .pulse-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: #fdf4ff;
+      border: 1px solid #f0abfc;
+      color: #86198f;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(192, 38, 211, 0.08);
+    }
+    .dot-container {
+      position: relative;
+      width: 10px;
+      height: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dot-core {
+      width: 8px;
+      height: 8px;
+      background: #a21caf;
+      border-radius: 50%;
+    }
+    .dot-wave {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #d946ef;
+      animation: pulse-ring 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="pulse-badge">
+    <div class="dot-container">
+      <div class="dot-wave"></div>
+      <div class="dot-core"></div>
     </div>
-    <div class="text-xs">
-      <strong class="font-semibold block text-white">Aggiornamento completato</strong>
-      Tutti i file HTML sono stati sincronizzati.
+    <span>Sistema Operativo Online</span>
+  </div>
+</body>
+</html>`,
+  },
+  {
+    id: 'campo-ricerca-animato',
+    title: 'Campo di Ricerca con Icona SVG',
+    category: 'form',
+    filePath: 'public/snippets/form/campo-ricerca-animato.html',
+    description: 'Input di ricerca fluido con icona lente e bordo illuminato corallo al focus.',
+    tags: ['form', 'input', 'search'],
+    createdAt: 1710008000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 16px;
+    }
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      color: #0f172a;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .search-input:focus {
+      border-color: #ea580c;
+      box-shadow: 0 0 0 3.5px rgba(234, 88, 12, 0.15);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+    .search-input:focus ~ .search-icon {
+      color: #ea580c;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-wrapper">
+    <input type="text" class="search-input" placeholder="Cerca componenti o documenti..." />
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </div>
+</body>
+</html>`,
+  },
+  {
+    id: 'dialog-conferma',
+    title: 'Finestra Dialog di Conferma',
+    category: 'modali',
+    filePath: 'public/snippets/modali/dialog-conferma.html',
+    description: 'Modale di avviso/successo con icona verde smeraldo e bottoni di risposta interattivi.',
+    tags: ['modal', 'dialog', 'confirm', 'alert'],
+    createdAt: 1710009000000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .modal-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 350px;
+      width: 100%;
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+    }
+    .modal-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #d1fae5;
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .modal-title {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .modal-text {
+      margin: 0 0 20px 0;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .btn-confirm {
+      background: #059669;
+      border: none;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-confirm:hover {
+      background: #047857;
+    }
+  </style>
+</head>
+<body>
+  <div class="modal-box">
+    <div class="modal-icon">✓</div>
+    <h3 class="modal-title">Operazione Riuscita</h3>
+    <p class="modal-text">Il frammento di codice HTML è stato registrato ed è pronto all'uso.</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="alert('Operazione annullata')">Annulla</button>
+      <button class="btn-confirm" onclick="this.textContent = 'Fatto!'; setTimeout(() => this.textContent = 'Continua', 1200)">Continua</button>
     </div>
   </div>
-  <button onclick="document.getElementById('my-toast').style.display='none'" class="text-cyan-400 hover:text-white transition p-1 cursor-pointer font-bold text-sm">
-    ×
-  </button>
-</div>`
-  },
-
-  // --- LAYOUT (INDIGO) ---
-  {
-    id: 'html-faq-accordion',
-    title: 'Accordion FAQ Nativo (HTML5)',
-    description: 'Componente a fisarmonica creato con tag nativi details e summary, zero JS.',
-    category: 'layout',
-    type: 'html',
-    tags: ['accordion', 'details', 'summary', 'faq', 'layout'],
-    path: '/snippets/layout/accordion.html',
-    createdAt: '2026-09-08',
-    code: `<div class="w-full max-w-md space-y-2">
-  <details class="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden cursor-pointer" open>
-    <summary class="flex items-center justify-between font-semibold text-xs text-slate-800 dark:text-slate-100">
-      <span>Perché solo HTML e Tailwind?</span>
-      <span class="transition group-open:rotate-180 text-indigo-500 font-bold">▼</span>
-    </summary>
-    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-      L'HTML puro con Tailwind si carica istantaneamente, non fallisce mai in fase di compilazione e può essere incollato direttamente in qualsiasi progetto web.
-    </p>
-  </details>
-
-  <details class="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
-    <summary class="flex items-center justify-between font-semibold text-xs text-slate-800 dark:text-slate-100">
-      <span>Come funzionano i colori per categoria?</span>
-      <span class="transition group-open:rotate-180 text-indigo-500 font-bold">▼</span>
-    </summary>
-    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-      Ogni categoria possiede un colore dedicato (Ambra per Pulsanti, Blu per Card, Smeraldo per Moduli, etc.) per un riconoscimento visivo immediato a colpo d'occhio.
-    </p>
-  </details>
-</div>`
+</body>
+</html>`,
   },
   {
-    id: 'html-stats-banner',
-    title: 'Banner Statistiche con Divisori',
-    description: 'Griglia KPI orizzontale a 3 metriche con layout responsive e divisori sottili.',
-    category: 'layout',
-    type: 'html',
-    tags: ['stats', 'kpi', 'metrics', 'layout', 'grid'],
-    path: '/snippets/layout/stats-banner.html',
-    createdAt: '2026-09-08',
-    code: `<div class="grid grid-cols-3 divide-x divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm text-center max-w-md w-full">
-  <div class="px-2">
-    <div class="text-2xl font-black text-indigo-600 dark:text-indigo-400">100%</div>
-    <div class="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Puro HTML</div>
+    id: 'menu-dropdown-responsive',
+    title: 'Menu Navigazione con Dropdown Interattivo',
+    category: 'menu',
+    filePath: 'public/snippets/menu/menu-dropdown-responsive.html',
+    description: 'Barra di navigazione con logo brand, menu a tendina multilivello al passaggio del mouse e pulsante di azione.',
+    tags: ['menu', 'navigation', 'dropdown', 'navbar', 'responsive'],
+    createdAt: 1710000700000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .navbar {
+      width: 100%;
+      max-width: 900px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      color: #0f172a;
+      text-decoration: none;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+    .nav-item {
+      position: relative;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #475569;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .nav-link:hover, .nav-item:hover > .nav-link {
+      color: #0284c7;
+      background: #f0f9ff;
+    }
+    .nav-link.active {
+      color: #0284c7;
+      background: #e0f2fe;
+      font-weight: 600;
+    }
+    /* Dropdown */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      width: 240px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: all 0.2s ease;
+      z-index: 50;
+    }
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: #334155;
+      transition: background 0.15s;
+    }
+    .dropdown-item:hover {
+      background: #f8fafc;
+      color: #0284c7;
+    }
+    .item-tag {
+      font-size: 10px;
+      font-weight: 700;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .nav-cta {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+    }
+    .nav-cta:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#" class="nav-brand">
+      <div class="brand-icon">❖</div>
+      <span>StudioNav</span>
+    </a>
+    <ul class="nav-links">
+      <li class="nav-item">
+        <a href="#" class="nav-link active">Home</a>
+      </li>
+      <li class="nav-item">
+        <div class="nav-link">
+          <span>Prodotti</span>
+          <span style="font-size: 10px;">▼</span>
+        </div>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item">
+            <span>Editor Componenti</span>
+            <span class="item-tag">Pro</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <span>Libreria Layout</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <span>Generatore Icone</span>
+            <span class="item-tag">Nuovo</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <span>Esportatore HTML/CSS</span>
+          </a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Documentazione</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Prezzi</a>
+      </li>
+    </ul>
+    <button class="nav-cta" onclick="alert('Accesso alla console di navigazione!')">Inizia Ora</button>
+  </nav>
+</body>
+</html>`,
+  },
+  {
+    id: 'header-app-moderno',
+    title: 'Header Applicativo con Ricerca e Profilo',
+    category: 'header',
+    filePath: 'public/snippets/header/header-app-moderno.html',
+    description: 'Intestazione top per applicazione web con percorso breadcrumb, ricerca rapida ⌘K, campana notifiche e badge profilo.',
+    tags: ['header', 'topbar', 'search', 'avatar', 'notifications'],
+    createdAt: 1710000800000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .app-header {
+      width: 100%;
+      max-width: 960px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .app-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #fff1f2;
+      border: 1px solid #ffe4e6;
+      color: #be123c;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .breadcrumb b {
+      color: #0f172a;
+    }
+    .header-search {
+      flex: 1;
+      max-width: 360px;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 36px 8px 34px;
+      font-size: 13px;
+      color: #1e293b;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      background: #ffffff;
+      border-color: #e11d48;
+      box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12);
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .kbd-shortcut {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-family: monospace;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+    .icon-btn:hover {
+      background: #f8fafc;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+    .badge-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      background: #e11d48;
+      border-radius: 50%;
+      border: 1.5px solid #ffffff;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .user-pill:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e11d48;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .user-info {
+      text-align: left;
+    }
+    .user-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.2;
+    }
+    .user-role {
+      font-size: 10px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-badge">
+        <span>⚡</span>
+        <span>Dashboard</span>
+      </div>
+      <div class="breadcrumb">
+        <span>Workspace</span>
+        <span>/</span>
+        <b>Panoramica</b>
+      </div>
+    </div>
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" placeholder="Cerca risorse o comandi..." />
+      <span class="kbd-shortcut">⌘K</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" title="Notifiche" onclick="alert('Hai 3 notifiche da leggere')">
+        <span>🔔</span>
+        <span class="badge-dot"></span>
+      </button>
+      <div class="user-pill" onclick="alert('Profilo Utente: Marco Rossi')">
+        <div class="avatar">MR</div>
+        <div class="user-info">
+          <div class="user-name">Marco Rossi</div>
+          <div class="user-role">Team Lead</div>
+        </div>
+      </div>
+    </div>
+  </header>
+</body>
+</html>`,
+  },
+  {
+    id: 'hero-landing-moderna',
+    title: 'Hero Section Landing Page con Metric Ribbon',
+    category: 'hero',
+    filePath: 'public/snippets/hero/hero-landing-moderna.html',
+    description: 'Sezione Hero ad alto impatto per landing page con chip novità, titolo con testo sfumato, doppi pulsanti CTA e metriche chiave.',
+    tags: ['hero', 'banner', 'landing-page', 'cta', 'metrics'],
+    createdAt: 1710000900000,
+    code: `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 30px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .hero-container {
+      width: 100%;
+      max-width: 900px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 44px 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #7c3aed, #06b6d4, #10b981);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      color: #6d28d9;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .chip-badge {
+      background: #7c3aed;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .hero-title span {
+      color: #7c3aed;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 15px;
+      color: #64748b;
+      max-width: 580px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: #7c3aed;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 26px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+    }
+    .btn-primary:hover {
+      background: #6d28d9;
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: #ffffff;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+    .metrics-ribbon {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      padding-top: 24px;
+      border-top: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+    }
+    .metric-item {
+      text-align: center;
+    }
+    .metric-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .metric-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-container">
+    <div class="chip">
+      <span class="chip-badge">Novità v2.4</span>
+      <span>Esportazione frammenti istantanea</span>
+    </div>
+    <h1 class="hero-title">
+      Costruisci interfacce moderne con <span>frammenti HTML pronti</span>
+    </h1>
+    <p class="hero-desc">
+      Una raccolta di componenti rifiniti, responsive e pronti all'uso con anteprima dal vivo, codifica a colori e gestione locale dei tuoi snippet.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="alert('Inizializzazione del nuovo progetto in corso!')">Esplora la Collezione</button>
+      <button class="btn-outline" onclick="alert('Riproduzione tour guidato 1 min')">▶ Guarda la Demo</button>
+    </div>
+    <div class="metrics-ribbon">
+      <div class="metric-item">
+        <div class="metric-num">99.9%</div>
+        <div class="metric-label">Compatibilità Browser</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">50K+</div>
+        <div class="metric-label">Snippet Organizzati</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">4.9 / 5</div>
+        <div class="metric-label">Valutazione Sviluppatori</div>
+      </div>
+    </div>
   </div>
-  <div class="px-2">
-    <div class="text-2xl font-black text-indigo-600 dark:text-indigo-400">0 ms</div>
-    <div class="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Build Time</div>
-  </div>
-  <div class="px-2">
-    <div class="text-2xl font-black text-indigo-600 dark:text-indigo-400">8</div>
-    <div class="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Colori Categorie</div>
-  </div>
-</div>`
+</body>
+</html>`,
   },
 ];

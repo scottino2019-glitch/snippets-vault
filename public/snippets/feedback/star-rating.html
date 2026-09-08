@@ -1,0 +1,30 @@
+<!-- Valutazione a Stelle Interattiva HTML + Vanilla JS -->
+<div class="flex flex-col items-center gap-2 p-5 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+    Valuta questo componente
+  </span>
+  <div id="stars-row" class="flex gap-1 text-2xl cursor-pointer">
+    <span onclick="setRating(1)" class="star text-amber-400 hover:scale-110 transition">★</span>
+    <span onclick="setRating(2)" class="star text-amber-400 hover:scale-110 transition">★</span>
+    <span onclick="setRating(3)" class="star text-amber-400 hover:scale-110 transition">★</span>
+    <span onclick="setRating(4)" class="star text-amber-400 hover:scale-110 transition">★</span>
+    <span onclick="setRating(5)" class="star text-slate-300 dark:text-slate-600 hover:scale-110 transition">★</span>
+  </div>
+  <span id="rating-label" class="text-xs font-medium text-slate-600 dark:text-slate-300 mt-1">
+    4 su 5 stelle
+  </span>
+
+  <script>
+    function setRating(val) {
+      const stars = document.querySelectorAll('#stars-row .star');
+      stars.forEach((star, index) => {
+        if (index < val) {
+          star.className = 'star text-amber-400 hover:scale-110 transition';
+        } else {
+          star.className = 'star text-slate-300 dark:text-slate-600 hover:scale-110 transition';
+        }
+      });
+      document.getElementById('rating-label').innerText = val + ' su 5 stelle';
+    }
+  </script>
+</div>

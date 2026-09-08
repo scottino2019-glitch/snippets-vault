@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   X,
   Upload,
@@ -7,6 +7,9 @@ import {
   Check,
   AlertCircle,
   FolderOpen,
+  RefreshCw,
+  Sparkles,
+  FileCode,
 } from 'lucide-react';
 import { CategoryInfo, Snippet, ThemeMode } from '../types';
 
@@ -28,12 +31,65 @@ export const ImportModal: React.FC<ImportModalProps> = ({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [activeTab, setActiveTab] = useState<'upload' | 'path' | 'info'>('upload');
-  const [customPath, setCustomPath] = useState('public/snippets/bottoni/mio-bottone.html');
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || 'bottoni');
+  const [activeTab, setActiveTab] = useState<'scan' | 'upload' | 'path' | 'info'>('scan');
+  const [customPath, setCustomPath] = useState('public/snippets/schede/accordion-faq.html');
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || 'schede');
   const [pathStatus, setPathStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [importedCount, setImportedCount] = useState<number | null>(null);
+
+  // Auto-scan state
+  const [scannedFiles, setScannedFiles] = useState<
+    { filePath: string; category: string; title: string; code: string }[]
+  >([]);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanStatusMsg, setScanStatusMsg] = useState('');
+
+  const fetchScannedSnippets = async () => {
+    setIsScanning(true);
+    setScanStatusMsg('');
+    try {
+      const res = await fetch('/api/scan-public-snippets');
+      if (!res.ok) {
+        throw new Error(`Errore risposta scanner: ${res.status}`);
+      }
+      const data = await res.json();
+      if (data && Array.isArray(data.files)) {
+        setScannedFiles(data.files);
+      }
+    } catch (err: any) {
+      setScanStatusMsg('Impossibile completare la scansione automatica: ' + err.message);
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && activeTab === 'scan') {
+      fetchScannedSnippets();
+    }
+  }, [isOpen, activeTab]);
+
+  const handleImportAllScanned = () => {
+    if (scannedFiles.length === 0) return;
+    const newSnippets: Snippet[] = scannedFiles.map((f, i) => ({
+      id: `scanned-${Date.now()}-${i}`,
+      title: f.title,
+      category: f.category || 'schede',
+      filePath: f.filePath,
+      description: `Componente caricato automaticamente da ${f.filePath}`,
+      tags: [f.category, 'file', 'sincronizzato'],
+      code: f.code,
+      createdAt: Date.now(),
+    }));
+
+    onImportSnippets(newSnippets);
+    setImportedCount(newSnippets.length);
+    setTimeout(() => {
+      onClose();
+      setImportedCount(null);
+    }, 1200);
+  };
 
   // Read files uploaded directly
   const handleFiles = async (files: FileList | null) => {
@@ -163,28 +219,39 @@ export const ImportModal: React.FC<ImportModalProps> = ({
         {/* Tab switcher */}
         <div className="flex border-b border-slate-200 text-xs font-semibold bg-slate-50">
           <button
+            onClick={() => setActiveTab('scan')}
+            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors flex items-center justify-center gap-1.5 ${
+              activeTab === 'scan'
+                ? 'border-teal-600 text-teal-700 font-bold bg-white'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <RefreshCw size={13} className={isScanning ? 'animate-spin text-teal-600' : ''} />
+            <span>Scansiona Cartella Public</span>
+          </button>
+          <button
             onClick={() => setActiveTab('upload')}
-            className={`flex-1 py-2.5 px-4 text-center border-b-2 transition-colors ${
+            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors ${
               activeTab === 'upload'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            Carica File HTML
+            Carica File
           </button>
           <button
             onClick={() => setActiveTab('path')}
-            className={`flex-1 py-2.5 px-4 text-center border-b-2 transition-colors ${
+            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors ${
               activeTab === 'path'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            Collega Percorso Public
+            Collega Percorso
           </button>
           <button
             onClick={() => setActiveTab('info')}
-            className={`flex-1 py-2.5 px-4 text-center border-b-2 transition-colors ${
+            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors ${
               activeTab === 'info'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -196,6 +263,84 @@ export const ImportModal: React.FC<ImportModalProps> = ({
 
         {/* Content */}
         <div className="p-5 space-y-4">
+          {activeTab === 'scan' && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs font-bold text-slate-900">
+                    File rilevati nella cartella <code className="bg-slate-100 px-1 py-0.5 rounded font-mono text-teal-700">public/snippets/</code>
+                  </h3>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Rileva automaticamente tutti i file .html aggiunti o modificati nella cartella del progetto.
+                  </p>
+                </div>
+                <button
+                  onClick={fetchScannedSnippets}
+                  disabled={isScanning}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-xs disabled:opacity-50"
+                  title="Riesegui scansione adesso"
+                >
+                  <RefreshCw size={13} className={isScanning ? 'animate-spin' : ''} />
+                  <span>Ricarica</span>
+                </button>
+              </div>
+
+              {scanStatusMsg && (
+                <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+                  {scanStatusMsg}
+                </div>
+              )}
+
+              {/* Scanned files list */}
+              <div className="max-h-56 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 divide-y divide-slate-200">
+                {scannedFiles.length === 0 ? (
+                  <div className="p-6 text-center text-xs text-slate-500">
+                    {isScanning ? 'Scansione in corso...' : 'Nessun file trovato in public/snippets/'}
+                  </div>
+                ) : (
+                  scannedFiles.map((file, idx) => (
+                    <div
+                      key={idx}
+                      className="p-2.5 px-3 flex items-center justify-between hover:bg-white transition-colors text-xs"
+                    >
+                      <div className="flex items-center gap-2 min-w-0 pr-2">
+                        <FileCode size={15} className="text-teal-600 shrink-0" />
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-800 truncate">{file.title}</p>
+                          <p className="text-[11px] text-slate-400 font-mono truncate">{file.filePath}</p>
+                        </div>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-md bg-teal-50 border border-teal-200 text-teal-800 font-medium text-[10px] shrink-0 uppercase">
+                        {file.category}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {scannedFiles.length > 0 && (
+                <div className="pt-2 flex items-center justify-between">
+                  <span className="text-xs text-slate-500 font-medium">
+                    {scannedFiles.length} file HTML pronti per l'importazione
+                  </span>
+                  <button
+                    onClick={handleImportAllScanned}
+                    className="px-4 py-2 rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white transition-colors flex items-center gap-1.5 shadow-xs"
+                  >
+                    <Sparkles size={14} />
+                    <span>Sincronizza e Importa Tutto ({scannedFiles.length})</span>
+                  </button>
+                </div>
+              )}
+
+              {importedCount !== null && (
+                <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                  <Check size={15} />
+                  <span>{importedCount} componenti sincronizzati con successo!</span>
+                </div>
+              )}
+            </div>
+          )}
           {activeTab === 'upload' && (
             <div>
               <p className="text-xs mb-3 text-slate-600 leading-relaxed">

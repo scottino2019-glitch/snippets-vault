@@ -24,6 +24,8 @@ interface HeaderProps {
   onChangeLayoutMode: (mode: LayoutMode) => void;
   onOpenNewSnippetModal: () => void;
   onOpenImportModal: () => void;
+  onSyncFolder?: () => void;
+  isSyncing?: boolean;
   snippetCount: number;
   totalSnippetCount: number;
 }
@@ -40,6 +42,8 @@ export const Header: React.FC<HeaderProps> = ({
   onChangeLayoutMode,
   onOpenNewSnippetModal,
   onOpenImportModal,
+  onSyncFolder,
+  isSyncing,
   snippetCount,
   totalSnippetCount,
 }) => {
@@ -145,11 +149,24 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden lg:inline">{isLight ? 'Azzurro Medio' : 'Azzurro Profondo'}</span>
           </button>
 
+          {/* Sincronizza Cartella Public */}
+          {onSyncFolder && (
+            <button
+              onClick={onSyncFolder}
+              disabled={isSyncing}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 text-xs font-semibold transition-all shadow-xs disabled:opacity-60"
+              title="Scansiona e sincronizza automaticamente i file HTML presenti nella cartella public/snippets"
+            >
+              <FolderDown size={14} className={`text-teal-600 ${isSyncing ? 'animate-spin' : ''}`} />
+              <span className="hidden md:inline">{isSyncing ? 'Scansione...' : 'Sincronizza'}</span>
+            </button>
+          )}
+
           {/* Importa HTML */}
           <button
             onClick={onOpenImportModal}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 text-xs font-semibold transition-all shadow-xs"
-            title="Importa file HTML da cartella locale"
+            title="Importa file HTML da cartella locale o server"
           >
             <FolderDown size={14} className="text-teal-600" />
             <span className="hidden sm:inline">Importa HTML</span>

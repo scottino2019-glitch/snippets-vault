@@ -1,6 +1,6 @@
 {
-  "name": "Snippet Vault",
-  "description": "Contenitore e anteprima per snippet HTML con codifica a colori per categoria e ricerca rapida.",
+  "name": "Snippet HTML Studio",
+  "description": "Contenitore e anteprima visiva per snippet HTML personali, con codifica a colori per categoria, ricerca rapida, cambio sfondo anteprima e layout ad alto contrasto.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

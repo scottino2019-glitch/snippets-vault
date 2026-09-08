@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Boxes,
   Plus,
@@ -90,6 +90,10 @@ export default function App() {
     index: number;
   } | null>(null);
 
+  // Sync state with public/snippets folder
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncToast, setSyncToast] = useState<string | null>(null);
+
   // Save snippets to localStorage
   const persistSnippets = (updated: Snippet[]) => {
     setSnippets(updated);
@@ -99,6 +103,63 @@ export default function App() {
       console.error('Errore salvataggio localStorage:', e);
     }
   };
+
+  // Auto-sync with public/snippets directory
+  const syncPublicFolder = useCallback(async (manual: boolean = false) => {
+    setIsSyncing(true);
+    try {
+      const res = await fetch('/api/scan-public-snippets');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && Array.isArray(data.files)) {
+        setSnippets((prev) => {
+          const existingPaths = new Set(prev.map((s) => s.filePath?.toLowerCase().trim()));
+          const newFiles = data.files.filter((f: any) => !existingPaths.has(f.filePath.toLowerCase().trim()));
+
+          if (newFiles.length === 0) {
+            if (manual) {
+              setSyncToast('Tutti i file della cartella public/snippets sono già sincronizzati!');
+            }
+            return prev;
+          }
+
+          const created: Snippet[] = newFiles.map((f: any) => ({
+            id: `scanned-${f.filePath.replace(/[^a-zA-Z0-9_-]/g, '-').toLowerCase()}`,
+            title: f.title,
+            category: f.category || 'schede',
+            filePath: f.filePath,
+            description: `File HTML caricato da ${f.filePath}`,
+            tags: [f.category, 'file', 'sincronizzato'],
+            code: f.code,
+            createdAt: Date.now(),
+          }));
+
+          const updated = [...prev, ...created];
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+          } catch {}
+
+          if (manual) {
+            setSyncToast(`${created.length} nuovi file sincronizzati da public/snippets!`);
+          }
+          return updated;
+        });
+      }
+    } catch (e) {
+      if (manual) {
+        setSyncToast('Impossibile verificare la cartella public.');
+      }
+    } finally {
+      setIsSyncing(false);
+      if (manual) {
+        setTimeout(() => setSyncToast(null), 3500);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    syncPublicFolder(false);
+  }, [syncPublicFolder]);
 
   // Keyboard shortcut for fast search (Ctrl+K or Cmd+K)
   useEffect(() => {
@@ -194,6 +255,8 @@ export default function App() {
         onChangeLayoutMode={setLayoutMode}
         onOpenNewSnippetModal={() => setIsNewModalOpen(true)}
         onOpenImportModal={() => setIsImportModalOpen(true)}
+        onSyncFolder={() => syncPublicFolder(true)}
+        isSyncing={isSyncing}
         snippetCount={filteredSnippets.length}
         totalSnippetCount={snippets.length}
       />
@@ -203,6 +266,19 @@ export default function App() {
         id="snippets-main-container"
         className="flex-1 max-w-[1700px] w-full mx-auto px-4 sm:px-6 py-6 flex flex-col"
       >
+        {/* Sync Toast Notification */}
+        {syncToast && (
+          <div className="mb-4 flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-teal-900 text-teal-100 border border-teal-700/50 shadow-lg animate-in slide-in-from-top duration-200">
+            <span className="text-xs font-semibold">{syncToast}</span>
+            <button
+              onClick={() => setSyncToast(null)}
+              className="text-xs font-bold text-teal-300 hover:text-white"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
         {/* Undo Toast Notification */}
         {deletedNotice && (
           <div className="mb-4 flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-slate-900 text-white shadow-lg animate-in slide-in-from-top duration-200">

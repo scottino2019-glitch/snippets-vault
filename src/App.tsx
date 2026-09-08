@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Snippet, ThemeMode, LayoutMode } from './types';
 import { CATEGORIES, INITIAL_SNIPPETS } from './data/defaultSnippets';
+import { scanPublicSnippets } from './services/snippetScanner';
 import { Header } from './components/Header';
 import { SnippetCard } from './components/SnippetCard';
 import { SnippetPreviewModal } from './components/SnippetPreviewModal';
@@ -104,26 +105,25 @@ export default function App() {
     }
   };
 
-  // Auto-sync with public/snippets directory
+  // Auto-sync with public/snippets directory using multi-layer scanner (API, static manifest, and fallback)
   const syncPublicFolder = useCallback(async (manual: boolean = false) => {
     setIsSyncing(true);
     try {
-      const res = await fetch('/api/scan-public-snippets');
-      if (!res.ok) return;
-      const data = await res.json();
-      if (data && Array.isArray(data.files)) {
+      const result = await scanPublicSnippets();
+
+      if (result.success && result.files && result.files.length > 0) {
         setSnippets((prev) => {
           const existingPaths = new Set(prev.map((s) => s.filePath?.toLowerCase().trim()));
-          const newFiles = data.files.filter((f: any) => !existingPaths.has(f.filePath.toLowerCase().trim()));
+          const newFiles = result.files.filter((f) => !existingPaths.has(f.filePath.toLowerCase().trim()));
 
           if (newFiles.length === 0) {
             if (manual) {
-              setSyncToast('Tutti i file della cartella public/snippets sono già sincronizzati!');
+              setSyncToast(`Tutti i ${result.files.length} file di public/snippets sono sincronizzati!`);
             }
             return prev;
           }
 
-          const created: Snippet[] = newFiles.map((f: any) => ({
+          const created: Snippet[] = newFiles.map((f) => ({
             id: `scanned-${f.filePath.replace(/[^a-zA-Z0-9_-]/g, '-').toLowerCase()}`,
             title: f.title,
             category: f.category || 'schede',
@@ -140,19 +140,23 @@ export default function App() {
           } catch {}
 
           if (manual) {
-            setSyncToast(`${created.length} nuovi file sincronizzati da public/snippets!`);
+            setSyncToast(`Sincronizzazione completata: ${created.length} nuovi file aggiunti (${result.source})!`);
           }
           return updated;
         });
+      } else {
+        if (manual) {
+          setSyncToast(result.error || 'Nessun nuovo file HTML trovato nella cartella public/snippets');
+        }
       }
-    } catch (e) {
+    } catch (e: any) {
       if (manual) {
-        setSyncToast('Impossibile verificare la cartella public.');
+        setSyncToast('Errore durante la sincronizzazione: ' + (e?.message || 'controlla la cartella public'));
       }
     } finally {
       setIsSyncing(false);
       if (manual) {
-        setTimeout(() => setSyncToast(null), 3500);
+        setTimeout(() => setSyncToast(null), 4000);
       }
     }
   }, []);

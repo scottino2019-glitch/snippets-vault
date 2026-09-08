@@ -12,6 +12,7 @@ import {
   FileCode,
 } from 'lucide-react';
 import { CategoryInfo, Snippet, ThemeMode } from '../types';
+import { scanPublicSnippets, KNOWN_PUBLIC_SNIPPETS } from '../services/snippetScanner';
 
 interface ImportModalProps {
   isOpen: boolean;
@@ -49,16 +50,17 @@ export const ImportModal: React.FC<ImportModalProps> = ({
     setIsScanning(true);
     setScanStatusMsg('');
     try {
-      const res = await fetch('/api/scan-public-snippets');
-      if (!res.ok) {
-        throw new Error(`Errore risposta scanner: ${res.status}`);
-      }
-      const data = await res.json();
-      if (data && Array.isArray(data.files)) {
-        setScannedFiles(data.files);
+      const result = await scanPublicSnippets();
+      if (result.success && result.files && result.files.length > 0) {
+        setScannedFiles(result.files);
+        if (result.message) {
+          setScanStatusMsg(result.message);
+        }
+      } else {
+        setScanStatusMsg(result.error || 'Nessun file HTML rilevato in public/snippets');
       }
     } catch (err: any) {
-      setScanStatusMsg('Impossibile completare la scansione automatica: ' + err.message);
+      setScanStatusMsg('Scansione non riuscita: ' + (err?.message || 'errore imprevisto'));
     } finally {
       setIsScanning(false);
     }
@@ -423,9 +425,35 @@ export const ImportModal: React.FC<ImportModalProps> = ({
                     type="text"
                     value={customPath}
                     onChange={(e) => setCustomPath(e.target.value)}
-                    placeholder="public/snippets/bottoni/mio-bottone.html"
+                    placeholder="public/snippets/schede/accordion-faq.html"
                     className="w-full pl-9 pr-3 py-2 text-xs font-mono rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:border-teal-600 outline-none"
                   />
+                </div>
+
+                {/* Quick selection suggestions */}
+                <div className="mt-2">
+                  <span className="text-[11px] text-slate-500 font-medium block mb-1">
+                    Scorciatoie percorsi disponibili nella cartella:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+                    {KNOWN_PUBLIC_SNIPPETS.map((k, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setCustomPath(k.filePath);
+                          setSelectedCategory(k.category);
+                        }}
+                        className={`text-[10px] font-mono px-2 py-1 rounded-md border transition-all ${
+                          customPath === k.filePath
+                            ? 'bg-teal-50 border-teal-300 text-teal-800 font-bold'
+                            : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                        }`}
+                      >
+                        {k.filePath.replace('public/snippets/', '')}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 

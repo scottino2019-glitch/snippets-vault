@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+`<div class="w-full max-w-md space-y-2">
+  <details class="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden cursor-pointer" open>
+    <summary class="flex items-center justify-between font-semibold text-xs text-slate-800 dark:text-slate-100">
+      <span>Perché solo HTML e Tailwind?</span>
+      <span class="transition group-open:rotate-180 text-indigo-500 font-bold">▼</span>
+    </summary>
+    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+      L'HTML puro con Tailwind si carica istantaneamente, non fallisce mai in fase di compilazione e può essere incollato direttamente in qualsiasi progetto web.
+    </p>
+  </details>
+
+  <details class="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+    <summary class="flex items-center justify-between font-semibold text-xs text-slate-800 dark:text-slate-100">
+      <span>Come funzionano i colori per categoria?</span>
+      <span class="transition group-open:rotate-180 text-indigo-500 font-bold">▼</span>
+    </summary>
+    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+      Ogni categoria possiede un colore dedicato (Ambra per Pulsanti, Blu per Card, Smeraldo per Moduli, etc.) per un riconoscimento visivo immediato a colpo d'occhio.
+    </p>
+  </details>
+</div>`
+
+
+</body>
+</html>

@@ -1,33 +1,31 @@
-export type SnippetType = 'html';
+export type ThemeMode = 'light' | 'sky';
 
-export type NeutralTheme = 'warm-neutral' | 'cool-neutral' | 'charcoal-neutral';
+export type LayoutMode = 'grid' | 'stack';
 
-export type SnippetCategory = 
-  | 'buttons' 
-  | 'cards' 
-  | 'navigation' 
-  | 'forms' 
-  | 'badges' 
-  | 'feedback' 
-  | 'layout' 
-  | 'other';
+export type DeviceMode = 'desktop' | 'tablet' | 'mobile';
+
+export interface CategoryInfo {
+  id: string;
+  name: string;
+  color: string;
+  dotBg: string;
+  badgeBg: string;
+  badgeText: string;
+  badgeBorder: string;
+  headerBg: string;
+  headerBorder: string;
+  headerHex: string;
+}
 
 export interface Snippet {
   id: string;
   title: string;
-  description?: string;
-  category: SnippetCategory;
-  type: SnippetType;
-  tags: string[];
+  category: string;
   code: string;
-  path?: string; // e.g. '/snippets/buttons/gradient-button.html'
+  filePath?: string;
   isCustom?: boolean;
-  favorite?: boolean;
-  createdAt: string;
+  createdAt: number;
+  description?: string;
+  tags?: string[];
 }
 
-export interface SnippetManifest {
-  version: string;
-  description: string;
-  snippets: Omit<Snippet, 'code'>[];
-}

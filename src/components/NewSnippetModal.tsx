@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Plus, Folder } from 'lucide-react';
 import { CategoryInfo, Snippet, ThemeMode } from '../types';
 
@@ -53,12 +53,24 @@ export const NewSnippetModal: React.FC<NewSnippetModalProps> = ({
   onSave,
   categories,
 }) => {
-  if (!isOpen) return null;
-
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState(categories[0]?.id || 'bottoni');
   const [description, setDescription] = useState('');
   const [code, setCode] = useState(DEFAULT_TEMPLATE);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +94,12 @@ export const NewSnippetModal: React.FC<NewSnippetModalProps> = ({
   return (
     <div
       id="new-snippet-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
     >
       <div className="w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden text-slate-900">
         {/* Header */}

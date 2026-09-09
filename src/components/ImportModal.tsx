@@ -28,8 +28,6 @@ export const ImportModal: React.FC<ImportModalProps> = ({
   onImportSnippets,
   categories,
 }) => {
-  if (!isOpen) return null;
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [activeTab, setActiveTab] = useState<'scan' | 'upload' | 'path' | 'info'>('scan');
@@ -45,6 +43,20 @@ export const ImportModal: React.FC<ImportModalProps> = ({
   >([]);
   const [isScanning, setIsScanning] = useState(false);
   const [scanStatusMsg, setScanStatusMsg] = useState('');
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   const fetchScannedSnippets = async () => {
     setIsScanning(true);
@@ -199,7 +211,12 @@ export const ImportModal: React.FC<ImportModalProps> = ({
   return (
     <div
       id="import-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
     >
       <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden text-slate-900">
         {/* Header */}

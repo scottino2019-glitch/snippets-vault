@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen bg-neutral-950 text-neutral-100 min-h-screen flex items-center justify-center p-3 sm:p-6 font-sans">
+
+
+<div id="pdf-book-container" class="w-full max-w-xl mx-auto select-none">
+
+  <!-- VISTA 1: COPERTINA RIGIDA CARTONATA CON DORSO E SEGNALIBRO -->
+  <div id="book-cover-view" class="relative flex shadow-2xl rounded-r-3xl rounded-l-md overflow-visible transition-all duration-300">
+    
+    <!-- Pagine a Rilievo Sottostanti (Spessore Fisico) -->
+    <div class="absolute -right-2.5 -bottom-3 inset-y-2 left-10 bg-[#fffdf0] rounded-r-2xl border-r-4 border-b-4 border-amber-200/80 shadow-md -z-10"></div>
+
+    <!-- Segnalibro di Raso Bordeaux con Taglio a V in Basso -->
+    <div class="absolute left-24 sm:left-28 -bottom-6 w-6 h-12 bg-gradient-to-b from-rose-600 via-rose-700 to-rose-900 shadow-md z-20 pointer-events-none flex flex-col justify-end">
+      <div class="w-full h-3 bg-transparent border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[10px] border-b-neutral-950"></div>
+    </div>
+
+    <!-- Dorso del Libro in Pelle con Nervature Dorate -->
+    <div class="w-12 sm:w-14 bg-gradient-to-r from-blue-950 via-indigo-950 to-[#0a1128] rounded-l-md border-r-2 border-amber-400/40 flex flex-col justify-between py-6 items-center text-amber-300 shrink-0 shadow-lg">
+      <div class="w-full h-1 bg-amber-400/60"></div>
+      <div class="rotate-90 tracking-widest uppercase font-serif font-black text-[10px] text-amber-300/90 whitespace-nowrap">
+        VOL. I • E-BOOK PDF
+      </div>
+      <div class="w-full h-1 bg-amber-400/60"></div>
+    </div>
+
+    <!-- Copertina Rigida Blu Notte con Cornice in Foglia d'Oro -->
+    <div class="flex-1 bg-gradient-to-br from-[#12182b] via-[#1a233d] to-[#0d1222] rounded-r-3xl p-5 sm:p-7 text-white border-2 border-amber-400/40 relative overflow-hidden flex flex-col justify-between min-h-[380px]">
+      
+      <!-- Cornice Interna in Oro Sottile -->
+      <div class="absolute inset-3 border border-amber-400/30 rounded-r-2xl pointer-events-none"></div>
+
+      <!-- Barra Badge e Stelle -->
+      <div class="relative z-10 flex items-center justify-between text-xs">
+        <span class="px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/40 text-amber-300 text-[10px] font-bold tracking-wider uppercase">
+          📄 PDF Interattivo (3.4 MB)
+        </span>
+        <span class="text-amber-400 text-xs">★★★★★</span>
+      </div>
+
+      <!-- Titolo e Autore -->
+      <div class="relative z-10 my-auto text-center py-4 px-2">
+        <span class="text-[10px] font-mono tracking-widest uppercase text-amber-300/80">
+          COLLANA DESIGN & ARCHITETTURA
+        </span>
+        <h2 class="font-serif font-black text-2xl sm:text-3xl text-amber-100 mt-1 mb-2 tracking-tight leading-tight">
+          Manuale di Architettura UI & Design Systems
+        </h2>
+        <p class="text-xs sm:text-sm text-neutral-300 italic max-w-sm mx-auto leading-relaxed">
+          Guida tattica ai componenti resilienti, pattern visivi senza tempo e interfacce accessibili.
+        </p>
+        <div class="mt-3 text-[11px] text-amber-300/90 font-medium">
+          Prof. Alessandro Corti • Fondazione Web
+        </div>
+      </div>
+
+      <!-- Bottoni Azione Copertina -->
+      <div class="relative z-10 pt-4 border-t border-amber-400/20 flex items-center justify-between gap-3">
+        <button id="book-open-reader-btn" type="button" class="px-4 py-2.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:brightness-110 active:scale-95 text-neutral-950 font-bold rounded-xl text-xs flex items-center gap-2 shadow-lg transition-all cursor-pointer">
+          <span>📖 Sfoglia Anteprima</span>
+        </button>
+        <button id="book-download-btn" type="button" class="px-3.5 py-2 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/20 transition-all cursor-pointer">
+          <span id="book-download-text">⬇ Scarica PDF</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- VISTA 2: LETTORE INTERNO A PAGINE APERTE (SFOGLIABILE) -->
+  <div id="book-reader-view" class="hidden relative bg-[#fffdf0] text-neutral-900 rounded-3xl p-5 sm:p-6 shadow-2xl border-4 border-amber-900/30 overflow-hidden">
+    
+    <!-- Barra Superiore Lettore -->
+    <div class="flex items-center justify-between pb-3 mb-4 border-b border-amber-200/80 text-xs">
+      <button id="book-close-reader-btn" type="button" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold flex items-center gap-1.5 border border-amber-300 transition-colors cursor-pointer">
+        <span>← Torna alla Copertina</span>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <span id="book-page-indicator" class="font-mono text-xs font-bold text-amber-900 bg-amber-100/70 px-2.5 py-1 rounded-lg border border-amber-300">
+          Pagina 1 / 4
+        </span>
+        <button id="book-bookmark-btn" type="button" class="text-rose-600 hover:scale-110 transition-transform cursor-pointer" title="Aggiungi Segnalibro">
+          <span id="book-bookmark-icon">🔖</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagine Aperte con Cucitura Centrale -->
+    <div class="relative bg-[#fffef8] rounded-2xl p-5 sm:p-6 border border-amber-200 shadow-inner min-h-[280px] flex flex-col justify-between">
+      <!-- Cucitura Centrale Piegatura -->
+      <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 bg-gradient-to-r from-transparent via-amber-900/5 to-transparent pointer-events-none"></div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span id="book-chapter-tag" class="text-[10px] font-mono uppercase tracking-widest text-amber-700 font-bold">
+            CAPITOLO I • FONDAMENTA
+          </span>
+          <span class="text-[11px] font-serif italic text-neutral-400">Design Systems Resilienti</span>
+        </div>
+
+        <h3 id="book-page-title" class="font-serif font-black text-xl sm:text-2xl text-neutral-900 mb-3">
+          I. La Geometria del Design System
+        </h3>
+
+        <div id="book-page-content" class="text-xs sm:text-sm text-neutral-700 leading-relaxed space-y-2.5">
+          <p>
+            Un'architettura visuale non nasce per caso: ogni griglia risponde a rapporti aurei o scale modulari discrete. L'occhio percepisce istantaneamente la coerenza dei margini, la proporzionalità dei font e l'armonia degli spazi bianchi.
+          </p>
+          <p class="italic text-neutral-600 border-l-2 border-amber-400 pl-3 py-1">
+            "La forma segue la funzione, ma la bellezza amplifica l'usabilità di ogni millesimo di secondo."
+          </p>
+        </div>
+      </div>
+
+      <!-- Barra di Navigazione Pagine -->
+      <div class="flex items-center justify-between pt-4 mt-4 border-t border-amber-200/60 text-xs">
+        <button id="book-prev-page-btn" type="button" class="px-3.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed text-neutral-800 font-bold transition-all cursor-pointer">
+          ‹ Pagina Prec.
+        </button>
+
+        <!-- Slider di Scorrimento Rapido Pagine -->
+        <div class="flex items-center gap-2 flex-1 max-w-[180px] mx-3">
+          <input id="book-page-slider" type="range" min="1" max="4" value="1" class="w-full accent-amber-600 cursor-pointer" />
+        </div>
+
+        <button id="book-next-page-btn" type="button" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold transition-all cursor-pointer">
+          Prossima ›
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Status Bar Notifica Discreta -->
+    <div id="book-status-msg" class="hidden mt-3 p-2 bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-xl text-xs text-center font-medium"></div>
+
+  </div>
+
+</div>
+
+<script>
+(function initPdfBookApp() {
+  const pages = [
+    {
+      num: 1,
+      chapter: 'CAPITOLO I • FONDAMENTA',
+      title: 'I. La Geometria del Design System',
+      text1: "Un'architettura visuale non nasce per caso: ogni griglia risponde a rapporti aurei o scale modulari discrete. L'occhio percepisce istantaneamente la coerenza dei margini, la proporzionalità dei font e l'armonia degli spazi bianchi.",
+      quote: "La forma segue la funzione, ma la bellezza amplifica l'usabilità di ogni millesimo di secondo."
+    },
+    {
+      num: 2,
+      chapter: 'CAPITOLO II • COMPONENTI',
+      title: 'II. Token Tipografici e Cromatici',
+      text1: "I token di stile garantiscono che ogni sfumatura, raggio di curvatura e livello di contrasto rimanga immutato tra piattaforme web, mobile e documenti digitali. Ridurre le varianti arbitrarie è il primo passo per un codice manutenibile.",
+      quote: "Meno stili isolati, più sistema: il codice pulito è lo specchio di una mente metodica."
+    },
+    {
+      num: 3,
+      chapter: 'CAPITOLO III • INTERAZIONE',
+      title: 'III. Microinterazioni e Feedback Tattile',
+      text1: "Ogni interazione digitale deve restituire certezza: il click di un tasto, il ritorno a molla di una card o la rotazione di un disco non sono meri ornamenti, ma segnali cognitivi indispensabili per rassicurare l'utente.",
+      quote: "L'interfaccia invisibile è quella che risponde al pensiero prima che al dito."
+    },
+    {
+      num: 4,
+      chapter: 'CAPITOLO IV • CONCLUSIONI',
+      title: 'IV. Il Futuro del Design Tattile',
+      text1: "Lo skeuomorfismo autentico non imita ciecamente il passato, ma fonde la familiarità dei supporti fisici con la rapidità e l'efficienza del software contemporaneo.",
+      quote: "La maestria è rendere il complesso immediatamente naturale."
+    }
+  ];
+
+  let currentPage = 1;
+  let isBookmarked = false;
+
+  const coverView = document.getElementById('book-cover-view');
+  const readerView = document.getElementById('book-reader-view');
+  const openReaderBtn = document.getElementById('book-open-reader-btn');
+  const closeReaderBtn = document.getElementById('book-close-reader-btn');
+  const downloadBtn = document.getElementById('book-download-btn');
+  const downloadText = document.getElementById('book-download-text');
+  const prevBtn = document.getElementById('book-prev-page-btn');
+  const nextBtn = document.getElementById('book-next-page-btn');
+  const slider = document.getElementById('book-page-slider');
+  const pageIndicator = document.getElementById('book-page-indicator');
+  const chapterTag = document.getElementById('book-chapter-tag');
+  const pageTitle = document.getElementById('book-page-title');
+  const pageContent = document.getElementById('book-page-content');
+  const bookmarkBtn = document.getElementById('book-bookmark-btn');
+  const bookmarkIcon = document.getElementById('book-bookmark-icon');
+  const statusMsg = document.getElementById('book-status-msg');
+
+  function showStatus(text, isError) {
+    if (!statusMsg) return;
+    statusMsg.textContent = text;
+    statusMsg.className = isError
+      ? 'mt-3 p-2 bg-rose-100 border border-rose-300 text-rose-900 rounded-xl text-xs text-center font-medium'
+      : 'mt-3 p-2 bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-xl text-xs text-center font-medium';
+    statusMsg.classList.remove('hidden');
+    setTimeout(() => {
+      statusMsg.classList.add('hidden');
+    }, 2500);
+  }
+
+  function renderPage(pageNum) {
+    currentPage = Math.max(1, Math.min(pages.length, pageNum));
+    const p = pages[currentPage - 1];
+
+    if (pageIndicator) pageIndicator.textContent = 'Pagina ' + currentPage + ' / ' + pages.length;
+    if (chapterTag) chapterTag.textContent = p.chapter;
+    if (pageTitle) pageTitle.textContent = p.title;
+    if (slider) slider.value = String(currentPage);
+
+    if (pageContent) {
+      pageContent.innerHTML = `
+        <p>${p.text1}</p>
+        <p class="italic text-neutral-600 border-l-2 border-amber-400 pl-3 py-1">"${p.quote}"</p>
+      `;
+    }
+
+    if (prevBtn) {
+      prevBtn.disabled = currentPage === 1;
+    }
+    if (nextBtn) {
+      nextBtn.disabled = currentPage === pages.length;
+    }
+  }
+
+  openReaderBtn?.addEventListener('click', () => {
+    coverView.classList.add('hidden');
+    readerView.classList.remove('hidden');
+    renderPage(currentPage);
+  });
+
+  closeReaderBtn?.addEventListener('click', () => {
+    readerView.classList.add('hidden');
+    coverView.classList.remove('hidden');
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    if (currentPage > 1) renderPage(currentPage - 1);
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    if (currentPage < pages.length) renderPage(currentPage + 1);
+  });
+
+  slider?.addEventListener('input', (e) => {
+    renderPage(Number(e.target.value));
+  });
+
+  bookmarkBtn?.addEventListener('click', () => {
+    isBookmarked = !isBookmarked;
+    if (bookmarkIcon) bookmarkIcon.textContent = isBookmarked ? '⭐' : '🔖';
+    showStatus(isBookmarked ? 'Segnalibro salvato a pagina ' + currentPage : 'Segnalibro rimosso');
+  });
+
+  downloadBtn?.addEventListener('click', () => {
+    if (downloadText) downloadText.textContent = '✓ Download Avviato!';
+    setTimeout(() => {
+      if (downloadText) downloadText.textContent = '⬇ Scarica PDF';
+    }, 2000);
+  });
+})();
+</script>
+
+
+
+
+</body>
+</html>

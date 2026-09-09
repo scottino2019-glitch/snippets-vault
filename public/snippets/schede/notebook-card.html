@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Taccuino Esecutivo Moleskine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#18110b] text-stone-900 flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+
+  <div class="w-full max-w-2xl mx-auto rounded-3xl bg-[#2a1b12] text-stone-100 border-2 border-[#543622] shadow-2xl overflow-hidden min-h-[560px] flex flex-col justify-between relative ring-2 ring-amber-950/40">
+    <!-- Crimson Ribbon Bookmark Accent -->
+    <div class="absolute top-0 right-12 w-4 h-12 bg-red-700 shadow-md rounded-b-sm z-20 pointer-events-none border-x border-red-800"></div>
+
+    <!-- Leather Header with Gold Foil Accents -->
+    <div class="px-6 py-4 border-b border-[#432b1b] bg-gradient-to-r from-[#24170f] via-[#321f14] to-[#24170f] flex flex-wrap items-center justify-between gap-4 relative z-10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-[#3f2719] border border-[#633e27] text-amber-200 flex items-center justify-center text-xl shrink-0 shadow-inner">
+          📓
+        </div>
+        <div>
+          <div class="flex items-center gap-2 mb-0.5">
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#1d120a] border border-[#52331f] text-amber-300 uppercase font-bold tracking-wider">
+              Taccuino Esecutivo Moleskine
+            </span>
+            <span class="text-[11px] font-mono text-amber-200/60">Cartaceo 120 g/m²</span>
+          </div>
+          <input id="noteTitle" type="text" value="Design System & UI Guidelines v3.0" class="text-base sm:text-lg font-serif font-bold text-amber-100 bg-transparent focus:outline-none w-full border-b border-transparent focus:border-amber-500/50 transition-colors" />
+        </div>
+      </div>
+
+      <button id="copyMdBtn" class="px-3.5 py-1.5 rounded-xl bg-[#1d120a] hover:bg-[#2b1b10] border border-[#5a3922] text-xs font-mono text-amber-200 flex items-center gap-1.5 shadow-sm transition-all cursor-pointer">
+        📋 Copia MD
+      </button>
+    </div>
+
+    <!-- Leather Tabs Navigation -->
+    <div class="px-6 border-b border-[#432b1b] flex gap-6 text-xs font-mono bg-[#20140c]">
+      <button id="tabNotes" class="py-3 border-b-2 border-amber-400 text-amber-200 font-bold transition-colors cursor-pointer">
+        Appunti (<span id="wordsBadge">54</span> parole)
+      </button>
+      <button id="tabTasks" class="py-3 border-b-2 border-transparent text-stone-400 hover:text-amber-200 transition-colors cursor-pointer">
+        Checklist (<span id="tasksRatio">2/4</span>)
+      </button>
+      <button id="tabDecisions" class="py-3 border-b-2 border-transparent text-stone-400 hover:text-amber-200 transition-colors cursor-pointer">
+        Decisioni ADR (3)
+      </button>
+    </div>
+
+    <!-- Lined Ivory Notebook Page Interior -->
+    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+      <div class="bg-[#faf6ee] text-stone-900 rounded-2xl p-5 sm:p-6 shadow-xl border border-[#ded5c2] flex-1 flex flex-col justify-between relative min-h-[350px]">
+        <!-- 1. Notes View -->
+        <div id="panelNotes" class="space-y-4 flex-1 flex flex-col justify-between">
+          <textarea id="noteBody" rows="8" class="w-full text-sm sm:text-base leading-relaxed text-stone-800 bg-transparent resize-none focus:outline-none font-serif placeholder-stone-400 selection:bg-amber-200">Principio cardine: ogni componente deve possedere uno scopo ottico preciso e una gerarchia rigorosa. Eliminare elementi superflui e privilegiare la chiarezza dei pesi tipografici.
+
+Regola dei raggi interni: quando un elemento arrotondato si trova all'interno di un altro contenitore arrotondato, il raggio interno deve essere esattamente calcolato come: Raggio Interno = Raggio Esterno - Padding.
+
+Evitare sfondi e gradienti non funzionali in favore di superfici neutre ad alto contrasto con WCAG AA garantito.</textarea>
+          <div class="pt-3 border-t border-[#e2d8c3] flex items-center justify-between text-xs font-mono text-stone-500">
+            <span id="wordsCountFooter">54 parole digitate</span>
+            <span class="text-amber-900 font-medium">✒ Inchiostro calligrafico • MD compatibile</span>
+          </div>
+        </div>
+
+        <!-- 2. Tasks View -->
+        <div id="panelTasks" class="hidden space-y-4 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-stone-600 mb-2">
+              <span class="font-bold uppercase tracking-wider text-amber-900">Progresso Checklist</span>
+              <span id="tasksPct" class="font-bold text-emerald-800">50%</span>
+            </div>
+            <div class="w-full h-2 bg-[#ebe1ce] rounded-full overflow-hidden border border-[#d8cdb8]">
+              <div id="tasksBar" class="h-full bg-emerald-600 rounded-full transition-all duration-300" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <div id="tasksContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
+
+          <form id="addTaskForm" class="flex gap-2 pt-3 border-t border-[#e2d8c3]">
+            <input id="newTaskInput" type="text" placeholder="Scrivi una nuova voce nella checklist..." class="flex-1 px-3.5 py-2 rounded-xl bg-white border border-[#d8cdb8] text-xs text-stone-800 focus:outline-none focus:border-amber-700 shadow-xs" />
+            <select id="newTaskPriority" class="px-3 py-2 rounded-xl bg-white border border-[#d8cdb8] text-xs text-stone-800 focus:outline-none font-mono shadow-xs">
+              <option value="Alta">Alta</option>
+              <option value="Media" selected>Media</option>
+              <option value="Bassa">Bassa</option>
+            </select>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-[#2a1b12] hover:bg-[#3d271a] text-amber-200 font-semibold text-xs transition-colors cursor-pointer shadow-xs">
+              + Aggiungi
+            </button>
+          </form>
+        </div>
+
+        <!-- 3. Decisions View -->
+        <div id="panelDecisions" class="hidden space-y-3 flex-1 overflow-y-auto">
+          <div class="p-3.5 rounded-xl bg-white border border-[#ded4c0] flex items-start justify-between gap-3 shadow-xs">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[11px] font-mono text-stone-500">Oggi, 15:40</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold">Approvato</span>
+              </div>
+              <p class="text-xs sm:text-sm text-stone-800 font-serif">Adozione definitiva di Tailwind CSS v4 e componenti autonomi 100% esportabili</p>
+            </div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white border border-[#ded4c0] flex items-start justify-between gap-3 shadow-xs">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[11px] font-mono text-stone-500">Ieri, 11:20</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-100 border border-amber-300 text-amber-900 font-bold">Consolidato</span>
+              </div>
+              <p class="text-xs sm:text-sm text-stone-800 font-serif">Rinuncia ai gradienti generici in favore di contrasti tipografici ed eleganza materica</p>
+            </div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white border border-[#ded4c0] flex items-start justify-between gap-3 shadow-xs">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[11px] font-mono text-stone-500">3 giorni fa</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-stone-100 border border-stone-300 text-stone-700 font-bold">Archiviato</span>
+              </div>
+              <p class="text-xs sm:text-sm text-stone-800 font-serif">Architettura a doppia pagina con navigazione sfogliabile e note marginali</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tabNotes = document.getElementById('tabNotes');
+    const tabTasks = document.getElementById('tabTasks');
+    const tabDecisions = document.getElementById('tabDecisions');
+    const panelNotes = document.getElementById('panelNotes');
+    const panelTasks = document.getElementById('panelTasks');
+    const panelDecisions = document.getElementById('panelDecisions');
+    const noteBody = document.getElementById('noteBody');
+    const wordsBadge = document.getElementById('wordsBadge');
+    const wordsCountFooter = document.getElementById('wordsCountFooter');
+    const copyMdBtn = document.getElementById('copyMdBtn');
+
+    function switchTab(activeTab, activePanel) {
+      [tabNotes, tabTasks, tabDecisions].forEach(t => {
+        t.className = 'py-3 border-b-2 border-transparent text-stone-400 hover:text-amber-200 transition-colors cursor-pointer';
+      });
+      activeTab.className = 'py-3 border-b-2 border-amber-400 text-amber-200 font-bold transition-colors cursor-pointer';
+      [panelNotes, panelTasks, panelDecisions].forEach(p => p.classList.add('hidden'));
+      activePanel.classList.remove('hidden');
+    }
+
+    tabNotes.addEventListener('click', () => switchTab(tabNotes, panelNotes));
+    tabTasks.addEventListener('click', () => switchTab(tabTasks, panelTasks));
+    tabDecisions.addEventListener('click', () => switchTab(tabDecisions, panelDecisions));
+
+    function updateWords() {
+      const words = noteBody.value.trim() ? noteBody.value.trim().split(/\s+/).length : 0;
+      wordsBadge.textContent = words;
+      wordsCountFooter.textContent = words + ' parole digitate';
+    }
+    noteBody.addEventListener('input', updateWords);
+
+    let tasks = [
+      { id: '1', text: 'Validare contrasto WCAG AA su palette neutra calda', done: true, priority: 'Alta' },
+      { id: '2', text: 'Ottimizzare bounding box di rendering per evitare reflow', done: true, priority: 'Media' },
+      { id: '3', text: 'Uniformare i codici sorgente React e HTML esportabili 1:1', done: false, priority: 'Alta' },
+      { id: '4', text: 'Testare compatibilità cross-browser per touch e desktop', done: false, priority: 'Bassa' }
+    ];
+
+    const tasksContainer = document.getElementById('tasksContainer');
+    const tasksRatio = document.getElementById('tasksRatio');
+    const tasksPct = document.getElementById('tasksPct');
+    const tasksBar = document.getElementById('tasksBar');
+
+    function renderTasks() {
+      tasksContainer.innerHTML = '';
+      const doneCount = tasks.filter(t => t.done).length;
+      const pct = Math.round((doneCount / (tasks.length || 1)) * 100);
+
+      tasksRatio.textContent = doneCount + '/' + tasks.length;
+      tasksPct.textContent = pct + '%';
+      tasksBar.style.width = pct + '%';
+
+      tasks.forEach(task => {
+        const row = document.createElement('div');
+        row.className = 'p-3 rounded-xl bg-white border border-[#ded5c2] flex items-center justify-between gap-3 shadow-xs';
+        row.innerHTML = `
+          <div class="flex items-center gap-3 cursor-pointer flex-1">
+            <div class="w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${task.done ? 'bg-emerald-700 border-emerald-600 text-white font-bold' : 'border-stone-400 text-transparent'}">
+              ${task.done ? '✓' : ''}
+            </div>
+            <span class="text-xs sm:text-sm font-serif ${task.done ? 'line-through text-stone-400' : 'text-stone-800'}">${task.text}</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono border ${task.priority === 'Alta' ? 'bg-rose-50 text-rose-800 border-rose-200 font-bold' : task.priority === 'Media' ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-stone-50 text-stone-600 border-stone-200'}">${task.priority}</span>
+        `;
+
+        row.querySelector('.flex-1').addEventListener('click', () => {
+          task.done = !task.done;
+          renderTasks();
+        });
+
+        tasksContainer.appendChild(row);
+      });
+    }
+
+    document.getElementById('addTaskForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const inp = document.getElementById('newTaskInput');
+      const prio = document.getElementById('newTaskPriority').value;
+      if (!inp.value.trim()) return;
+      tasks.push({ id: Date.now().toString(), text: inp.value.trim(), done: false, priority: prio });
+      inp.value = '';
+      renderTasks();
+    });
+
+    copyMdBtn.addEventListener('click', () => {
+      let md = '# ' + document.getElementById('noteTitle').value + '\n\n' + noteBody.value + '\n\n## Checklist Attività\n';
+      tasks.forEach(t => {
+        md += '- [' + (t.done ? 'x' : ' ') + '] [' + t.priority + '] ' + t.text + '\n';
+      });
+      navigator.clipboard.writeText(md);
+      copyMdBtn.textContent = 'Copiato!';
+      setTimeout(() => copyMdBtn.textContent = '📋 Copia MD', 2000);
+    });
+
+    renderTasks();
+    updateWords();
+  </script>
+</body>
+</html>

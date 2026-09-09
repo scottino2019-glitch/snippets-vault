@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Lettore Video Cinematografico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+
+  <div class="w-full max-w-2xl mx-auto rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-2xl overflow-hidden ring-1 ring-white/10">
+    <!-- Viewport 16:9 Cinema -->
+    <div id="videoScreen" class="relative aspect-video bg-black overflow-hidden group select-none flex flex-col justify-between p-4 sm:p-5">
+      <!-- Background cinematic frame -->
+      <img
+        id="videoImg"
+        src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200&auto=format&fit=crop"
+        alt="Cinematic frame"
+        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/60 pointer-events-none"></div>
+
+      <!-- Top Badges -->
+      <div class="relative z-10 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md bg-amber-500 text-black text-[11px] font-bold font-mono tracking-wider shadow-lg">4K HDR</span>
+          <span class="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md border border-white/15 text-[11px] font-mono text-zinc-300">DOLBY ATMOS</span>
+        </div>
+        <div class="relative">
+          <button id="chaptersBtn" class="px-2.5 py-1 rounded-md bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/15 text-[11px] font-medium text-white flex items-center gap-1.5 transition-colors">
+            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span>Capitoli</span>
+          </button>
+          <div id="chaptersMenu" class="hidden absolute top-9 right-0 w-60 bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-xl p-2 shadow-2xl z-30 space-y-1">
+            <div class="text-[10px] font-mono text-zinc-400 px-2 py-1 uppercase">Seleziona Capitolo</div>
+            <button class="chap-opt w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-white/10 flex justify-between text-xs text-zinc-200" data-pct="0">
+              <span>01. Prologo: Il Cemento</span><span class="text-zinc-400 font-mono">00:00</span>
+            </button>
+            <button class="chap-opt w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-white/10 flex justify-between text-xs text-zinc-200" data-pct="30">
+              <span>02. Struttura Portante</span><span class="text-zinc-400 font-mono">04:12</span>
+            </button>
+            <button class="chap-opt w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-white/10 flex justify-between text-xs text-zinc-200" data-pct="62">
+              <span>03. Acustica & Luce</span><span class="text-zinc-400 font-mono">08:45</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Play Button & Title -->
+      <div class="relative z-10 text-center my-auto flex flex-col items-center">
+        <button id="centerPlayBtn" class="w-16 h-16 rounded-full bg-white text-zinc-950 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all mb-2">
+          <svg id="centerPlayIcon" class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <h3 class="text-lg font-semibold tracking-tight text-white drop-shadow">Architettura Brutalista e Luce Naturale</h3>
+        <p id="currentChapterName" class="text-xs text-zinc-300 font-mono mt-1">Capitolo 1: Prologo</p>
+      </div>
+
+      <!-- Scrubber Bar -->
+      <div class="relative z-10">
+        <div id="scrubber" class="w-full h-2 bg-white/20 hover:h-2.5 rounded-full cursor-pointer relative transition-all overflow-hidden">
+          <div id="scrubberFill" class="h-full bg-amber-400 rounded-full" style="width: 32%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Console Controls Bar -->
+    <div class="px-5 py-3.5 bg-zinc-900/90 border-t border-zinc-800 flex items-center justify-between text-xs">
+      <div class="flex items-center gap-3">
+        <button id="bottomPlayBtn" class="p-1.5 text-zinc-200 hover:text-white transition-colors">
+          <svg id="bottomPlayIcon" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <span class="font-mono text-zinc-400">
+          <span id="timeCurrent" class="text-zinc-200">04:28</span> / <span id="timeDuration">14:00</span>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Speed button -->
+        <button id="speedBtn" class="px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 font-mono text-[11px] text-zinc-300">1.0×</button>
+
+        <!-- Volume -->
+        <div class="flex items-center gap-2">
+          <button id="muteBtn" class="text-zinc-400 hover:text-white">
+            <svg id="volIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/></svg>
+          </button>
+          <input id="volSlider" type="range" min="0" max="100" value="80" class="w-16 h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-amber-400" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isPlaying = false;
+    let progress = 32;
+    let speed = 1;
+    let volume = 80;
+    let isMuted = false;
+    const durationSec = 840; // 14 mins
+
+    const centerBtn = document.getElementById('centerPlayBtn');
+    const bottomBtn = document.getElementById('bottomPlayBtn');
+    const centerIcon = document.getElementById('centerPlayIcon');
+    const bottomIcon = document.getElementById('bottomPlayIcon');
+    const scrubber = document.getElementById('scrubber');
+    const scrubberFill = document.getElementById('scrubberFill');
+    const timeCurrent = document.getElementById('timeCurrent');
+    const speedBtn = document.getElementById('speedBtn');
+    const chaptersBtn = document.getElementById('chaptersBtn');
+    const chaptersMenu = document.getElementById('chaptersMenu');
+    const chapName = document.getElementById('currentChapterName');
+    const volSlider = document.getElementById('volSlider');
+    const muteBtn = document.getElementById('muteBtn');
+    const videoImg = document.getElementById('videoImg');
+
+    function formatTime(s) {
+      const mins = Math.floor(s / 60).toString().padStart(2, '0');
+      const secs = (s % 60).toString().padStart(2, '0');
+      return mins + ':' + secs;
+    }
+
+    function updatePlayState() {
+      const pauseSvg = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      const playSvg = '<polygon points="5 3 19 12 5 21 5 3"/>';
+
+      if (isPlaying) {
+        centerIcon.innerHTML = pauseSvg;
+        bottomIcon.innerHTML = pauseSvg;
+        videoImg.classList.add('scale-105');
+      } else {
+        centerIcon.innerHTML = playSvg;
+        bottomIcon.innerHTML = playSvg;
+        videoImg.classList.remove('scale-105');
+      }
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      updatePlayState();
+    }
+
+    centerBtn.addEventListener('click', togglePlay);
+    bottomBtn.addEventListener('click', togglePlay);
+
+    scrubber.addEventListener('click', (e) => {
+      const rect = scrubber.getBoundingClientRect();
+      const pos = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      progress = pos;
+      scrubberFill.style.width = progress + '%';
+      const currentSec = Math.floor((progress / 100) * durationSec);
+      timeCurrent.textContent = formatTime(currentSec);
+    });
+
+    speedBtn.addEventListener('click', () => {
+      const speeds = [1, 1.25, 1.5, 2];
+      const next = speeds[(speeds.indexOf(speed) + 1) % speeds.length];
+      speed = next;
+      speedBtn.textContent = speed.toFixed(speed % 1 === 0 ? 1 : 2) + '×';
+    });
+
+    chaptersBtn.addEventListener('click', () => {
+      chaptersMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.chap-opt').forEach(b => {
+      b.addEventListener('click', () => {
+        const pct = Number(b.getAttribute('data-pct'));
+        progress = pct;
+        scrubberFill.style.width = progress + '%';
+        const currentSec = Math.floor((progress / 100) * durationSec);
+        timeCurrent.textContent = formatTime(currentSec);
+        chapName.textContent = b.querySelector('span').textContent;
+        chaptersMenu.classList.add('hidden');
+      });
+    });
+
+    volSlider.addEventListener('input', (e) => {
+      volume = Number(e.target.value);
+      isMuted = volume === 0;
+    });
+
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      volSlider.value = isMuted ? 0 : (volume || 80);
+    });
+  </script>
+</body>
+</html>

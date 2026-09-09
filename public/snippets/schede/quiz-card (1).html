@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Quiz Esame & Certificazione</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#090d16] text-slate-100 flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+
+  <div class="w-full max-w-2xl mx-auto rounded-3xl bg-[#0e1726] border-2 border-[#1e2e4a] text-slate-100 shadow-2xl overflow-hidden ring-2 ring-amber-500/20 min-h-[560px] flex flex-col justify-between">
+    <!-- Top Navy & Gold Academic Header -->
+    <div class="px-6 py-4 bg-gradient-to-r from-[#0d1624] via-[#142338] to-[#0d1624] border-b border-[#223552] flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 flex items-center justify-center text-xl shadow-inner">
+          🎓
+        </div>
+        <div>
+          <div class="flex items-center gap-2 mb-0.5">
+            <span id="levelBadge" class="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-mono font-bold uppercase tracking-wider">
+              Senior Architect
+            </span>
+            <span id="topicText" class="text-[11px] font-mono text-slate-400">
+              Architettura Rendering & CSS
+            </span>
+          </div>
+          <h3 class="text-base font-serif font-bold text-white tracking-wide">
+            Esame di Certificazione Ufficiale
+          </h3>
+        </div>
+      </div>
+
+      <!-- Score & Streak Badges -->
+      <div class="flex items-center gap-2">
+        <div id="streakPill" class="hidden px-2.5 py-1 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 flex items-center gap-1.5 text-xs font-mono font-bold animate-pulse">
+          🔥 <span id="streakText">Streak x2</span>
+        </div>
+
+        <div class="px-3 py-1.5 rounded-xl bg-[#18263d] border border-amber-500/40 text-amber-300 flex items-center gap-1.5 text-xs font-mono font-bold shadow-xs">
+          ⚡ <span id="scoreText">0 XP</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle Examination Sheet (Ivory Cardstock with refined borders) -->
+    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+      <div id="quizActiveView" class="flex-1 flex flex-col justify-between bg-[#faf8f5] text-slate-900 rounded-2xl p-5 sm:p-6 shadow-lg border border-[#ded5c5]">
+        <div>
+          <!-- Progress Bar & Question Counter -->
+          <div class="flex items-center justify-between text-xs font-mono text-stone-500 mb-2">
+            <span id="counterLabel" class="font-semibold text-stone-700">Domanda 1 di 3</span>
+            <span id="percentLabel" class="text-amber-800 font-bold">33% completato</span>
+          </div>
+          <div class="w-full h-2 bg-[#ebe3d5] rounded-full mb-5 overflow-hidden border border-[#ded3c2]">
+            <div id="progressBar" class="h-full bg-gradient-to-r from-amber-500 to-amber-600 transition-all duration-300 rounded-full" style="width: 33%;"></div>
+          </div>
+
+          <!-- Question Title -->
+          <div class="mb-5">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-amber-800 font-bold block mb-1">Quesito di Valutazione</span>
+            <h4 id="questionTitle" class="text-base sm:text-lg font-serif font-semibold tracking-tight text-stone-900 leading-snug">
+              Qual è il reale beneficio architetturale nell'adottare la proprietà CSS "contain: layout paint"?
+            </h4>
+          </div>
+
+          <!-- Options Container -->
+          <div id="optionsContainer" class="space-y-2.5"></div>
+
+          <!-- Explanation Panel -->
+          <div id="explanationBox" class="hidden mt-4 p-3.5 rounded-xl border text-xs sm:text-sm leading-relaxed font-sans shadow-xs"></div>
+        </div>
+
+        <!-- Sheet Footer Controls -->
+        <div class="mt-6 pt-4 border-t border-[#e2d8c7] flex items-center justify-between">
+          <button id="resetQuizBtn" class="text-xs font-mono text-stone-600 hover:text-stone-900 flex items-center gap-1.5 transition-colors cursor-pointer">
+            ↺ Riavvia test
+          </button>
+          <button id="nextQuestionBtn" class="hidden px-5 py-2 rounded-xl bg-[#142338] hover:bg-[#1d314e] text-amber-300 border border-amber-500/40 font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer">
+            <span>Prossima Domanda</span> →
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Screen (Hidden by default) -->
+      <div id="quizSummaryView" class="hidden flex-1 flex flex-col justify-center items-center py-8 text-center bg-[#faf8f5] text-slate-900 rounded-2xl p-6 shadow-lg border border-[#ded5c5]">
+        <div class="w-20 h-20 rounded-3xl bg-amber-500/20 border-2 border-amber-500/50 text-amber-700 mx-auto flex items-center justify-center mb-4 text-4xl shadow-inner">
+          🏆
+        </div>
+        <span class="text-[11px] font-mono uppercase tracking-widest text-amber-800 font-bold">Attestato Ufficiale</span>
+        <h3 class="text-2xl font-serif font-bold text-stone-900 tracking-tight mt-1">Certificazione Superata!</h3>
+        <p class="text-xs sm:text-sm text-stone-600 mt-2 max-w-sm mx-auto leading-relaxed">
+          Ottimo lavoro! Hai risposto con successo a tutti i quesiti architetturali di questo modulo d'esame.
+        </p>
+
+        <div class="my-5 inline-flex items-center gap-8 px-6 py-3 rounded-2xl bg-[#f2ecde] border border-[#d8cdb8] font-mono text-xs">
+          <div>
+            <span class="text-stone-500 block text-[10px]">Punteggio Totale</span>
+            <span id="finalScore" class="text-xl font-bold text-amber-700">0 XP</span>
+          </div>
+          <div class="w-px h-8 bg-stone-300"></div>
+          <div>
+            <span class="text-stone-500 block text-[10px]">Accuratezza</span>
+            <span id="finalAccuracy" class="text-xl font-bold text-emerald-700">100%</span>
+          </div>
+        </div>
+
+        <div>
+          <button id="restartTestBtn" class="px-6 py-2.5 rounded-xl bg-[#142338] text-amber-300 border border-amber-500/40 font-semibold text-sm hover:bg-[#1d314e] active:scale-95 transition-all cursor-pointer shadow-md">
+            Ricomincia Esame
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        topic: 'Architettura Rendering & CSS',
+        level: 'Senior Architect',
+        question: 'Qual è il reale beneficio architetturale nell\'adottare la proprietà CSS "contain: layout paint"?',
+        options: [
+          { letter: 'A', text: 'Isola i confini di rendering impedendo che le mutazioni interne scatenino ricalcoli di layout (reflow) sull\'intero albero DOM.', correct: true },
+          { letter: 'B', text: 'Forza la GPU ad allocare un contesto WebGL trasparente per il compositing multi-thread.', correct: false },
+          { letter: 'C', text: 'Comprime la memoria bitmap del DOM riducendo la dimensione dei pacchetti TCP trasmessi.', correct: false },
+          { letter: 'D', text: 'Disabilita temporaneamente gli eventi puntatore durante lo scrolling ad alta frequenza.', correct: false }
+        ],
+        explanation: 'La direttiva "contain: layout paint" circoscrive il sub-albero DOM: il motore del browser sa che gli elementi figli non influenzeranno mai la geometria degli elementi esterni, azzerando i costosi cicli di reflow a livello globale.'
+      },
+      {
+        topic: 'React Core & Performance',
+        level: 'Expert Lead',
+        question: 'Nel React Fiber Reconciler, perché una closure obsoleta (stale closure) può produrre bug silenti in un useEffect?',
+        options: [
+          { letter: 'A', text: 'Causa la de-ottimizzazione del garbage collector V8 mandando in crash l\'event loop.', correct: false },
+          { letter: 'B', text: 'Il callback cattura i valori delle variabili all\'istante della creazione: senza corretta dependency list leggerà per sempre lo stato vecchio.', correct: true },
+          { letter: 'C', text: 'Inverte la priorità temporale dei task asincroni nel Concurrent Mode.', correct: false },
+          { letter: 'D', text: 'Trasforma automaticamente un functional component in un legacy class component.', correct: false }
+        ],
+        explanation: 'Le funzioni in JavaScript catturano l\'ambiente lessicale in cui sono definite. Se un effetto non elenca le dipendenze aggiornate nel dependency array, manterrà il riferimento allo scope della render pass iniziale.'
+      },
+      {
+        topic: 'Accessibilità & Design System',
+        level: 'WCAG 2.1 AA',
+        question: 'Secondo lo standard WCAG 2.1 AA, qual è il rapporto minimo di contrasto richiesto per il testo normale?',
+        options: [
+          { letter: 'A', text: '2.5:1 rispetto al colore di sfondo primario.', correct: false },
+          { letter: 'B', text: '3.0:1 con tolleranza d\'interpolazione per schermi OLED.', correct: false },
+          { letter: 'C', text: '4.5:1 per testo standard (e 3:1 per testo grande oltre i 18pt o 14pt grassetto).', correct: true },
+          { letter: 'D', text: '7.0:1 obbligatorio in tutte le condizioni di luce.', correct: false }
+        ],
+        explanation: 'Il criterio di successo WCAG 1.4.3 impone un contrasto minimo di 4.5:1 per garantire leggibilità ad utenti con ipovisione o difetti di percezione cromatica su testi di dimensione standard.'
+      }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+    let streak = 0;
+    let isAnswered = false;
+    let correctCount = 0;
+
+    const levelBadge = document.getElementById('levelBadge');
+    const topicText = document.getElementById('topicText');
+    const streakPill = document.getElementById('streakPill');
+    const streakText = document.getElementById('streakText');
+    const scoreText = document.getElementById('scoreText');
+    const counterLabel = document.getElementById('counterLabel');
+    const percentLabel = document.getElementById('percentLabel');
+    const progressBar = document.getElementById('progressBar');
+    const questionTitle = document.getElementById('questionTitle');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const explanationBox = document.getElementById('explanationBox');
+    const nextBtn = document.getElementById('nextQuestionBtn');
+    const resetBtn = document.getElementById('resetQuizBtn');
+    const quizActiveView = document.getElementById('quizActiveView');
+    const quizSummaryView = document.getElementById('quizSummaryView');
+    const finalScore = document.getElementById('finalScore');
+    const finalAccuracy = document.getElementById('finalAccuracy');
+    const restartBtn = document.getElementById('restartTestBtn');
+
+    function renderQuestion() {
+      isAnswered = false;
+      explanationBox.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+
+      const q = questions[currentIdx];
+      levelBadge.textContent = q.level;
+      topicText.textContent = q.topic;
+      counterLabel.textContent = 'Domanda ' + (currentIdx + 1) + ' di ' + questions.length;
+      const pct = Math.round(((currentIdx) / questions.length) * 100);
+      percentLabel.textContent = pct + '% completato';
+      progressBar.style.width = Math.max(10, pct) + '%';
+      questionTitle.textContent = q.question;
+
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border border-[#ded5c5] bg-white hover:bg-[#fcfbf9] text-stone-800 transition-all cursor-pointer flex items-start gap-3 shadow-xs hover:border-amber-500/60 hover:shadow-sm';
+        btn.innerHTML =
+          '<span class="w-6 h-6 rounded-lg bg-[#f0ebd9] border border-[#dfd3b9] text-amber-900 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">' +
+          opt.letter +
+          '</span>' +
+          '<span class="text-xs sm:text-sm leading-relaxed font-sans font-medium flex-1">' +
+          opt.text +
+          '</span>';
+
+        btn.addEventListener('click', () => {
+          if (isAnswered) return;
+          isAnswered = true;
+
+          const allBtns = optionsContainer.querySelectorAll('button');
+          allBtns.forEach((b, bIdx) => {
+            const isRight = q.options[bIdx].correct;
+            const letterSpan = b.querySelector('span');
+
+            if (isRight) {
+              b.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-950 flex items-start gap-3 shadow-xs';
+              letterSpan.className = 'w-6 h-6 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5';
+            } else if (bIdx === idx) {
+              b.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50 text-rose-950 flex items-start gap-3 shadow-xs';
+              letterSpan.className = 'w-6 h-6 rounded-lg bg-rose-600 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5';
+            } else {
+              b.className = 'opacity-40 w-full text-left p-3 sm:p-3.5 rounded-xl border border-stone-200 bg-stone-100 text-stone-400 flex items-start gap-3 cursor-not-allowed';
+            }
+          });
+
+          if (opt.correct) {
+            correctCount++;
+            score += 100 + (streak * 25);
+            streak++;
+            scoreText.textContent = score + ' XP';
+            if (streak > 1) {
+              streakText.textContent = 'Streak x' + streak;
+              streakPill.classList.remove('hidden');
+            }
+            explanationBox.className = 'mt-4 p-3.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 text-xs sm:text-sm leading-relaxed shadow-xs';
+            explanationBox.innerHTML = '<strong class="text-emerald-800 block mb-1">✓ Risposta Esatta (+' + (100 + ((streak - 1) * 25)) + ' XP)</strong>' + q.explanation;
+          } else {
+            streak = 0;
+            streakPill.classList.add('hidden');
+            explanationBox.className = 'mt-4 p-3.5 rounded-xl border border-rose-300 bg-rose-50 text-rose-900 text-xs sm:text-sm leading-relaxed shadow-xs';
+            explanationBox.innerHTML = '<strong class="text-rose-800 block mb-1">✕ Risposta Errata</strong>' + q.explanation;
+          }
+
+          explanationBox.classList.remove('hidden');
+          nextBtn.classList.remove('hidden');
+          const donePct = Math.round(((currentIdx + 1) / questions.length) * 100);
+          percentLabel.textContent = donePct + '% completato';
+          progressBar.style.width = donePct + '%';
+        });
+
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIdx + 1 < questions.length) {
+        currentIdx++;
+        renderQuestion();
+      } else {
+        quizActiveView.classList.add('hidden');
+        quizSummaryView.classList.remove('hidden');
+        finalScore.textContent = score + ' XP';
+        finalAccuracy.textContent = Math.round((correctCount / questions.length) * 100) + '%';
+      }
+    });
+
+    function restart() {
+      currentIdx = 0;
+      score = 0;
+      streak = 0;
+      correctCount = 0;
+      scoreText.textContent = '0 XP';
+      streakPill.classList.add('hidden');
+      quizActiveView.classList.remove('hidden');
+      quizSummaryView.classList.add('hidden');
+      renderQuestion();
+    }
+
+    resetBtn.addEventListener('click', restart);
+    restartBtn.addEventListener('click', restart);
+
+    renderQuestion();
+  </script>
+</body>
+</html>

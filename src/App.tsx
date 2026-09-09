@@ -7,7 +7,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Boxes,
   Plus,
-  FolderDown,
+  FolderPlus,
   RotateCcw,
 } from 'lucide-react';
 import { Snippet, ThemeMode, LayoutMode } from './types';
@@ -360,7 +360,7 @@ export default function App() {
                 onClick={() => setIsImportModalOpen(true)}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700"
               >
-                <FolderDown size={14} className="text-teal-600" />
+                <FolderPlus size={14} className="text-teal-600" />
                 <span>Importa File HTML</span>
               </button>
             </div>

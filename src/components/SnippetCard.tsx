@@ -113,173 +113,189 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({
     >
       {/* 1. Header of the Snippet Container - DYNAMIC CATEGORY COLOR */}
       <div
-        className="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2.5 shrink-0 transition-colors"
+        className="border-b shrink-0 transition-colors shadow-xs"
         style={{
           backgroundColor: category?.headerHex || '#0f766e',
           borderColor: category?.headerHex || '#0f766e',
         }}
       >
-        {/* Left: Category Badge & Title */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          {category && (
-            <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold shrink-0 bg-white text-slate-900 shadow-xs border border-white/40"
-              title={`Categoria: ${category.name}`}
-            >
+        {/* Main Row: Category Badge, Title, and Priority Pinned Actions (Copia, Espandi, Cestino) */}
+        <div className="px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2">
+          {/* Left: Category Badge & Title */}
+          <div className="flex items-center gap-2 min-w-0 flex-1 pr-1">
+            {category && (
               <span
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: category.headerHex || category.color }}
-              />
-              {category.name.split('&')[0].trim()}
-            </span>
-          )}
-
-          <div className="min-w-0">
-            <h3 className="text-sm sm:text-base font-bold text-white tracking-tight truncate drop-shadow-xs">
-              {snippet.title}
-            </h3>
-            <div className="flex items-center gap-1.5 text-[11px] font-mono text-white/80 truncate mt-0.5">
-              <Folder size={12} className="shrink-0 opacity-80 text-white" />
-              <span className="truncate">
-                {snippet.filePath || `public/snippets/${snippet.category}/${snippet.id}.html`}
+                className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold shrink-0 bg-white text-slate-900 shadow-xs border border-white/40"
+                title={`Categoria: ${category.name}`}
+              >
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{ backgroundColor: category.headerHex || category.color }}
+                />
+                <span className="truncate max-w-[80px] sm:max-w-none">{category.name.split('&')[0].trim()}</span>
               </span>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <h3
+                className="text-sm sm:text-base font-bold text-white tracking-tight truncate drop-shadow-xs"
+                title={snippet.title}
+              >
+                {snippet.title}
+              </h3>
+              <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-white/80 truncate">
+                <Folder size={11} className="shrink-0 opacity-80 text-white" />
+                <span className="truncate">
+                  {snippet.filePath || `public/snippets/${snippet.category}/${snippet.id}.html`}
+                </span>
+              </div>
             </div>
+          </div>
+
+          {/* Right: Essential Actions (Copia, Espandi, Cestino) - ALWAYS VISIBLE, NEVER CLIPPED */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            {/* Copia Codice HTML */}
+            <button
+              onClick={handleCopy}
+              className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold border transition-all ${
+                copied
+                  ? 'bg-white text-emerald-700 border-white shadow-md'
+                  : 'bg-white text-slate-900 border-white hover:bg-slate-100 shadow-xs'
+              }`}
+              title="Copia codice HTML"
+            >
+              {copied ? (
+                <>
+                  <Check size={13} className="stroke-[2.5]" />
+                  <span>Copiato!</span>
+                </>
+              ) : (
+                <>
+                  <Copy size={13} />
+                  <span className="hidden xs:inline">Copia</span>
+                  <span className="hidden md:inline"> HTML</span>
+                </>
+              )}
+            </button>
+
+            {/* Espandi a tutto schermo */}
+            {onExpandPreview && (
+              <button
+                onClick={() => onExpandPreview(snippet)}
+                className="p-1.5 rounded-lg border border-white/25 bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-xs shadow-xs"
+                title="Espandi anteprima a tutto schermo"
+                aria-label="Espandi anteprima"
+              >
+                <Maximize2 size={14} />
+              </button>
+            )}
+
+            {/* Cestino / Elimina Snippet - ALWAYS PINNED ON THE HEADER */}
+            {onDelete && (
+              isConfirmingDelete ? (
+                <div className="flex items-center gap-1 bg-white border border-white px-2 py-0.5 rounded-lg text-xs shadow-md animate-in fade-in shrink-0">
+                  <span className="font-bold text-rose-700 text-[10px] sm:text-[11px]">Eliminare?</span>
+                  <button
+                    onClick={() => {
+                      onDelete(snippet.id);
+                      setIsConfirmingDelete(false);
+                    }}
+                    className="px-1.5 py-0.5 font-bold text-white bg-rose-600 hover:bg-rose-700 rounded transition-colors text-[10px] sm:text-[11px]"
+                  >
+                    Sì
+                  </button>
+                  <button
+                    onClick={() => setIsConfirmingDelete(false)}
+                    className="px-1.5 py-0.5 font-medium text-slate-700 hover:bg-slate-100 rounded transition-colors text-[10px] sm:text-[11px]"
+                  >
+                    No
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setIsConfirmingDelete(true)}
+                  className="p-1.5 rounded-lg border border-white/30 bg-white/15 hover:bg-rose-600 hover:border-rose-500 text-white transition-colors backdrop-blur-xs shadow-xs active:scale-95 shrink-0"
+                  title="Elimina snippet dal contenitore"
+                  aria-label="Elimina snippet"
+                >
+                  <Trash2 size={14} className="text-white" />
+                </button>
+              )
+            )}
           </div>
         </div>
 
-        {/* Right: Quick Action Controls */}
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* Background Switcher (Bianco / Scuro / Griglia) */}
+        {/* Secondary Sub-toolbar: Sfondo preview, Ricarica iframe, Mostra codice */}
+        <div className="px-3 sm:px-4 py-1.5 bg-black/15 border-t border-white/15 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
+          {/* Left: Background Switcher (Bianco / Scuro / Griglia) */}
           <div
-            className="flex items-center rounded-lg p-0.5 bg-black/25 backdrop-blur-xs border border-white/20 text-xs shadow-inner"
+            className="flex items-center rounded-lg p-0.5 bg-black/25 backdrop-blur-xs border border-white/20 text-xs shadow-inner shrink-0"
             title="Cambia sfondo anteprima"
           >
             <button
               onClick={() => setPreviewBg('white')}
-              className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] transition-all ${
+              className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[11px] transition-all ${
                 previewBg === 'white'
                   ? 'bg-white font-bold text-slate-950 shadow-xs'
                   : 'text-white/85 hover:text-white hover:bg-white/10'
               }`}
               title="Sfondo Bianco Pulito"
             >
-              <Sun size={12} className={previewBg === 'white' ? 'text-amber-500' : 'text-white'} />
-              <span className="hidden sm:inline">Bianco</span>
+              <Sun size={11} className={previewBg === 'white' ? 'text-amber-500' : 'text-white'} />
+              <span className="hidden sm:inline text-[11px]">Bianco</span>
             </button>
             <button
               onClick={() => setPreviewBg('dark')}
-              className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] transition-all ${
+              className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[11px] transition-all ${
                 previewBg === 'dark'
                   ? 'bg-slate-950 font-bold text-white shadow-xs border border-white/20'
                   : 'text-white/85 hover:text-white hover:bg-white/10'
               }`}
               title="Sfondo Scuro Ardesia"
             >
-              <Moon size={12} className={previewBg === 'dark' ? 'text-cyan-400' : 'text-white'} />
-              <span className="hidden sm:inline">Scuro</span>
+              <Moon size={11} className={previewBg === 'dark' ? 'text-cyan-400' : 'text-white'} />
+              <span className="hidden sm:inline text-[11px]">Scuro</span>
             </button>
             <button
               onClick={() => setPreviewBg('grid')}
-              className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] transition-all ${
+              className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[11px] transition-all ${
                 previewBg === 'grid'
                   ? 'bg-white font-bold text-slate-950 shadow-xs'
                   : 'text-white/85 hover:text-white hover:bg-white/10'
               }`}
               title="Sfondo a Griglia Puntinata"
             >
-              <Grid size={12} className={previewBg === 'grid' ? 'text-indigo-600' : 'text-white'} />
-              <span className="hidden sm:inline">Griglia</span>
+              <Grid size={11} className={previewBg === 'grid' ? 'text-indigo-600' : 'text-white'} />
+              <span className="hidden sm:inline text-[11px]">Griglia</span>
             </button>
           </div>
 
-          {/* Ricarica Anteprima */}
-          <button
-            onClick={handleReload}
-            className="p-1.5 rounded-lg border border-white/25 bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-xs shadow-xs"
-            title="Ricarica anteprima interattiva"
-          >
-            <RefreshCw size={14} />
-          </button>
-
-          {/* Copia Codice HTML */}
-          <button
-            onClick={handleCopy}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${
-              copied
-                ? 'bg-white text-emerald-700 border-white shadow-md'
-                : 'bg-white text-slate-900 border-white hover:bg-slate-100 shadow-xs'
-            }`}
-            title="Copia codice HTML"
-          >
-            {copied ? (
-              <>
-                <Check size={13} className="stroke-[2.5]" />
-                <span>Copiato!</span>
-              </>
-            ) : (
-              <>
-                <Copy size={13} />
-                <span>Copia HTML</span>
-              </>
-            )}
-          </button>
-
-          {/* Mostra Codice Toggle */}
-          <button
-            onClick={() => setShowCode(!showCode)}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-              showCode
-                ? 'bg-slate-950 text-white border-slate-950 shadow-xs'
-                : 'bg-white/15 hover:bg-white/30 text-white border-white/25 backdrop-blur-xs'
-            }`}
-            title={showCode ? 'Nascondi codice sorgente' : 'Mostra codice HTML'}
-          >
-            <Code2 size={13} />
-            <span className="hidden xs:inline">{showCode ? 'Chiudi' : 'Codice'}</span>
-          </button>
-
-          {/* Espandi a tutto schermo */}
-          {onExpandPreview && (
+          {/* Right: Ricarica + Codice Toggle */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* Ricarica Anteprima */}
             <button
-              onClick={() => onExpandPreview(snippet)}
-              className="p-1.5 rounded-lg border border-white/25 bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-xs shadow-xs"
-              title="Espandi anteprima a tutto schermo"
+              onClick={handleReload}
+              className="p-1 sm:p-1.5 rounded-lg border border-white/25 bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-xs shadow-xs"
+              title="Ricarica anteprima interattiva"
+              aria-label="Ricarica anteprima"
             >
-              <Maximize2 size={14} />
+              <RefreshCw size={13} />
             </button>
-          )}
 
-          {/* Elimina Snippet con conferma inline affidabile (senza window.confirm) */}
-          {onDelete && (
-            isConfirmingDelete ? (
-              <div className="flex items-center gap-1.5 bg-white border border-white px-2.5 py-1 rounded-lg text-xs shadow-md animate-in fade-in">
-                <span className="font-bold text-rose-700 text-[11px]">Eliminare?</span>
-                <button
-                  onClick={() => {
-                    onDelete(snippet.id);
-                    setIsConfirmingDelete(false);
-                  }}
-                  className="px-2 py-0.5 font-bold text-white bg-rose-600 hover:bg-rose-700 rounded transition-colors text-[11px]"
-                >
-                  Sì
-                </button>
-                <button
-                  onClick={() => setIsConfirmingDelete(false)}
-                  className="px-1.5 py-0.5 font-medium text-slate-700 hover:bg-slate-100 rounded transition-colors text-[11px]"
-                >
-                  No
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsConfirmingDelete(true)}
-                className="p-1.5 rounded-lg border border-white/25 bg-white/15 hover:bg-rose-600 hover:border-rose-500 text-white transition-colors backdrop-blur-xs shadow-xs"
-                title="Elimina dal contenitore"
-              >
-                <Trash2 size={14} />
-              </button>
-            )
-          )}
+            {/* Mostra Codice Toggle */}
+            <button
+              onClick={() => setShowCode(!showCode)}
+              className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold border transition-colors ${
+                showCode
+                  ? 'bg-slate-950 text-white border-slate-950 shadow-xs'
+                  : 'bg-white/15 hover:bg-white/30 text-white border-white/25 backdrop-blur-xs'
+              }`}
+              title={showCode ? 'Nascondi codice sorgente' : 'Mostra codice HTML'}
+            >
+              <Code2 size={13} />
+              <span>{showCode ? 'Nascondi' : 'Codice'}</span>
+            </button>
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen bg-[#0b0e14] text-white min-h-screen flex items-center justify-center p-3 sm:p-6 font-sans">
+
+
+<div id="audio-player-card" class="w-full max-w-xl mx-auto select-none p-2 font-sans">
+  <div class="relative bg-gradient-to-br from-[#121620] via-[#1a1f2e] to-[#0c0f17] text-white rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-cyan-500/30 overflow-hidden">
+    
+    <!-- Barra Superiore Deck Audio Hi-Fi -->
+    <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="font-mono uppercase tracking-widest text-[11px] font-bold text-cyan-400 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+          HI-RES AUDIO DECK
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 font-mono text-[10px] text-neutral-300">
+          24-bit / 96kHz FLAC
+        </span>
+        <button id="audio-fav-btn" type="button" class="p-1 rounded text-rose-500 hover:scale-110 transition-transform cursor-pointer" title="Aggiungi ai Preferiti">
+          <svg id="audio-fav-icon" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Piatto Vinile 3D e Display LCD con Equalizzatore -->
+    <div class="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 mb-5">
+      
+      <!-- Vinile con Solchi e Braccetto Meccanico -->
+      <div class="relative w-36 h-36 shrink-0 flex items-center justify-center">
+        <div id="vinyl-disc" class="w-36 h-36 rounded-full bg-gradient-to-tr from-neutral-950 via-neutral-900 to-neutral-950 shadow-2xl border-4 border-neutral-800 flex items-center justify-center relative transition-transform">
+          <!-- Solchi Concentrici del Vinile -->
+          <div class="absolute inset-2 rounded-full border border-white/10 pointer-events-none"></div>
+          <div class="absolute inset-5 rounded-full border border-white/5 pointer-events-none"></div>
+          <div class="absolute inset-8 rounded-full border border-white/10 pointer-events-none"></div>
+          <div class="absolute inset-11 rounded-full border border-white/5 pointer-events-none"></div>
+
+          <!-- Etichetta Centrale del Vinile -->
+          <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-500 to-fuchsia-600 shadow-inner flex items-center justify-center text-white border-2 border-neutral-900 font-bold">
+            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0Z"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
+          </div>
+        </div>
+
+        <!-- Braccetto Meccanico Puntina Tonearm -->
+        <div id="vinyl-tonearm" class="absolute top-0 right-1 w-2.5 h-16 bg-gradient-to-b from-neutral-300 via-neutral-400 to-neutral-600 rounded-sm shadow-md origin-top transform rotate-0 transition-transform duration-500 pointer-events-none">
+          <div class="absolute -bottom-1 -left-1 w-4 h-2 bg-amber-400 rounded-xs shadow"></div>
+        </div>
+      </div>
+
+      <!-- Display Retroilluminato LCD con Equalizzatore -->
+      <div class="flex-1 w-full text-center sm:text-left">
+        <div class="bg-black/60 rounded-2xl p-3 border border-cyan-500/20 mb-3 shadow-inner">
+          <div class="flex items-center justify-between text-[10px] font-mono text-cyan-400 mb-1">
+            <span>CANALE STEREO DX/SX</span>
+            <span class="text-amber-400">EQ: NATURAL HI-FI</span>
+          </div>
+          <h3 id="audio-track-title" class="font-bold text-base sm:text-lg text-white truncate tracking-wide">
+            La Sinfonia delle Stelle
+          </h3>
+          <p id="audio-track-artist" class="text-xs text-cyan-300/80 font-medium truncate">
+            Podcast & Audiolibro • Traccia 01
+          </p>
+        </div>
+
+        <!-- Equalizzatore Grafico a Barre Spettrali -->
+        <div id="audio-eq-container" class="flex items-end justify-between gap-1 h-8 bg-neutral-950/80 p-2 rounded-xl border border-neutral-800">
+          <div class="audio-eq-bar flex-1 bg-cyan-400 rounded-xs h-[40%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-cyan-400 rounded-xs h-[65%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-amber-400 rounded-xs h-[85%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-rose-500 rounded-xs h-[95%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-amber-400 rounded-xs h-[70%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-cyan-400 rounded-xs h-[50%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-amber-400 rounded-xs h-[80%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-rose-500 rounded-xs h-[100%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-amber-400 rounded-xs h-[75%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-cyan-400 rounded-xs h-[60%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-rose-500 rounded-xs h-[90%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-amber-400 rounded-xs h-[70%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-cyan-400 rounded-xs h-[55%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-amber-400 rounded-xs h-[85%] transition-all duration-150"></div>
+          <div class="audio-eq-bar flex-1 bg-cyan-400 rounded-xs h-[45%] transition-all duration-150"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra Scrubber Traccia -->
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-xs font-mono text-neutral-400 mb-1">
+        <span id="audio-time-current" class="text-cyan-400 font-bold">00:00</span>
+        <span id="audio-time-total">07:15</span>
+      </div>
+      <div id="audio-scrubber-track" class="relative h-2.5 bg-neutral-800/90 rounded-full overflow-hidden p-0.5 cursor-pointer">
+        <div id="audio-scrubber-bar" class="h-full bg-gradient-to-r from-cyan-500 via-sky-400 to-fuchsia-500 rounded-full shadow-sm transition-all" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Controlli Meccanici Play / Pausa e Volume -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+      <div class="flex items-center gap-2">
+        <button id="audio-prev-btn" type="button" class="p-2 rounded-xl bg-white/5 hover:bg-white/15 text-neutral-300 hover:text-white border border-white/10 text-xs transition-colors cursor-pointer active:scale-95" title="Traccia precedente">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+        </button>
+
+        <button id="audio-play-btn" type="button" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-neutral-950 font-bold flex items-center gap-2 shadow-lg text-xs cursor-pointer hover:brightness-110 active:scale-95 transition-all">
+          <span id="audio-play-icon">▶</span>
+          <span id="audio-play-text">PLAY</span>
+        </button>
+
+        <button id="audio-next-btn" type="button" class="p-2 rounded-xl bg-white/5 hover:bg-white/15 text-neutral-300 hover:text-white border border-white/10 text-xs transition-colors cursor-pointer active:scale-95" title="Traccia successiva">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        </button>
+      </div>
+
+      <!-- Controllo Manopola Volume -->
+      <div class="flex items-center gap-2 bg-neutral-950/80 px-3 py-1.5 rounded-2xl border border-white/10">
+        <button id="audio-mute-btn" type="button" class="text-cyan-400 text-xs cursor-pointer">🔊</button>
+        <input 
+          id="audio-volume-slider" 
+          type="range" 
+          min="0" 
+          max="100" 
+          value="80" 
+          class="w-20 accent-cyan-400 h-1.5 cursor-pointer bg-neutral-800 rounded-lg"
+        />
+        <span id="audio-volume-text" class="text-[11px] font-mono text-cyan-400 w-8 text-right">80%</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function initAudioPlayerCard() {
+  const playlist = [
+    { title: "La Sinfonia delle Stelle", artist: "Podcast Cosmico • Traccia 01", totalSec: 435 },
+    { title: "Eco nei Canyon del Vento", artist: "Atmosfere Acustiche • Traccia 02", totalSec: 320 },
+    { title: "Nocturne in Cyber C Minor", artist: "Elettronica Analogica • Traccia 03", totalSec: 280 }
+  ];
+
+  let currentTrackIdx = 0;
+  let isPlaying = false;
+  let vinylAngle = 0;
+  let rotTimer = null;
+  let eqTimer = null;
+  let progress = 0;
+  let volume = 80;
+  let isMuted = false;
+  let isFav = true;
+
+  const playBtn = document.getElementById('audio-play-btn');
+  const playIcon = document.getElementById('audio-play-icon');
+  const playText = document.getElementById('audio-play-text');
+  const vinylDisc = document.getElementById('vinyl-disc');
+  const vinylTonearm = document.getElementById('vinyl-tonearm');
+  const scrubberTrack = document.getElementById('audio-scrubber-track');
+  const scrubberBar = document.getElementById('audio-scrubber-bar');
+  const timeCurrent = document.getElementById('audio-time-current');
+  const timeTotal = document.getElementById('audio-time-total');
+  const trackTitle = document.getElementById('audio-track-title');
+  const trackArtist = document.getElementById('audio-track-artist');
+  const prevBtn = document.getElementById('audio-prev-btn');
+  const nextBtn = document.getElementById('audio-next-btn');
+  const muteBtn = document.getElementById('audio-mute-btn');
+  const volumeSlider = document.getElementById('audio-volume-slider');
+  const volumeText = document.getElementById('audio-volume-text');
+  const favBtn = document.getElementById('audio-fav-btn');
+  const eqBars = document.querySelectorAll('.audio-eq-bar');
+
+  function formatTime(sec) {
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const s = String(Math.floor(sec % 60)).padStart(2, '0');
+    return m + ':' + s;
+  }
+
+  function loadTrack(idx) {
+    currentTrackIdx = idx;
+    const t = playlist[currentTrackIdx];
+    if (trackTitle) trackTitle.textContent = t.title;
+    if (trackArtist) trackArtist.textContent = t.artist;
+    if (timeTotal) timeTotal.textContent = formatTime(t.totalSec);
+    progress = 0;
+    if (scrubberBar) scrubberBar.style.width = '0%';
+    if (timeCurrent) timeCurrent.textContent = '00:00';
+  }
+
+  function togglePlay() {
+    isPlaying = !isPlaying;
+    if (playIcon) playIcon.textContent = isPlaying ? '❚❚' : '▶';
+    if (playText) playText.textContent = isPlaying ? 'PAUSA' : 'PLAY';
+
+    if (vinylTonearm) {
+      vinylTonearm.style.transform = isPlaying ? 'rotate(24deg)' : 'rotate(0deg)';
+    }
+
+    if (isPlaying) {
+      rotTimer = setInterval(() => {
+        vinylAngle = (vinylAngle + 4) % 360;
+        if (vinylDisc) vinylDisc.style.transform = 'rotate(' + vinylAngle + 'deg)';
+        const curTrack = playlist[currentTrackIdx];
+        progress = (progress >= 100) ? 0 : +(progress + 0.15).toFixed(2);
+        if (scrubberBar) scrubberBar.style.width = progress + '%';
+        if (timeCurrent) timeCurrent.textContent = formatTime((progress / 100) * curTrack.totalSec);
+      }, 50);
+
+      eqTimer = setInterval(() => {
+        eqBars.forEach((bar) => {
+          const h = Math.floor(25 + Math.random() * 75);
+          bar.style.height = h + '%';
+        });
+      }, 150);
+    } else {
+      clearInterval(rotTimer);
+      clearInterval(eqTimer);
+      eqBars.forEach((bar) => {
+        bar.style.height = '15%';
+      });
+    }
+  }
+
+  playBtn?.addEventListener('click', togglePlay);
+
+  prevBtn?.addEventListener('click', () => {
+    const newIdx = (currentTrackIdx - 1 + playlist.length) % playlist.length;
+    loadTrack(newIdx);
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    const newIdx = (currentTrackIdx + 1) % playlist.length;
+    loadTrack(newIdx);
+  });
+
+  scrubberTrack?.addEventListener('click', (e) => {
+    const rect = scrubberTrack.getBoundingClientRect();
+    const pos = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    progress = Math.round(pos);
+    if (scrubberBar) scrubberBar.style.width = progress + '%';
+    const curTrack = playlist[currentTrackIdx];
+    if (timeCurrent) timeCurrent.textContent = formatTime((progress / 100) * curTrack.totalSec);
+  });
+
+  volumeSlider?.addEventListener('input', (e) => {
+    volume = Number(e.target.value);
+    isMuted = volume === 0;
+    if (volumeText) volumeText.textContent = volume + '%';
+    if (muteBtn) muteBtn.textContent = isMuted ? '🔇' : '🔊';
+  });
+
+  muteBtn?.addEventListener('click', () => {
+    isMuted = !isMuted;
+    if (volumeSlider) volumeSlider.value = isMuted ? 0 : volume;
+    if (volumeText) volumeText.textContent = isMuted ? '0%' : volume + '%';
+    if (muteBtn) muteBtn.textContent = isMuted ? '🔇' : '🔊';
+  });
+
+  favBtn?.addEventListener('click', () => {
+    isFav = !isFav;
+    favBtn.className = isFav ? 'p-1 text-rose-500 cursor-pointer' : 'p-1 text-neutral-500 cursor-pointer';
+  });
+
+  loadTrack(0);
+})();
+</script>
+
+
+
+
+</body>
+</html>

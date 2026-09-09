@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Flashcard Spaced Repetition (SRS)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#18110b] text-amber-50 flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+
+  <div class="w-full max-w-xl mx-auto flex flex-col items-center select-none">
+    <!-- Top Deck Stats Bar -->
+    <div class="w-full flex items-center justify-between px-3 py-2 rounded-2xl bg-[#2a1c12] border border-[#523824] shadow-md mb-4 text-xs font-mono">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+        <span class="text-amber-200 font-semibold tracking-wide">Archivio Index Card • Software Engineering</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="deckCounter" class="text-amber-300/80">1 di 3</span>
+        <span id="learnedBadge" class="px-2.5 py-0.5 rounded-full bg-[#1c120a] border border-amber-600/40 text-amber-300 font-bold">12 memorizzate</span>
+      </div>
+    </div>
+
+    <!-- 3D Card Stack Container -->
+    <div class="w-full relative min-h-[380px] cursor-pointer" id="cardContainer">
+      <div class="absolute inset-0 translate-y-3 scale-[0.94] rounded-3xl bg-[#dcd2be] border border-[#b8aa8f] pointer-events-none shadow-md"></div>
+      <div class="absolute inset-0 translate-y-1.5 scale-[0.97] rounded-3xl bg-[#ede3cf] border border-[#cbbea4] pointer-events-none shadow-md"></div>
+
+      <!-- Active Card Face (Archival Library Index Card) -->
+      <div id="cardFace" class="w-full min-h-[380px] rounded-3xl bg-[#faf6ee] text-stone-900 border-2 border-[#d6ccb8] shadow-2xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 relative z-10 ring-1 ring-amber-900/10">
+        <!-- Front View -->
+        <div id="frontView" class="flex flex-col justify-between h-full space-y-6">
+          <div>
+            <div class="flex items-center justify-between border-b-2 border-red-500/25 pb-2.5">
+              <span id="cardCategory" class="text-[11px] font-mono uppercase tracking-widest text-amber-900 font-bold">Algoritmi & Strutture Dati</span>
+              <span id="cardBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-[#ebd9ba] border border-[#d2bb95] text-amber-950 font-semibold">Struttura Dati Probabilistica</span>
+            </div>
+            <div class="mt-6">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-stone-500 font-semibold block mb-1">Lemma Architetturale</span>
+              <h3 id="cardTerm" class="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-stone-900">Bloom Filter</h3>
+              <p id="cardQuestion" class="text-sm sm:text-base text-stone-700 mt-4 leading-relaxed font-serif italic">
+                Qual è la proprietà fondamentale sui falsi positivi e falsi negativi di un Bloom Filter?
+              </p>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-[#ded4c1]">
+            <div id="hintBox" class="hidden p-3 rounded-xl bg-[#f2ebd9] border border-[#decfae] text-xs text-stone-800 leading-relaxed font-sans mb-2">
+              💡 <span id="hintText">Pensa alla funzione hash e all'operazione di appartenenza.</span>
+            </div>
+            <div id="hintTriggerRow" class="flex items-center justify-between">
+              <button id="showHintBtn" type="button" class="text-xs font-mono text-amber-900 hover:text-amber-700 underline underline-offset-4 transition-colors cursor-pointer">
+                💡 Consulta indizio
+              </button>
+              <span class="text-xs font-mono text-stone-500">↻ Tocca per svelare risposta</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back View (Hidden initially) -->
+        <div id="backView" class="hidden flex flex-col justify-between h-full space-y-6">
+          <div>
+            <div class="flex items-center justify-between border-b-2 border-emerald-600/30 pb-2.5">
+              <span class="text-[11px] font-mono uppercase tracking-widest text-emerald-800 font-bold flex items-center gap-1.5">
+                ✓ Soluzione Verificata
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-100 border border-emerald-300 text-emerald-900 font-semibold">Ripetizione Spaziata</span>
+            </div>
+            <div class="mt-5">
+              <h4 id="cardAnswer" class="text-base sm:text-lg font-serif font-bold text-stone-900 leading-snug">
+                Un Bloom Filter può generare falsi positivi, ma non genererà MAI falsi negativi.
+              </h4>
+              <p id="cardElaboration" class="text-xs sm:text-sm text-stone-700 mt-3 leading-relaxed font-sans">
+                Se il filtro dichiara che un elemento non è presente, è garantito al 100% che non esiste. Se dichiara che è presente, potrebbe esserci una collisione di hash nei bit.
+              </p>
+            </div>
+            <div id="cardComplexity" class="mt-4 p-3 rounded-xl bg-[#f4ede1] border border-[#dbcca8] text-[11px] font-mono text-amber-950">
+              ⚡ Tempo O(k) per k funzioni hash • Spazio compatto in bit
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-[#ded4c1] flex flex-wrap items-center justify-between gap-2" id="srsControls">
+            <span class="text-[11px] font-mono text-stone-500 font-semibold">Intervallo memoria:</span>
+            <div class="flex items-center gap-2">
+              <button class="review-opt px-3 py-1.5 rounded-xl bg-white hover:bg-stone-100 border border-[#d0c2a7] text-xs font-mono text-stone-800 shadow-xs cursor-pointer">1 giorno</button>
+              <button class="review-opt px-3 py-1.5 rounded-xl bg-[#ede3ce] hover:bg-[#e4d6be] border border-[#c4b394] text-xs font-mono text-amber-950 font-bold shadow-xs cursor-pointer">3 giorni</button>
+              <button class="review-opt px-3.5 py-1.5 rounded-xl bg-[#1e4620] hover:bg-[#285d2b] text-xs font-mono text-emerald-100 font-bold shadow-sm cursor-pointer">7 giorni (Facile)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="w-full flex items-center justify-between mt-5 px-1">
+      <button id="prevBtn" class="px-4 py-2 rounded-xl bg-[#2a1c12] hover:bg-[#382618] border border-[#523824] text-xs font-mono text-amber-200 transition-colors shadow-sm cursor-pointer">
+        ← Precedente
+      </button>
+      <button id="flipToggleBtn" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-serif font-bold text-xs sm:text-sm tracking-wide shadow-md active:scale-95 transition-all cursor-pointer">
+        Gira Scheda
+      </button>
+      <button id="nextBtn" class="px-4 py-2 rounded-xl bg-[#2a1c12] hover:bg-[#382618] border border-[#523824] text-xs font-mono text-amber-200 transition-colors shadow-sm cursor-pointer">
+        Successiva →
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const deck = [
+      {
+        category: 'Algoritmi & Strutture Dati',
+        badge: 'Struttura Dati Probabilistica',
+        term: 'Bloom Filter',
+        question: 'Qual è la proprietà fondamentale sui falsi positivi e falsi negativi di un Bloom Filter?',
+        hint: 'Pensa alla funzione hash e all\'operazione di appartenenza.',
+        answer: 'Un Bloom Filter può generare falsi positivi, ma non genererà MAI falsi negativi.',
+        elaboration: 'Se il filtro dichiara che un elemento non è presente, è garantito al 100% che non esiste. Se dichiara che è presente, potrebbe esserci una collisione nei bit.',
+        complexity: 'Tempo O(k) per k funzioni hash • Spazio compatto in bit'
+      },
+      {
+        category: 'Sistemi Distribuiti',
+        badge: 'Architettura Distribuita',
+        term: 'Teorema CAP',
+        question: 'Durante una partizione di rete (P), perché è impossibile garantire contemporaneamente Consistenza (C) e Disponibilità (A)?',
+        hint: 'Considera cosa accade se due nodi isolati ricevono richieste contrastanti.',
+        answer: 'In presenza di partizione (P), si deve scegliere se rifiutare le scritture per preservare i dati (CP) o accettarle causando disallineamento (AP).',
+        elaboration: 'Se un nodo non può comunicare con il leader, non può garantire la consistenza atomica delle modifiche senza rifiutare la richiesta.',
+        complexity: 'Principio guida nei database NoSQL (Cassandra AP vs Spanner CP)'
+      },
+      {
+        category: 'Networking & Web',
+        badge: 'Protocolli di Rete',
+        term: 'Head-of-Line Blocking (HTTP/2 vs HTTP/3)',
+        question: 'Perché il protocollo HTTP/3 ha sostituito TCP con QUIC (su UDP) per risolvere l\'Head-of-Line Blocking?',
+        hint: 'Pensa a cosa accade a livello di pacchetti TCP se un singolo stream perde un frame.',
+        answer: 'In HTTP/2 su TCP, la perdita di un singolo pacchetto blocca tutti gli stream multiplexati. HTTP/3 isola la perdita al singolo stream.',
+        elaboration: 'QUIC gestisce la perdita di pacchetti a livello applicativo per singolo flusso, consentendo agli altri stream di proseguire senza attese.',
+        complexity: 'Zero-RTT Handshake • Nessun blocco su reti mobili instabili'
+      }
+    ];
+
+    let currentIdx = 0;
+    let isFlipped = false;
+    let learned = 12;
+
+    const cardContainer = document.getElementById('cardContainer');
+    const cardFace = document.getElementById('cardFace');
+    const frontView = document.getElementById('frontView');
+    const backView = document.getElementById('backView');
+    const hintBox = document.getElementById('hintBox');
+    const hintText = document.getElementById('hintText');
+    const hintTriggerRow = document.getElementById('hintTriggerRow');
+    const showHintBtn = document.getElementById('showHintBtn');
+    const flipToggleBtn = document.getElementById('flipToggleBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const deckCounter = document.getElementById('deckCounter');
+    const learnedBadge = document.getElementById('learnedBadge');
+
+    function toggleFlip() {
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        frontView.classList.add('hidden');
+        backView.classList.remove('hidden');
+        flipToggleBtn.textContent = 'Mostra Fronte';
+      } else {
+        backView.classList.add('hidden');
+        frontView.classList.remove('hidden');
+        flipToggleBtn.textContent = 'Gira Scheda';
+      }
+    }
+
+    function render() {
+      isFlipped = false;
+      backView.classList.add('hidden');
+      frontView.classList.remove('hidden');
+      hintBox.classList.add('hidden');
+      hintTriggerRow.classList.remove('hidden');
+      flipToggleBtn.textContent = 'Gira Scheda';
+
+      const c = deck[currentIdx];
+      document.getElementById('cardCategory').textContent = c.category;
+      document.getElementById('cardBadge').textContent = c.badge;
+      document.getElementById('cardTerm').textContent = c.term;
+      document.getElementById('cardQuestion').textContent = c.question;
+      hintText.textContent = c.hint;
+
+      document.getElementById('cardAnswer').textContent = c.answer;
+      document.getElementById('cardElaboration').textContent = c.elaboration;
+      document.getElementById('cardComplexity').textContent = '⚡ ' + c.complexity;
+
+      deckCounter.textContent = (currentIdx + 1) + ' di ' + deck.length;
+    }
+
+    cardContainer.addEventListener('click', toggleFlip);
+    flipToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFlip();
+    });
+
+    showHintBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      hintBox.classList.remove('hidden');
+      hintTriggerRow.classList.add('hidden');
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIdx = (currentIdx + 1) % deck.length;
+      render();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      currentIdx = (currentIdx - 1 + deck.length) % deck.length;
+      render();
+    });
+
+    document.querySelectorAll('.review-opt').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        learned++;
+        learnedBadge.textContent = learned + ' apprese';
+        currentIdx = (currentIdx + 1) % deck.length;
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>

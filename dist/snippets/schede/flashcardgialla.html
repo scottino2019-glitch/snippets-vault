@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen bg-[#18110b] text-neutral-900 min-h-screen flex items-center justify-center p-3 sm:p-6 font-sans">
+
+
+<div class="w-full max-w-xl mx-auto select-none p-2 font-sans">
+  <div class="relative">
+    
+    <!-- Strati Sottostanti del Mazzo -->
+    <div class="absolute -inset-x-2.5 -bottom-3 h-20 bg-amber-200/60 rounded-3xl -z-20 shadow-md transform -rotate-1 border border-amber-300/40"></div>
+    <div class="absolute -inset-x-1.5 -bottom-1.5 h-20 bg-amber-100 rounded-3xl -z-10 shadow-lg transform rotate-1 border border-amber-200/80"></div>
+
+    <!-- Cartoncino Studio Attivo -->
+    <div id="flashcard-surface" class="relative min-h-[360px] rounded-3xl p-6 sm:p-7 cursor-pointer shadow-xl border-2 border-amber-300 bg-[#fffef8] text-neutral-900 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl">
+      
+      <!-- Foro ad Anello Metallico -->
+      <div class="absolute top-5 left-5 z-20 flex items-center justify-center pointer-events-none">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-b from-neutral-200 via-neutral-400 to-neutral-600 shadow-inner flex items-center justify-center border border-white/60">
+          <div class="w-4 h-4 rounded-full bg-neutral-900 shadow-inner border border-neutral-950 flex items-center justify-center">
+            <div class="w-1.5 h-1 bg-white/70 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra Superiore con Badge e Suggerimento -->
+      <div class="flex items-center justify-between pl-10 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] bg-amber-100 text-amber-900 border border-amber-300/80">
+            🎓 Design & Interfacce
+          </span>
+          <span id="flashcard-counter" class="font-mono text-[11px] text-neutral-500 font-bold">Scheda 1/3</span>
+        </div>
+
+        <div class="flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200/60">
+          <span id="flashcard-flip-prompt">↻ Clicca per girare</span>
+        </div>
+      </div>
+
+      <!-- Contenuto Centrale (Fronte / Retro) -->
+      <div id="flashcard-content-area" class="my-6 text-center px-2 sm:px-6">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+      <!-- Controlli Inferiori di Navigazione e Progresso -->
+      <div class="flex items-center justify-between pt-4 border-t border-amber-200/60 text-xs">
+        <div class="flex items-center gap-1.5">
+          <button id="flashcard-prev-btn" type="button" class="p-2 px-3 rounded-lg border border-amber-300 hover:bg-amber-100 text-neutral-700 font-bold transition-colors cursor-pointer">
+            ‹ Prec
+          </button>
+          <button id="flashcard-next-btn" type="button" class="p-2 px-3 rounded-lg border border-amber-300 hover:bg-amber-100 text-neutral-700 font-bold transition-colors cursor-pointer">
+            Succ ›
+          </button>
+        </div>
+
+        <button id="flashcard-learned-btn" type="button" class="px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 shadow-md bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition-colors">
+          <span>✓</span>
+          <span id="flashcard-learned-text">Segna come Imparata</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function initFlashcardDeck() {
+  const cards = [
+    {
+      front: 'Affordance',
+      phonetic: '/əˈfɔːr.dəns/',
+      hint: 'Pensa a una maniglia di una porta o a un pulsante a rilievo.',
+      back: 'La proprietà fisica o visiva di un oggetto che suggerisce spontaneamente all\'utente come interagire con esso.',
+      example: 'Un pulsante con ombra 3D invita spontaneamente ad essere premuto col dito o col mouse.',
+      learned: false
+    },
+    {
+      front: 'Skeuomorphism',
+      phonetic: '/ˈskjuː.ə.mɔːr.fɪ.zəm/',
+      hint: 'Metafora visiva derivata direttamente da un oggetto analogico del mondo reale.',
+      back: 'Tecnica di design in cui elementi di interfaccia software imitano fedelmente forme, materiali (legno, cuoio, metallo) e texture del mondo fisico.',
+      example: 'Il taccuino con cuciture o l\'icona a forma di floppy disk per il salvataggio.',
+      learned: false
+    },
+    {
+      front: 'Legge di Fitts',
+      phonetic: '/fɪts lɔː/',
+      hint: 'Relazione tra dimensione del target e distanza dal cursore.',
+      back: 'Il tempo richiesto per raggiungere un bersaglio è in funzione della distanza da percorrere e della larghezza del bersaglio stesso.',
+      example: 'I pulsanti primari (CTA) devono essere ampi e posizionati in punti di facile raggiungimento.',
+      learned: false
+    }
+  ];
+
+  let currentIndex = 0;
+  let isFlipped = false;
+
+  const surface = document.getElementById('flashcard-surface');
+  const contentArea = document.getElementById('flashcard-content-area');
+  const counterEl = document.getElementById('flashcard-counter');
+  const flipPrompt = document.getElementById('flashcard-flip-prompt');
+  const prevBtn = document.getElementById('flashcard-prev-btn');
+  const nextBtn = document.getElementById('flashcard-next-btn');
+  const learnedBtn = document.getElementById('flashcard-learned-btn');
+  const learnedText = document.getElementById('flashcard-learned-text');
+
+  function renderCard() {
+    const card = cards[currentIndex];
+    if (!card || !contentArea) return;
+
+    if (counterEl) {
+      counterEl.textContent = 'Scheda ' + (currentIndex + 1) + '/' + cards.length;
+    }
+
+    if (isFlipped) {
+      flipPrompt.textContent = '↻ Mostra fronte';
+      contentArea.innerHTML = `
+        <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-700">DEFINIZIONE E SIGNIFICATO • RETRO</span>
+        <p class="text-sm sm:text-base font-medium text-neutral-800 leading-relaxed max-w-md mx-auto my-3">
+          ${card.back}
+        </p>
+        <div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 text-left max-w-md mx-auto">
+          <span>💡</span>
+          <span class="italic font-normal"><strong>Esempio:</strong> ${card.example}</span>
+        </div>
+      `;
+    } else {
+      flipPrompt.textContent = '↻ Clicca per girare';
+      contentArea.innerHTML = `
+        <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-neutral-400">CONCETTO CHIAVE • FRONTE</span>
+        <h3 class="text-3xl sm:text-4xl font-serif font-black text-neutral-900 mt-1 mb-1 tracking-tight">
+          ${card.front}
+        </h3>
+        <p class="text-xs sm:text-sm font-mono text-amber-800 font-semibold mb-4">
+          ${card.phonetic}
+        </p>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-neutral-600 text-left max-w-md mx-auto">
+          <span>✨</span>
+          <span class="italic">Suggerimento: ${card.hint}</span>
+        </div>
+      `;
+    }
+
+    if (learnedBtn && learnedText) {
+      if (card.learned) {
+        learnedBtn.className = 'px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 shadow-md bg-amber-500 hover:bg-amber-600 text-neutral-950 cursor-pointer transition-colors';
+        learnedBtn.firstElementChild.textContent = '★';
+        learnedText.textContent = 'Memorizzata!';
+      } else {
+        learnedBtn.className = 'px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 shadow-md bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition-colors';
+        learnedBtn.firstElementChild.textContent = '✓';
+        learnedText.textContent = 'Segna come Imparata';
+      }
+    }
+  }
+
+  surface?.addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+    isFlipped = !isFlipped;
+    renderCard();
+  });
+
+  prevBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    isFlipped = false;
+    renderCard();
+  });
+
+  nextBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % cards.length;
+    isFlipped = false;
+    renderCard();
+  });
+
+  learnedBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    cards[currentIndex].learned = !cards[currentIndex].learned;
+    renderCard();
+  });
+
+  renderCard();
+})();
+</script>
+
+
+
+
+</body>
+</html>

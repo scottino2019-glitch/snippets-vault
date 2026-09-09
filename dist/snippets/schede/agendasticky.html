@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen bg-[#11241d] text-neutral-900 min-h-screen flex items-center justify-center p-3 sm:p-6 font-sans">
+
+
+<div class="w-full max-w-xl mx-auto select-none p-2 sm:p-4 font-sans">
+  <div class="relative bg-[#17372b] rounded-3xl p-4 sm:p-5 shadow-2xl border-4 border-[#0d221a] flex overflow-visible">
+    
+    <!-- Angolari Metallici in Ottone Dorato Vintage -->
+    <div class="absolute top-1.5 left-1.5 w-6 h-6 border-t-2 border-l-2 border-amber-400 rounded-tl-xl pointer-events-none"></div>
+    <div class="absolute top-1.5 right-1.5 w-6 h-6 border-t-2 border-r-2 border-amber-400 rounded-tr-xl pointer-events-none"></div>
+    <div class="absolute bottom-1.5 left-1.5 w-6 h-6 border-b-2 border-l-2 border-amber-400 rounded-bl-xl pointer-events-none"></div>
+    <div class="absolute bottom-1.5 right-1.5 w-6 h-6 border-b-2 border-r-2 border-amber-400 rounded-br-xl pointer-events-none"></div>
+
+    <!-- Nastro Segnalibro di Raso Bordeaux -->
+    <div class="absolute -top-3 left-16 z-30 pointer-events-none">
+      <div class="w-4 h-12 bg-gradient-to-b from-rose-700 to-rose-900 shadow-md transform rotate-3 rounded-b flex items-end justify-center pb-1">
+        <div class="w-2 h-1 bg-amber-300 rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Linguette Settimanali a Scomparsa a Destra -->
+    <div id="agenda-tabs" class="absolute -right-3 sm:-right-4 top-10 z-20 flex flex-col gap-2">
+      <button data-day="Lunedì" class="agenda-tab px-2 py-1 text-[10px] font-extrabold text-white rounded-r-lg shadow-md bg-rose-600 opacity-80 cursor-pointer">Lun</button>
+      <button data-day="Martedì" class="agenda-tab px-2 py-1 text-[10px] font-extrabold text-white rounded-r-lg shadow-md bg-amber-600 opacity-80 cursor-pointer">Mar</button>
+      <button data-day="Mercoledì" class="agenda-tab px-2 py-1 text-[10px] font-extrabold text-white rounded-r-lg shadow-md bg-emerald-600 ring-2 ring-white translate-x-1.5 scale-105 cursor-pointer">Mer</button>
+      <button data-day="Giovedì" class="agenda-tab px-2 py-1 text-[10px] font-extrabold text-white rounded-r-lg shadow-md bg-sky-600 opacity-80 cursor-pointer">Gio</button>
+      <button data-day="Venerdì" class="agenda-tab px-2 py-1 text-[10px] font-extrabold text-white rounded-r-lg shadow-md bg-violet-600 opacity-80 cursor-pointer">Ven</button>
+    </div>
+
+    <!-- Pagina Avorio Interna Rigorosamente Contenuta -->
+    <div class="w-full min-w-0 flex-1 bg-[#fffdf2] rounded-2xl p-4 sm:p-6 shadow-inner text-neutral-900 border border-amber-200/80 overflow-hidden box-border">
+      
+      <!-- Intestazione Pagina -->
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-amber-200">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+            📅 Agenda Organizzativa Giornaliera
+          </span>
+          <h3 id="agenda-current-day-label" class="font-serif font-black text-lg sm:text-xl text-neutral-900 mt-0.5">
+            Mercoledì, 04 Settembre
+          </h3>
+        </div>
+
+        <div class="text-right">
+          <span id="agenda-counter-badge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+            1/2 completati
+          </span>
+        </div>
+      </div>
+
+      <!-- Elenco Impegni Orari -->
+      <div id="agenda-items-container" class="space-y-2 mb-4 max-h-56 overflow-y-auto pr-1">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Form Rapido -->
+      <form id="agenda-form" class="flex flex-wrap sm:flex-nowrap gap-2 pt-3 border-t border-amber-200/70">
+        <input id="agenda-input-time" type="time" value="16:00" class="w-20 px-2 py-1.5 text-xs bg-amber-50 rounded-xl border border-amber-200 font-mono shrink-0" />
+        <input id="agenda-input-title" type="text" placeholder="Aggiungi impegno..." class="flex-1 min-w-[120px] px-3 py-1.5 text-xs bg-amber-50 rounded-xl border border-amber-200" required />
+        <button type="submit" class="px-3 py-1.5 bg-emerald-700 text-white rounded-xl text-xs font-bold shadow cursor-pointer hover:bg-emerald-800 transition-colors shrink-0">
+          + Aggiungi
+        </button>
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function initAgenda() {
+  let items = [
+    { id: 1, time: '09:00', title: 'Revisione capitolo su React Hooks', done: true },
+    { id: 2, time: '15:00', title: 'Esercitazione quiz e flashcard mnemonica', done: false }
+  ];
+
+  const container = document.getElementById('agenda-items-container');
+  const counterBadge = document.getElementById('agenda-counter-badge');
+  const form = document.getElementById('agenda-form');
+  const timeInput = document.getElementById('agenda-input-time');
+  const titleInput = document.getElementById('agenda-input-title');
+  const dayLabel = document.getElementById('agenda-current-day-label');
+  const tabBtns = document.querySelectorAll('.agenda-tab');
+
+  function render() {
+    if (!container) return;
+    container.innerHTML = '';
+    const completed = items.filter(i => i.done).length;
+    if (counterBadge) {
+      counterBadge.textContent = completed + '/' + items.length + ' completati';
+    }
+
+    items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'p-2.5 sm:p-3 rounded-xl border ' + (item.done ? 'bg-amber-50/60 border-amber-200/50 opacity-70' : 'bg-white border-amber-200 shadow-xs') + ' flex items-center justify-between gap-3';
+      
+      const left = document.createElement('div');
+      left.className = 'flex items-center gap-2.5 min-w-0 cursor-pointer flex-1';
+      left.innerHTML = 
+        '<span class="font-bold text-sm ' + (item.done ? 'text-emerald-600' : 'text-neutral-400') + '">' + (item.done ? '✓' : '○') + '</span>' +
+        '<span class="font-mono text-xs font-bold text-emerald-800">' + item.time + '</span>' +
+        '<span class="text-xs font-medium truncate ' + (item.done ? 'line-through text-neutral-400' : 'text-neutral-800') + '">' + item.title + '</span>';
+      
+      left.addEventListener('click', () => {
+        item.done = !item.done;
+        render();
+      });
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'text-neutral-400 hover:text-rose-600 text-xs px-1 cursor-pointer';
+      delBtn.textContent = '✕';
+      delBtn.title = 'Elimina';
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        items = items.filter(i => i.id !== item.id);
+        render();
+      });
+
+      row.appendChild(left);
+      row.appendChild(delBtn);
+      container.appendChild(row);
+    });
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = titleInput.value.trim();
+    const time = timeInput.value || '12:00';
+    if (!title) return;
+    items.push({ id: Date.now(), time, title, done: false });
+    titleInput.value = '';
+    render();
+  });
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => {
+        b.classList.remove('ring-2', 'ring-white', 'translate-x-1.5', 'scale-105');
+        b.classList.add('opacity-80');
+      });
+      btn.classList.add('ring-2', 'ring-white', 'translate-x-1.5', 'scale-105');
+      btn.classList.remove('opacity-80');
+      const day = btn.getAttribute('data-day');
+      if (dayLabel) {
+        dayLabel.textContent = day + ', 04 Settembre';
+      }
+    });
+  });
+
+  render();
+})();
+</script>
+
+
+
+
+</body>
+</html>

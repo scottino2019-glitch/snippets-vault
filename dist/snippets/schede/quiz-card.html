@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Console Retrò Gameboy - Componente Tailwind CSS</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-[#faf9f6] text-stone-900 min-h-screen flex items-center justify-center p-6 sm:p-12">
+
+<!-- =========================================================================
+     CONSOLE RETRÒ GAME & LEARN (HTML + TAILWIND CSS + VANILLA JS)
+     Funziona al 100% senza dipendenze: 4 Tasti A•B•C•D, D-Pad 3D, Aiuto 50:50 e Power
+     ========================================================================= -->
+<div id="gameboy-app" class="max-w-md w-full rounded-3xl p-5 shadow-2xl relative select-none border-4 transition-all bg-[#2a3b40] border-[#182529] text-stone-100">
+  <!-- Cartuccia Superiore Inseribile -->
+  <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-44 h-5 bg-[#1f2c31] rounded-t-lg border-t-2 border-x-2 border-[#3d525a] flex items-center justify-center shadow-xs">
+    <div class="flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+      <span class="text-[7px] font-mono font-black text-amber-300 uppercase tracking-widest">UX QUEST CARTRIDGE</span>
+    </div>
+  </div>
+
+  <!-- LED Accensione e Switch Power -->
+  <div class="flex items-center justify-between px-2 pt-2 pb-1.5 border-b border-[#3b4e54]">
+    <div class="flex items-center gap-2">
+      <div id="gb-power-led" class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.9)] transition-all"></div>
+      <span class="text-[9px] font-mono font-bold tracking-wider text-stone-400 uppercase">POWER</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-[8px] font-mono text-stone-400 uppercase">OFF / ON</span>
+      <button id="gb-power-btn" type="button" class="w-8 h-4 bg-stone-900 rounded-full p-0.5 border border-stone-600 cursor-pointer flex items-center">
+        <div id="gb-power-switch" class="w-3 h-3 rounded-full bg-stone-200 shadow-sm translate-x-4 transition-transform"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bezel Schermo LCD a Fosfori Verdi -->
+  <div class="rounded-2xl bg-[#0d1416] p-3 border-4 border-[#121c1f] shadow-inner mb-3 mt-2">
+    <div class="flex items-center justify-between text-[9px] font-mono text-stone-400 mb-1.5 px-1">
+      <span class="text-stone-300 font-bold">DOT MATRIX WITH STEREO SOUND</span>
+      <div class="flex items-center gap-1.5">
+        <span class="text-amber-400">STREAK: <strong id="gb-streak" class="text-amber-300">3x</strong></span>
+        <span class="text-stone-600">•</span>
+        <span class="text-emerald-400">PTS: <strong id="gb-score" class="text-emerald-300">350</strong></span>
+      </div>
+    </div>
+
+    <!-- Schermo LCD Interattivo -->
+    <div id="gb-screen" class="rounded-xl bg-[#2b3a2a] p-3.5 border-2 border-[#1e2b1d] text-[#9bbf8a] font-mono transition-all relative overflow-hidden min-h-[240px]">
+      <!-- Linee di scansione CRT/LCD -->
+      <div class="absolute inset-0 pointer-events-none opacity-15" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.8) 2px, rgba(0,0,0,0.8) 4px);"></div>
+
+      <!-- Barra Superiore Livello e Categoria -->
+      <div class="relative z-10 flex items-center justify-between text-[10px] font-black pb-1.5 border-b border-[#3e533c]">
+        <span id="gb-cat-tag" class="px-1.5 py-0.5 bg-[#1a261a] text-[#bce6aa] rounded-xs text-[9px]">LIVELLO 1 • DESIGN TOKENS</span>
+        <span id="gb-question-counter" class="text-[#729c66]">Q 1/4</span>
+      </div>
+
+      <!-- Testo Domanda -->
+      <p id="gb-question-text" class="relative z-10 text-xs font-bold text-[#e6fcd9] my-2.5 leading-snug">
+        Quale principio descrive che il tempo di puntamento verso un bersaglio dipende dalla sua distanza e larghezza?
+      </p>
+
+      <!-- 4 Opzioni Risposta (A, B, C, D) -->
+      <div id="gb-options-container" class="relative z-10 space-y-1.5">
+        <!-- Renderizzate dinamicamente da JS -->
+      </div>
+
+      <!-- Banner Risultato & Feedback -->
+      <div id="gb-feedback-banner" class="relative z-10 mt-2.5 pt-2 border-t border-[#3e533c] hidden">
+        <p id="gb-feedback-title" class="text-[11px] font-bold text-[#e6fcd9] mb-1 leading-tight"></p>
+        <p id="gb-feedback-desc" class="text-[10px] text-[#9fc78d] leading-relaxed mb-2"></p>
+        <button id="gb-next-btn" type="button" class="w-full py-1.5 bg-[#4e6e4a] hover:bg-[#5f875a] text-[#0d160c] font-black rounded text-[11px] uppercase tracking-wider cursor-pointer shadow-sm active:scale-98">
+          PROSSIMO LIVELLO (O PREMI START / A) →
+        </button>
+      </div>
+
+      <!-- Schermo Spento Overlay (Zero distruzione DOM) -->
+      <div id="gb-screen-off" class="hidden absolute inset-0 bg-[#0d140e] flex flex-col items-center justify-center text-stone-500 font-mono text-xs z-30">
+        <span class="text-stone-400 font-bold mb-1 tracking-wider">[ CONSOLE SPENTA ]</span>
+        <span class="text-[9px] text-stone-600">ACCENDI LO SWITCH POWER IN ALTO PER GIOCARE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controlli Tattili: D-Pad 3D, Select/Start, 4 Tasti Azione (A, B, C, D) -->
+  <div class="flex items-center justify-between px-1 pt-1 pb-1">
+    <!-- D-Pad Direzionale con Frecce Cliccabili -->
+    <div class="flex flex-col items-center">
+      <div class="relative w-18 h-18 flex items-center justify-center">
+        <div class="absolute w-18 h-6 bg-gradient-to-b from-[#182023] to-[#0c1113] rounded-sm border border-stone-700 shadow-lg flex justify-between items-center px-1">
+          <button id="gb-dpad-left" type="button" class="w-5 h-5 flex items-center justify-center text-[10px] text-stone-400 hover:text-white active:scale-80 cursor-pointer">◄</button>
+          <button id="gb-dpad-right" type="button" class="w-5 h-5 flex items-center justify-center text-[10px] text-stone-400 hover:text-white active:scale-80 cursor-pointer">►</button>
+        </div>
+        <div class="absolute h-18 w-6 bg-gradient-to-r from-[#182023] to-[#0c1113] rounded-sm border border-stone-700 shadow-lg flex flex-col justify-between items-center py-1">
+          <button id="gb-dpad-up" type="button" class="w-5 h-5 flex items-center justify-center text-[10px] text-stone-400 hover:text-white active:scale-80 cursor-pointer">▲</button>
+          <button id="gb-dpad-down" type="button" class="w-5 h-5 flex items-center justify-center text-[10px] text-stone-400 hover:text-white active:scale-80 cursor-pointer">▼</button>
+        </div>
+        <button id="gb-dpad-center" type="button" class="relative z-10 w-4 h-4 rounded-full bg-[#111618] border border-stone-800 shadow-inner hover:bg-stone-800 active:scale-85 cursor-pointer"></button>
+      </div>
+      <span class="text-[7px] font-mono text-stone-500 font-bold mt-0.5">D-PAD NAV</span>
+    </div>
+
+    <!-- Tasti Funzione: SELECT (Aiuto 50:50) e START (Prossimo) -->
+    <div class="flex flex-col items-center gap-1 mt-2">
+      <div class="flex gap-2.5 rotate-[-20deg]">
+        <div class="flex flex-col items-center">
+          <button id="gb-btn-select" type="button" class="w-7 h-2.5 rounded-full bg-stone-800 hover:bg-stone-700 border border-stone-600 shadow-inner active:scale-90 cursor-pointer" title="Aiuto 50:50"></button>
+          <span class="text-[7px] font-mono font-black text-amber-300 mt-1 uppercase tracking-tight">50:50</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <button id="gb-btn-start" type="button" class="w-7 h-2.5 rounded-full bg-stone-800 hover:bg-stone-700 border border-stone-600 shadow-inner active:scale-90 cursor-pointer" title="START: Conferma o Avanti"></button>
+          <span class="text-[7px] font-mono font-black text-stone-300 mt-1 uppercase tracking-tight">START</span>
+        </div>
+      </div>
+      <span class="text-[7px] font-mono text-stone-500 tracking-wider">FUNZIONI</span>
+    </div>
+
+    <!-- 4 Tasti Azione Arcade Frontali: (A), (B), (C), (D) -->
+    <div class="flex flex-col items-end gap-1">
+      <div class="grid grid-cols-2 gap-1.5 rotate-[-18deg] bg-black/30 p-1.5 rounded-2xl border border-white/5 shadow-inner">
+        <button id="gb-btn-a" type="button" class="w-7 h-7 rounded-full bg-gradient-to-b from-rose-500 to-rose-900 border-t border-rose-300 border-b-2 border-b-rose-950 text-white font-black text-[11px] shadow-md active:translate-y-0.5 cursor-pointer flex items-center justify-center font-mono">A</button>
+        <button id="gb-btn-b" type="button" class="w-7 h-7 rounded-full bg-gradient-to-b from-amber-400 to-amber-800 border-t border-amber-200 border-b-2 border-b-amber-950 text-stone-950 font-black text-[11px] shadow-md active:translate-y-0.5 cursor-pointer flex items-center justify-center font-mono">B</button>
+        <button id="gb-btn-c" type="button" class="w-7 h-7 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-900 border-t border-emerald-300 border-b-2 border-b-emerald-950 text-white font-black text-[11px] shadow-md active:translate-y-0.5 cursor-pointer flex items-center justify-center font-mono">C</button>
+        <button id="gb-btn-d" type="button" class="w-7 h-7 rounded-full bg-gradient-to-b from-sky-500 to-sky-900 border-t border-sky-300 border-b-2 border-b-sky-950 text-white font-black text-[11px] shadow-md active:translate-y-0.5 cursor-pointer flex items-center justify-center font-mono">D</button>
+      </div>
+      <span class="text-[7px] font-mono text-stone-400 font-bold">4 TASTI A•B•C•D</span>
+    </div>
+  </div>
+</div>
+
+<!-- Logica Vanilla JS autonoma del Gameboy -->
+<script>
+(function() {
+  var questions = [
+    {
+      id: 1,
+      cat: "LIVELLO 1 • LEGGI UX",
+      question: "Quale principio descrive che il tempo di puntamento verso un bersaglio dipende dalla sua distanza e larghezza?",
+      options: [
+        { id: "a", key: "A", text: "Legge di Hick-Hyman", correct: false },
+        { id: "b", key: "B", text: "Legge di Fitts", correct: true },
+        { id: "c", key: "C", text: "Effetto Von Restorff", correct: false },
+        { id: "d", key: "D", text: "Rasoio di Occam", correct: false }
+      ],
+      explanation: "La Legge di Fitts stabilisce che bersagli più grandi e più vicini al cursore/dito si raggiungono molto più rapidamente."
+    },
+    {
+      id: 2,
+      cat: "LIVELLO 2 • DESIGN TOKENS",
+      question: "Qual è il beneficio architetturale primario nell'usare token semantici (es. color-bg-surface) anziché valori grezzi?",
+      options: [
+        { id: "a", key: "A", text: "Aumenta la dimensione del bundle CSS finale", correct: false },
+        { id: "b", key: "B", text: "Rende le modifiche di tema globali e disaccoppiate", correct: true },
+        { id: "c", key: "C", text: "Elimina la necessità di test di contrasto WCAG", correct: false },
+        { id: "d", key: "D", text: "Rallenta il rendering delle proprietà GPU", correct: false }
+      ],
+      explanation: "I token semantici separano il ruolo d'uso dai valori fisici esatti, rendendo dark/light mode istantanei."
+    },
+    {
+      id: 3,
+      cat: "LIVELLO 3 • ACCESSIBILITÀ",
+      question: "Qual è il rapporto minimo di contrasto WCAG 2.1 AA per il testo normale del corpo?",
+      options: [
+        { id: "a", key: "A", text: "3:1 (contrasto basso)", correct: false },
+        { id: "b", key: "B", text: "4.5:1 (standard AA)", correct: true },
+        { id: "c", key: "C", text: "7:1 (standard AAA)", correct: false },
+        { id: "d", key: "D", text: "1.5:1 (inaccessibile)", correct: false }
+      ],
+      explanation: "Lo standard WCAG AA prescrive almeno 4.5:1 per testo normale e 3:1 per testo grande o componenti grafici."
+    },
+    {
+      id: 4,
+      cat: "LIVELLO 4 • RETRO GAMING",
+      question: "Quanti tasti azione frontali aveva il celebre Game Boy originale (DMG-01) del 1989?",
+      options: [
+        { id: "a", key: "A", text: "2 tasti storici (A e B)", correct: true },
+        { id: "b", key: "B", text: "4 tasti (A, B, C, D)", correct: false },
+        { id: "c", key: "C", text: "1 solo pulsante centrale", correct: false },
+        { id: "d", key: "D", text: "6 tasti stile arcade", correct: false }
+      ],
+      explanation: "Il Game Boy originale aveva solo A e B! In questa console CardCraft abbiamo 4 tasti per i quiz!"
+    }
+  ];
+
+  var state = {
+    currentQIndex: 0,
+    focusedIndex: 0,
+    selectedOption: null,
+    isAnswered: false,
+    score: 350,
+    streak: 3,
+    powerOn: true,
+    eliminated: [],
+    lifelineUsed: false
+  };
+
+  var elScore = document.getElementById("gb-score");
+  var elStreak = document.getElementById("gb-streak");
+  var elScreen = document.getElementById("gb-screen");
+  var elCatTag = document.getElementById("gb-cat-tag");
+  var elQCounter = document.getElementById("gb-question-counter");
+  var elQText = document.getElementById("gb-question-text");
+  var elOptionsContainer = document.getElementById("gb-options-container");
+  var elFeedbackBanner = document.getElementById("gb-feedback-banner");
+  var elFeedbackTitle = document.getElementById("gb-feedback-title");
+  var elFeedbackDesc = document.getElementById("gb-feedback-desc");
+  var elNextBtn = document.getElementById("gb-next-btn");
+  var elPowerBtn = document.getElementById("gb-power-btn");
+  var elPowerSwitch = document.getElementById("gb-power-switch");
+  var elPowerLed = document.getElementById("gb-power-led");
+  var elScreenOff = document.getElementById("gb-screen-off");
+
+  function render() {
+    if (!state.powerOn) {
+      if (elScreenOff) elScreenOff.classList.remove("hidden");
+      return;
+    }
+    if (elScreenOff) elScreenOff.classList.add("hidden");
+
+    var q = questions[state.currentQIndex];
+    elCatTag.textContent = q.cat;
+    elQCounter.textContent = "Q " + (state.currentQIndex + 1) + "/" + questions.length;
+    elQText.textContent = q.question;
+    elScore.textContent = state.score;
+    elStreak.textContent = state.streak + "x";
+
+    elOptionsContainer.innerHTML = "";
+    q.options.forEach(function(opt, idx) {
+      var isEliminated = state.eliminated.indexOf(opt.id) !== -1;
+      var isFocused = idx === state.focusedIndex && !state.isAnswered;
+
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "w-full p-2 rounded-lg border text-left text-xs transition-all flex items-center gap-2 cursor-pointer ";
+
+      if (state.isAnswered) {
+        if (opt.correct) {
+          btn.className += "bg-[#153e1a] border-[#52a45a] text-[#7bf188] font-bold";
+        } else if (state.selectedOption === opt.id) {
+          btn.className += "bg-[#401a1a] border-[#a45252] text-[#f17b7b] font-black";
+        } else {
+          btn.className += "bg-[#1a2319] border-[#293627] text-[#556952] opacity-50";
+        }
+      } else if (isEliminated) {
+        btn.className += "bg-[#121a11] border-[#222e20] text-[#42543e] line-through opacity-40 cursor-not-allowed";
+      } else if (isFocused) {
+        btn.className += "bg-[#2a3c29] border-[#72a86c] text-[#ebffdf] ring-1 ring-[#72a86c]";
+      } else {
+        btn.className += "bg-[#1f2b1e] border-[#384c36] text-[#b0d59e] hover:bg-[#283827]";
+      }
+
+      btn.innerHTML = '<span class="w-4 h-4 rounded-xs bg-black/40 text-center font-mono font-black text-[10px] leading-tight flex items-center justify-center shrink-0">' +
+        (isFocused && !state.isAnswered ? "►" : opt.key) +
+        '</span><span class="flex-1 font-semibold leading-tight">' + opt.text + '</span>' +
+        (isEliminated ? '<span class="text-[8px] font-mono uppercase text-red-400 font-bold">50:50 OFF</span>' : '');
+
+      btn.onclick = function() {
+        if (!isEliminated) handleSelect(opt.id);
+      };
+      elOptionsContainer.appendChild(btn);
+    });
+
+    if (state.isAnswered) {
+      elFeedbackBanner.classList.remove("hidden");
+      var opt = q.options.find(function(o) { return o.id === state.selectedOption; });
+      var isCorrect = opt && opt.correct;
+      elFeedbackTitle.textContent = isCorrect ? "★ RISPOSTA ESATTA! (+100 PTS)" : "✖ RISPOSTA ERRATA!";
+      elFeedbackDesc.textContent = q.explanation;
+    } else {
+      elFeedbackBanner.classList.add("hidden");
+    }
+  }
+
+  function handleSelect(optionId) {
+    if (state.isAnswered || !state.powerOn) return;
+    if (state.eliminated.indexOf(optionId) !== -1) return;
+
+    state.selectedOption = optionId;
+    state.isAnswered = true;
+
+    var q = questions[state.currentQIndex];
+    var opt = q.options.find(function(o) { return o.id === optionId; });
+    if (opt && opt.correct) {
+      state.score += 100;
+      state.streak += 1;
+    } else {
+      state.streak = 0;
+    }
+    render();
+  }
+
+  function handleNext() {
+    state.selectedOption = null;
+    state.isAnswered = false;
+    state.eliminated = [];
+    state.lifelineUsed = false;
+    state.focusedIndex = 0;
+    state.currentQIndex = (state.currentQIndex + 1) % questions.length;
+    render();
+  }
+
+  function moveFocus(delta) {
+    if (!state.powerOn || state.isAnswered) return;
+    var total = questions[state.currentQIndex].options.length;
+    state.focusedIndex = (state.focusedIndex + delta + total) % total;
+    render();
+  }
+
+  function confirmFocused() {
+    if (!state.powerOn) return;
+    if (state.isAnswered) {
+      handleNext();
+      return;
+    }
+    var opt = questions[state.currentQIndex].options[state.focusedIndex];
+    if (opt) handleSelect(opt.id);
+  }
+
+  function trigger5050() {
+    if (state.isAnswered || state.lifelineUsed || !state.powerOn) return;
+    var q = questions[state.currentQIndex];
+    var wrong = q.options.filter(function(o) { return !o.correct; }).map(function(o) { return o.id; });
+    state.eliminated = wrong.slice(0, 2);
+    state.lifelineUsed = true;
+    render();
+  }
+
+  // Tasti A, B, C, D
+  document.getElementById("gb-btn-a").onclick = function() { if (state.isAnswered) handleNext(); else handleSelect("a"); };
+  document.getElementById("gb-btn-b").onclick = function() { if (state.isAnswered) handleNext(); else handleSelect("b"); };
+  document.getElementById("gb-btn-c").onclick = function() { if (state.isAnswered) handleNext(); else handleSelect("c"); };
+  document.getElementById("gb-btn-d").onclick = function() { if (state.isAnswered) handleNext(); else handleSelect("d"); };
+
+  // D-Pad
+  document.getElementById("gb-dpad-up").onclick = function() { moveFocus(-1); };
+  document.getElementById("gb-dpad-down").onclick = function() { moveFocus(1); };
+  document.getElementById("gb-dpad-left").onclick = function() { moveFocus(-1); };
+  document.getElementById("gb-dpad-right").onclick = function() { moveFocus(1); };
+  document.getElementById("gb-dpad-center").onclick = confirmFocused;
+
+  // Funzioni
+  document.getElementById("gb-btn-select").onclick = trigger5050;
+  document.getElementById("gb-btn-start").onclick = confirmFocused;
+  elNextBtn.onclick = handleNext;
+
+  // Power Switch
+  elPowerBtn.onclick = function() {
+    state.powerOn = !state.powerOn;
+    if (state.powerOn) {
+      elPowerSwitch.className = "w-3 h-3 rounded-full bg-stone-200 shadow-sm translate-x-4 transition-transform";
+      elPowerLed.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.9)] transition-all";
+    } else {
+      elPowerSwitch.className = "w-3 h-3 rounded-full bg-stone-400 shadow-sm translate-x-0 transition-transform";
+      elPowerLed.className = "w-2.5 h-2.5 rounded-full bg-stone-700 transition-all";
+    }
+    render();
+  };
+
+  render();
+})();
+</script>
+
+</body>
+</html>

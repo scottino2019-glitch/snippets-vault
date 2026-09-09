@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   X,
   Upload,
@@ -56,9 +56,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
-  const fetchScannedSnippets = async () => {
+  const fetchScannedSnippets = useCallback(async () => {
     setIsScanning(true);
     setScanStatusMsg('');
     try {
@@ -76,13 +74,16 @@ export const ImportModal: React.FC<ImportModalProps> = ({
     } finally {
       setIsScanning(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isOpen && activeTab === 'scan') {
       fetchScannedSnippets();
     }
-  }, [isOpen, activeTab]);
+  }, [isOpen, activeTab, fetchScannedSnippets]);
+
+  // All hooks must be defined above before this conditional return
+  if (!isOpen) return null;
 
   const handleImportAllScanned = () => {
     if (scannedFiles.length === 0) return;
@@ -218,39 +219,41 @@ export const ImportModal: React.FC<ImportModalProps> = ({
       }}
       className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
     >
-      <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden text-slate-900">
+      <div className="w-full max-w-xl max-h-[92dvh] sm:max-h-[88vh] flex flex-col rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden text-slate-900">
         {/* Header */}
-        <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between shrink-0">
+        <div className="px-4 sm:px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <span className="p-1.5 rounded-lg bg-teal-600 text-white shadow-xs">
               <FolderPlus size={16} />
             </span>
-            <h2 className="text-base font-bold text-slate-900">Importa Frammenti HTML</h2>
+            <h2 className="text-sm sm:text-base font-bold text-slate-900">Importa Frammenti HTML</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-colors shrink-0"
+            aria-label="Chiudi finestra modale"
+            title="Chiudi (Esc)"
           >
             <X size={16} />
           </button>
         </div>
 
-        {/* Tab switcher */}
-        <div className="flex border-b border-slate-200 text-xs font-semibold bg-slate-50">
+        {/* Tab switcher - responsive horizontal scroll on mobile */}
+        <div className="flex border-b border-slate-200 text-xs font-semibold bg-slate-50 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap shrink-0 px-1">
           <button
             onClick={() => setActiveTab('scan')}
-            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors flex items-center justify-center gap-1.5 ${
+            className={`py-2.5 px-3.5 text-center border-b-2 transition-colors flex items-center justify-center gap-1.5 shrink-0 ${
               activeTab === 'scan'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <RefreshCw size={13} className={isScanning ? 'animate-spin text-teal-600' : ''} />
-            <span>Scansiona Cartella Public</span>
+            <span>Scansiona Public</span>
           </button>
           <button
             onClick={() => setActiveTab('upload')}
-            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors ${
+            className={`py-2.5 px-3.5 text-center border-b-2 transition-colors shrink-0 ${
               activeTab === 'upload'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -260,7 +263,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('path')}
-            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors ${
+            className={`py-2.5 px-3.5 text-center border-b-2 transition-colors shrink-0 ${
               activeTab === 'path'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -270,7 +273,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('info')}
-            className={`flex-1 py-2.5 px-3 text-center border-b-2 transition-colors ${
+            className={`py-2.5 px-3.5 text-center border-b-2 transition-colors shrink-0 ${
               activeTab === 'info'
                 ? 'border-teal-600 text-teal-700 font-bold bg-white'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -280,8 +283,8 @@ export const ImportModal: React.FC<ImportModalProps> = ({
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-5 space-y-4">
+        {/* Content - vertically scrollable */}
+        <div className="p-4 sm:p-5 space-y-4 flex-1 overflow-y-auto">
           {activeTab === 'scan' && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -554,3 +557,4 @@ export const ImportModal: React.FC<ImportModalProps> = ({
     </div>
   );
 };
+

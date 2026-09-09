@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Layout Responsive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        header, footer {
+            background: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        main {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        article, aside {
+            padding: 20px;
+        }
+        article {
+            flex: 3;
+            background: #f9f9f9;
+        }
+        aside {
+            flex: 1;
+            background: #ddd;
+        }
+        @media (max-width: 600px) {
+            main {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌐 Sito Responsive</h1>
+    </header>
+
+    <main>
+        <article>
+            <h2>Contenuto principale</h2>
+            <p>Qui andrà il testo principale.</p>
+        </article>
+        <aside>
+            <h3>Sidebar</h3>
+            <p>Informazioni aggiuntive.</p>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Layout Responsive</p>
+    </footer>
+
+</body>
+</html>

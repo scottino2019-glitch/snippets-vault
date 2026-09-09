@@ -2,7 +2,8 @@ import React from 'react';
 import {
   Search,
   Plus,
-  FolderDown,
+  FolderPlus,
+  RefreshCw,
   LayoutGrid,
   Rows3,
   X,
@@ -11,6 +12,7 @@ import {
   Compass,
 } from 'lucide-react';
 import { CategoryInfo, ThemeMode, LayoutMode } from '../types';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface HeaderProps {
   categories: CategoryInfo[];
@@ -107,34 +109,37 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-2 shrink-0 justify-end">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-start sm:justify-end">
+          {/* PWA Install Button if available */}
+          <PWAInstallButton />
+
           {/* Layout switcher: Griglia / Lista */}
           <div
-            className="flex items-center rounded-xl p-1 bg-slate-100 border border-slate-200 text-xs"
+            className="flex items-center rounded-xl p-0.5 sm:p-1 bg-slate-100 border border-slate-200 text-xs"
             title="Cambia disposizione schede"
           >
             <button
               onClick={() => onChangeLayoutMode('grid')}
-              className={`p-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+              className={`p-1.5 rounded-lg flex items-center gap-1 transition-all ${
                 layoutMode === 'grid'
                   ? 'bg-white font-bold text-slate-900 shadow-xs'
                   : 'text-slate-500 hover:text-slate-900'
               }`}
               title="Vista Griglia (2 colonne)"
             >
-              <LayoutGrid size={15} />
+              <LayoutGrid size={14} />
               <span className="hidden xl:inline text-xs">Griglia</span>
             </button>
             <button
               onClick={() => onChangeLayoutMode('stack')}
-              className={`p-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+              className={`p-1.5 rounded-lg flex items-center gap-1 transition-all ${
                 layoutMode === 'stack'
                   ? 'bg-white font-bold text-slate-900 shadow-xs'
                   : 'text-slate-500 hover:text-slate-900'
               }`}
               title="Vista Lista estesa (1 colonna)"
             >
-              <Rows3 size={15} />
+              <Rows3 size={14} />
               <span className="hidden xl:inline text-xs">Lista</span>
             </button>
           </div>
@@ -142,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Theme switcher: Azzurro Medio vs Azzurro Profondo */}
           <button
             onClick={onToggleTheme}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white text-slate-800 hover:border-slate-300 text-xs font-semibold transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white text-slate-800 hover:border-slate-300 text-xs font-semibold transition-all shadow-xs"
             title={`Tonalità sfondo: ${isLight ? 'Azzurro Mediterraneo' : 'Azzurro Oceano'}. Clicca per alternare`}
           >
             <Sparkles size={14} className="text-teal-600" />
@@ -152,34 +157,39 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Sincronizza Cartella Public */}
           {onSyncFolder && (
             <button
+              id="header-btn-sync"
               onClick={onSyncFolder}
               disabled={isSyncing}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 text-xs font-semibold transition-all shadow-xs disabled:opacity-60"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 text-xs font-semibold transition-all shadow-xs disabled:opacity-60"
               title="Scansiona e sincronizza automaticamente i file HTML presenti nella cartella public/snippets"
             >
-              <FolderDown size={14} className={`text-teal-600 ${isSyncing ? 'animate-spin' : ''}`} />
+              <RefreshCw size={13} className={`text-teal-600 ${isSyncing ? 'animate-spin' : ''}`} />
               <span className="hidden md:inline">{isSyncing ? 'Scansione...' : 'Sincronizza'}</span>
             </button>
           )}
 
-          {/* Importa HTML */}
+          {/* Importa HTML - always clearly visible with text and distinct icon */}
           <button
+            id="header-btn-import-html"
             onClick={onOpenImportModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 text-xs font-semibold transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-200 bg-teal-50/70 hover:bg-teal-100/70 text-teal-800 text-xs font-bold transition-all shadow-xs"
             title="Importa file HTML da cartella locale o server"
           >
-            <FolderDown size={14} className="text-teal-600" />
-            <span className="hidden sm:inline">Importa HTML</span>
+            <FolderPlus size={14} className="text-teal-700 shrink-0" />
+            <span>
+              Importa <span className="hidden sm:inline">HTML</span>
+            </span>
           </button>
 
           {/* Nuovo Snippet */}
           <button
+            id="header-btn-new-snippet"
             onClick={onOpenNewSnippetModal}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-xs transition-colors"
+            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-xs transition-colors"
             title="Aggiungi un nuovo snippet al contenitore"
           >
             <Plus size={15} className="stroke-[2.5]" />
-            <span>Nuovo Snippet</span>
+            <span>Nuovo <span className="hidden sm:inline">Snippet</span></span>
           </button>
         </div>
       </div>

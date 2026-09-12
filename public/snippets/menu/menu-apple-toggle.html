@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  window.tailwind = window.tailwind || {};
+window.tailwind.config = {
+  darkMode: "class",
+  theme: { extend: {} }
+};
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  <style type="text/tailwindcss">
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: #3b495e;
+    font-family: Inter;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 30px;
+}
+
+.wrapper p {
+    margin: 30px 0;
+}
+
+ul.products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    list-style: none;
+}
+ul.products .product {
+    aspect-ratio: 5/6;
+    border-radius: 4px;
+}
+ul.products .product:nth-child(odd) {
+    background-color: #e7e7e7;
+}
+ul.products .product:nth-child(even) {
+    background-color: #ccc;
+}
+
+/* --------------------------*/
+/*  Snippflow Sticky Bottom Navigation Bar with Hover Effects */
+/* --------------------------*/
+
+.sf-floating-bar,
+.sf-floating-bar .sf-button,
+.sf-floating-bar .sf-button .cart-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sf-floating-bar {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    z-index: 2;
+    transform: translateX(-50%);
+    max-width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #212121;
+    box-shadow: 0px 8px 8px -4px rgba(0, 0, 0, 0.15), 0px 20px 24px -4px rgba(0, 0, 0, 0.08);
+}
+
+.sf-floating-bar .sf-button {
+  position: relative;
+  width: 56px;
+    height: 56px;
+    font-size: 18px;
+    color: #fff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+.sf-floating-bar .sf-button .cart-badge {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    background-color: #63D9B3;
+    color: #fff;
+    border-radius: 100%;
+}
+
+.sf-floating-bar .sf-button:before {
+    content: attr(data-menu);
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2a3733;
+    color: #63D9B3;
+    font-size: 11px;
+    padding: 2px 6px;
+    opacity: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.sf-floating-bar .sf-button:hover {
+    color: #63D9B3;
+}
+.sf-floating-bar .sf-button:hover i {
+    margin-top: -25px;
+}
+.sf-floating-bar .sf-button:hover .cart-badge {
+    top: -4px;
+}
+.sf-floating-bar .sf-button:hover:before {
+    opacity: 1;
+    bottom: 5px;
+}
+
+.sf-floating-bar .sf-button,
+.sf-floating-bar .sf-button:before,
+.sf-floating-bar .sf-button .cart-badge,
+.sf-floating-bar .sf-button i {
+    transition: all .3s ease-in-out;
+}
+
+
+</style>
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+<script src="https://kit.fontawesome.com/912c12b389.js" crossorigin="anonymous"></script>
+<div class="sf-floating-bar">
+    <a href="#" data-menu="Home" class="sf-button"><i class="fa-solid fa-house"></i></a>
+    <a href="#" data-menu="Shop" class="sf-button"><i class="fa-solid fa-table-cells-large"></i></a>
+    <a href="#" data-menu="Wishlist" class="sf-button"><i class="fa-regular fa-heart"></i></a>
+    <a href="#" data-menu="Cart" class="sf-button"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge">2</span></a>
+    <a href="#" data-menu="Profile" class="sf-button"><i class="fa-solid fa-user"></i></a>
+</div>
+
+
+
+
+</body>
+</html>

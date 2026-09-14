@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    
+    /* Layout Principale */
+    .app-container {
+      display: flex;
+      height: 100vh;
+      background-color: #f4f4f9;
+    }
+
+    /* Menu di Navigazione */
+    .sidebar-menu {
+      width: 220px;
+      background-color: #1e1e2d;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      z-index: 2;
+    }
+
+    .menu-item {
+      padding: 18px 20px;
+      cursor: pointer;
+      border-bottom: 1px solid #2d2d3f;
+      transition: background 0.2s;
+    }
+
+    .menu-item:hover, .menu-item.active {
+      background-color: #2b2b40;
+      color: #00d2d3;
+    }
+
+    /* Pannello Laterale Scorrevole (Off-canvas) */
+    .side-panel {
+      width: 320px;
+      background-color: #ffffff;
+      border-right: 1px solid #e0e0e0;
+      box-shadow: 4px 0 12px rgba(0,0,0,0.05);
+      transform: translateX(-100%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease-in-out;
+      padding: 25px;
+      z-index: 1;
+    }
+
+    /* Stato visibile del pannello */
+    .side-panel.open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .panel-content { display: none; }
+    .panel-content.active { display: block; }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      color: #888;
+    }
+  </style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  <style type="text/tailwindcss">
+/* Regole CSS personalizzate */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+</style>
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+
+<div class="app-container">
+  <!-- Menu -->
+  <nav class="sidebar-menu">
+    <div class="menu-item" onclick="openPanel('sec1', this)">Profilo</div>
+    <div class="menu-item" onclick="openPanel('sec2', this)">Impostazioni</div>
+    <div class="menu-item" onclick="openPanel('sec3', this)">Notifiche</div>
+  </nav>
+
+  <!-- Riquadro Laterale Dettagli -->
+  <aside class="side-panel" id="sidePanel">
+    <span class="close-btn" onclick="closePanel()">&times; Chiudi</span>
+    
+    <div id="sec1" class="panel-content">
+      <h3>Profilo Utente</h3>
+      <p style="margin-top: 10px;">Gestisci le tue informazioni personali e la foto profilo.</p>
+    </div>
+
+    <div id="sec2" class="panel-content">
+      <h3>Impostazioni</h3>
+      <p style="margin-top: 10px;">Modifica la password, la lingua e il tema dell'interfaccia.</p>
+    </div>
+
+    <div id="sec3" class="panel-content">
+      <h3>Centro Notifiche</h3>
+      <p style="margin-top: 10px;">Configura quali avvisi ricevere via email o browser.</p>
+    </div>
+  </aside>
+</div>
+
+<script>
+  function openPanel(sectionId, element) {
+    const panel = document.getElementById('sidePanel');
+    const contents = document.querySelectorAll('.panel-content');
+    const items = document.querySelectorAll('.menu-item');
+
+    // Gestione stato attivo del menu
+    items.forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+
+    // Mostra il contenuto corretto
+    contents.forEach(content => content.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+
+    // Apri il riquadro laterale
+    panel.classList.add('open');
+  }
+
+  function closePanel() {
+    document.getElementById('sidePanel').classList.remove('open');
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+  }
+</script>
+
+
+
+<script>
+// JavaScript interattivo
+let clicks = 0;
+const ctaBtn = document.getElementById('cta-btn');
+const counterEl = document.getElementById('click-counter');
+const toastBtn = document.getElementById('toast-btn');
+
+if (ctaBtn && counterEl) {
+  ctaBtn.addEventListener('click', () => {
+    clicks++;
+    counterEl.textContent = clicks;
+    console.log('Pulsante cliccato! Totale click:', clicks);
+  });
+}
+
+if (toastBtn) {
+  toastBtn.addEventListener('click', () => {
+    console.info('Notifica triggerata da JS preview!');
+    alert('Ciao! Il codice JavaScript viene eseguito direttamente nell\'anteprima.');
+  });
+}
+</script>
+</body>
+</html>

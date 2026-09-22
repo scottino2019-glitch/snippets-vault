@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Motore Tailwind CSS CDN -->
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Syne"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
+            '6xl': '3.5rem',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* Regole CSS personalizzate per il tuo layout vuoto */
+#bento-container {
+  min-height: 200px;
+}
+</style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+
+      <div class="col-span-1 md:col-span-2 min-h-[220px]">
+    <div class="w-full h-full w-full rounded-[3.5rem] bg-black p-3.5 border-4 border-slate-700/60 shadow-[0_25px_60px_rgba(0,0,0,0.9)] relative overflow-hidden">
+  <div class="rounded-[2.75rem] bg-[#0c0d14] border border-white/10 p-5 pt-4 text-white min-h-[460px] flex flex-col justify-between relative overflow-hidden">
+    <div class="w-24 h-5 rounded-full bg-black mx-auto border border-white/10 flex items-center justify-between px-2 text-[8px] font-mono text-white/70">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+      <span>09:41</span>
+    </div>
+
+    <div class="my-auto text-center space-y-3 py-6">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center font-display font-black text-2xl text-black shadow-lg">
+        📱
+      </div>
+      <h4 class="text-xl font-display font-black">Mobile View</h4>
+      <p class="text-[11px] text-slate-400 font-light max-w-[200px] mx-auto">Layout verticale da 393 × 852 px.</p>
+    </div>
+
+    <div class="w-28 h-1 rounded-full bg-white/40 mx-auto mt-2"></div>
+  </div>
+</div>
+  </div>  
+  
+ 
+
+
+
+</body>
+</html>

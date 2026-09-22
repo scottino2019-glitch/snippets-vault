@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Motore Tailwind CSS CDN -->
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Syne"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
+            '6xl': '3.5rem',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* Regole CSS personalizzate per il tuo layout vuoto */
+#bento-container {
+  min-height: 200px;
+}
+</style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+
+         <!-- FRAME SMARTPHONE 9:16 (2 COLONNE IN BASSO) -->
+      <div class="col-span-1 sm:col-span-2">
+        <div class="relative w-full max-w-[320px] mx-auto bg-slate-950 p-3.5 rounded-[3rem] border-4 border-slate-800 shadow-2xl flex flex-col justify-between min-h-[380px]">
+          <div class="flex items-center justify-between px-3 pt-1 pb-2 text-[10px] font-mono text-slate-400 select-none">
+            <span class="font-bold text-white">09:41</span>
+            <div class="w-16 h-3.5 bg-black rounded-full flex items-center justify-end px-2 border border-slate-800/80">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            </div>
+            <span class="font-bold">5G</span>
+          </div>
+          <div class="flex-1 w-full bg-slate-900 rounded-[2.2rem] p-4 text-white flex flex-col justify-between overflow-hidden shadow-inner border border-slate-800">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="text-[10px] font-mono font-bold text-amber-400">APP FEED</span>
+              <span class="text-xs">🔔</span>
+            </div>
+            <div class="my-auto text-center space-y-2 py-4">
+              <div class="w-12 h-12 rounded-2xl bg-amber-400 text-slate-950 font-black text-xl flex items-center justify-center mx-auto shadow-md">
+                ★
+              </div>
+              <h4 class="text-sm font-black text-white">Frame Smartphone</h4>
+              <p class="text-xs text-slate-400">Cornice 9:16 con Dynamic Island</p>
+            </div>
+            <button class="w-full py-2 bg-amber-400 text-slate-950 font-bold text-xs rounded-xl cursor-pointer">Azione Mobile ➔</button>
+          </div>
+          <div class="w-24 h-1 bg-slate-700 rounded-full mx-auto mt-2 mb-0.5"></div>
+        </div>
+      </div>
+  
+ 
+
+
+
+</body>
+</html>

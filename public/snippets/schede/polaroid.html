@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Motore Tailwind CSS CDN -->
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Syne"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
+            '6xl': '3.5rem',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* Regole CSS personalizzate per il tuo layout vuoto */
+#bento-container {
+  min-height: 200px;
+}
+</style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+
+        <!-- POLAROID CON WASHI TAPE -->
+      <div class="relative p-4 bg-white border-2 border-slate-900 rounded-3xl shadow-[5px_5px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-between items-center rotate-1 hover:rotate-0 transition-transform min-h-[210px] group">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-300 text-amber-950 text-[10px] font-mono font-black px-4 py-0.5 -rotate-2 shadow-xs border border-amber-400 z-20 whitespace-nowrap uppercase tracking-wider">
+          ★ POLAROID
+        </div>
+        <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-slate-100 border border-slate-300 mt-2 shadow-inner">
+          <img 
+            src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500&auto=format&fit=crop&q=80" 
+            alt="Foto Polaroid" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block"
+          />
+        </div>
+        <div class="pt-2 text-center font-mono w-full">
+          <div class="text-xs font-black text-slate-900">STUDIO ARCHITECTURE</div>
+        </div>
+      </div>
+  
+ 
+
+
+
+</body>
+</html>

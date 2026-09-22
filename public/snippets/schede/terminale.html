@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Motore Tailwind CSS CDN -->
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Syne"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
+            '6xl': '3.5rem',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* Regole CSS personalizzate per il tuo layout vuoto */
+#bento-container {
+  min-height: 200px;
+}
+</style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+
+      <div class="col-span-full min-h-[220px]">
+    <div class="w-full h-full w-full rounded-2xl bg-black border-2 border-emerald-500/40 p-4 font-mono text-emerald-400 shadow-[0_0_40px_rgba(34,197,94,0.15)]">
+  <div class="flex items-center justify-between border-b border-emerald-500/20 pb-2 mb-4 text-xs">
+    <div class="flex items-center space-x-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+      <span class="font-bold text-white">bash — bentocraft@engine: ~</span>
+    </div>
+    <span class="text-[10px] text-emerald-500/60">PORT: 3000 • STATUS: 200 OK</span>
+  </div>
+
+  <div class="space-y-2 text-xs">
+    <p class="text-slate-400">$ bento init --template=sculpture-polymorphic</p>
+    <p class="text-emerald-300">✔ Modello caricato con successo (6 forme geometriche attive)</p>
+    <p class="text-slate-400">$ tailwind compile --minify</p>
+    <p class="text-emerald-400 flex items-center space-x-2">
+      <span>> Pronto all'esecuzione live</span>
+      <span class="w-2 h-4 bg-emerald-400 inline-block animate-pulse"></span>
+    </p>
+  </div>
+</div>
+  </div>
+  
+ 
+
+
+
+</body>
+</html>

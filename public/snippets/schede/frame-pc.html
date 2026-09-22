@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Motore Tailwind CSS CDN -->
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Syne"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
+            '6xl': '3.5rem',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* Regole CSS personalizzate per il tuo layout vuoto */
+#bento-container {
+  min-height: 200px;
+}
+</style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+ <!-- FRAME BROWSER 16:9 (2 COLONNE IN BASSO) -->
+      <div class="col-span-1 sm:col-span-2">
+        <div class="w-full bg-[#181825] border-2 border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[380px]">
+          <div class="bg-[#1e1e2e] px-4 py-3 border-b border-slate-800 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-[#f38ba8] inline-block shadow-xs"></span>
+              <span class="w-3 h-3 rounded-full bg-[#f9e2af] inline-block shadow-xs"></span>
+              <span class="w-3 h-3 rounded-full bg-[#a6e3a1] inline-block shadow-xs"></span>
+            </div>
+            <div class="flex-1 max-w-xs bg-[#11111b] border border-[#313244] rounded-xl px-3 py-1 flex items-center justify-center gap-1.5 text-xs font-mono text-[#a6adc8]">
+              <span class="text-emerald-400 text-[10px]">🔒</span>
+              <span class="text-[#89b4fa]">bento.studio</span>
+            </div>
+            <div class="text-xs font-mono text-slate-500">16:9</div>
+          </div>
+          <div class="flex-1 p-6 bg-[#11111b] text-white flex flex-col justify-between">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+              <span class="text-xs font-mono text-cyan-400 font-bold">PORTALE DESKTOP</span>
+              <span class="text-xs font-mono text-emerald-400">Attivo</span>
+            </div>
+            <div class="my-auto py-4 text-center space-y-2">
+              <h3 class="text-xl font-black text-white">Finestra Browser Reale</h3>
+              <p class="text-xs text-slate-400 max-w-sm mx-auto">
+                Cornice macOS con semafori colorati e barra URL protetta.
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs font-mono text-slate-500">
+              <span>Stato: 200 OK</span>
+              <span class="text-emerald-400">Desktop View</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  
+ 
+
+
+
+</body>
+</html>

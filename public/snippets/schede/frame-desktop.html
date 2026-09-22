@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetto Tailwind CSS</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Motore Tailwind CSS CDN -->
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Syne"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
+            '6xl': '3.5rem',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* Regole CSS personalizzate per il tuo layout vuoto */
+#bento-container {
+  min-height: 200px;
+}
+</style>
+
+
+  <!-- Tailwind CSS Config -->
+  <script>
+    
+window.tailwind = window.tailwind || {};
+window.module = window.module || { exports: {} };
+window.exports = window.exports || {};
+try {
+  // Configurazione Tailwind
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#0ea5e9',
+      }
+    }
+  }
+}
+  if (window.module && window.module.exports && Object.keys(window.module.exports).length > 0) {
+    window.tailwind.config = window.module.exports;
+  }
+} catch(e) {
+  console.warn('Errore esecuzione tailwind.config:', e.message);
+}
+    if (window.tailwind && window.tailwind.config && !window.tailwind.config.darkMode) {
+      window.tailwind.config.darkMode = 'class';
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- Custom CSS & Tailwind Directives -->
+  
+</head>
+<body class="bg-[#0b0f19] text-[#f1f5f9] min-h-screen ">
+
+
+  <div class="min-h-screen bg-[#07080c] text-white p-6 md:p-12 font-sans">
+  <div id="bento-container" class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[220px]">
+    <!-- Nessun elemento: canvas totalmente pulito e libero per la tua creatività -->
+  </div>
+
+    <div class="col-span-full min-h-[220px]">
+    <div class="w-full h-full w-full rounded-2xl bg-[#0e1017] border border-white/10 shadow-2xl overflow-hidden">
+  <div class="h-10 bg-[#151822] border-b border-white/5 px-4 flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+      <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+      <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+    </div>
+    <div class="w-1/2 max-w-sm h-6 rounded-md bg-black/40 border border-white/5 flex items-center justify-center text-[10px] font-mono text-slate-400">
+      https://bentocraft.studio/preview
+    </div>
+    <div class="w-10"></div>
+  </div>
+
+  <div class="p-6 md:p-8 bg-gradient-to-b from-[#0e1017] to-[#07080c] min-h-[260px] flex flex-col items-center justify-center text-center">
+    <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-amber-300 uppercase mb-2">
+      FRAME ESPOSITIVO
+    </span>
+    <h3 class="text-2xl font-display font-bold text-white">Finestra Browser Interattiva</h3>
+    <p class="text-xs text-slate-400 mt-1 max-w-md">Inserisci all'interno qualsiasi componente per simularne la vista web reale.</p>
+  </div>
+</div>
+  </div>
+  
+ 
+
+
+
+</body>
+</html>

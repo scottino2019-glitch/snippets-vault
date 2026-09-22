@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagina Bento Personalizzata</title>
+  <!-- Tailwind CSS Engine -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Reset base */
+    html, body {
+      min-height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    /* Stili CSS Personalizzati */
+    
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-[#11111b] text-[#cdd6f4]">
+<!-- Header Bento Studio con Notifiche Animate -->
+<header class="w-full bg-[#0c1220] text-white rounded-3xl p-4 sm:p-5 border-b-4 border-amber-400 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+  <div class="flex items-center gap-3">
+    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-rose-500 text-slate-950 flex items-center justify-center font-black text-xl shadow-md border border-amber-200">
+      ★
+    </div>
+    <div>
+      <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+        Bento Hub <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-mono border border-amber-400/40 font-bold">LIVE CANVAS</span>
+      </h1>
+      <p class="text-[11px] font-mono text-cyan-300 uppercase tracking-wider font-bold">
+        Interfaccia Modulare & Tattile
+      </p>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3 font-mono text-xs">
+    <!-- Campanella Notifiche con Ping LED -->
+    <div class="relative p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white cursor-pointer transition">
+      <span class="text-sm">🔔</span>
+      <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400"></span>
+    </div>
+
+    <button class="px-4 py-2 rounded-full bg-amber-400 text-slate-950 font-black shadow-sm hover:bg-amber-300 transition cursor-pointer">
+      + Nuovo Blocco
+    </button>
+  </div>
+</header>
+</body>
+</html>
